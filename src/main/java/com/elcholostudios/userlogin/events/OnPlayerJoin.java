@@ -1,9 +1,9 @@
 package com.elcholostudios.userlogin.events;
 
 import com.elcholostudios.userlogin.UserLogin;
+import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Location;
 import com.elcholostudios.userlogin.util.lists.Path;
-import com.elcholostudios.userlogin.util.Utils;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,7 +22,7 @@ public class OnPlayerJoin implements Listener {
 
         // Set a new timeout
         utils.cancelTimeout(player);
-        if(UserLogin.plugin.getConfig().getBoolean("timeout.enabled")){
+        if (UserLogin.plugin.getConfig().getBoolean("timeout.enabled")) {
             int seconds = UserLogin.plugin.getConfig().getInt("timeout.time");
             int id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(
                     UserLogin.plugin, () -> kickPlayer(player), seconds * 20);

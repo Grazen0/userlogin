@@ -12,19 +12,25 @@ public abstract class SubCommand {
     private final boolean playerOnly;
 
     public SubCommand(String name, boolean playerOnly) {
-        this.name =  name;
+        this.name = name;
         this.playerOnly = playerOnly;
     }
 
     public abstract boolean run(CommandSender sender, String[] args);
 
-    public String getName() { return this.name; }
+    public String getName() {
+        return this.name;
+    }
 
-    public List<String> getSubs() { return this.subs; }
+    public List<String> getSubs() {
+        return this.subs;
+    }
 
     public void addSub(String sub) {
         this.subs.add(sub);
     }
 
-    public boolean isPlayerOnly() { return this.playerOnly; }
+    public boolean isPlayerOnly() {
+        return this.playerOnly;
+    }
 }

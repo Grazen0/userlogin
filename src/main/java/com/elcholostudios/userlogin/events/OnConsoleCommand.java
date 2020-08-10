@@ -9,6 +9,6 @@ public class OnConsoleCommand implements Listener {
 
     @EventHandler
     public void onConsoleCommand(ServerCommandEvent e) {
-        if((e.getCommand() + " ").startsWith("reload ")) new Utils().reloadWarn(null);
+        if ((e.getCommand() + " ").startsWith("reload ")) new Utils().reloadWarn(null);
     }
 }

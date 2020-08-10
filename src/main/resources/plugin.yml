@@ -3,7 +3,7 @@ version: ${project.version}
 main: com.elcholostudios.userlogin.UserLogin
 api-version: 1.16
 authors: [ElCholoGamer]
-description: Adds a login security system to you server
+description: A login security system to you server
 website: www.spigotmc.org
 commands:
   userlogin:

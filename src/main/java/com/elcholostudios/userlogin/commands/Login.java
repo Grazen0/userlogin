@@ -1,9 +1,9 @@
 package com.elcholostudios.userlogin.commands;
 
 import com.elcholostudios.userlogin.UserLogin;
+import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Location;
 import com.elcholostudios.userlogin.util.lists.Path;
-import com.elcholostudios.userlogin.util.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -1,8 +1,8 @@
 package com.elcholostudios.userlogin.events;
 
 import com.elcholostudios.userlogin.UserLogin;
-import com.elcholostudios.userlogin.util.lists.Path;
 import com.elcholostudios.userlogin.util.Utils;
+import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;

@@ -7,12 +7,12 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import java.io.File;
 import java.io.IOException;
 
-public class Configuration {
-    
+public abstract class Configuration {
+
     private final String name;
     private File file;
     private FileConfiguration fileConfiguration;
-    
+
     public Configuration(String name) {
         this.name = name;
     }
@@ -20,10 +20,10 @@ public class Configuration {
     public void setup() {
         file = new File(UserLogin.plugin.getDataFolder(), name + ".yml");
 
-        if(!file.exists()){
-            try{
+        if (!file.exists()) {
+            try {
                 file.createNewFile();
-            }catch (IOException e){
+            } catch (IOException e) {
                 System.out.println("Failed to create \"" + name + ".yml\" file!");
                 e.printStackTrace();
             }
@@ -31,6 +31,8 @@ public class Configuration {
 
         reload();
     }
+
+    public abstract void registerDefaults();
 
     public FileConfiguration get() {
         return fileConfiguration;
@@ -41,9 +43,9 @@ public class Configuration {
     }
 
     public void save() {
-        try{
+        try {
             fileConfiguration.save(file);
-        }catch (IOException e){
+        } catch (IOException e) {
             System.out.println("Error while trying to save \"" + name + ".yml\"!");
             e.printStackTrace();
         }

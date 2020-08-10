@@ -23,7 +23,7 @@ public class Utils {
 
     public void cancelTimeout(Player player) {
         Integer id = timeouts.get(player.getUniqueId());
-        if(id != null)
+        if (id != null)
             Bukkit.getServer().getScheduler().cancelTask(id);
     }
 
