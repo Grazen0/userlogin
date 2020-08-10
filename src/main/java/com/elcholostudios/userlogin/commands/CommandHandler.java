@@ -66,7 +66,4 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
         return options;
     }
 
-    public List<SubCommand> getSubCommands() {
-        return this.subCommands;
-    }
 }

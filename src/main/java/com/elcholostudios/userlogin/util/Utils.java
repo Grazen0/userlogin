@@ -4,7 +4,6 @@ import com.elcholostudios.userlogin.UserLogin;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
-import org.bukkit.World;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -19,8 +18,8 @@ import java.util.regex.Pattern;
 
 public class Utils {
 
-    public static Map<UUID, Boolean> loggedIn = new HashMap<>();
-    public static Map<UUID, Integer> timeouts = new HashMap<>();
+    public static final Map<UUID, Boolean> loggedIn = new HashMap<>();
+    public static final Map<UUID, Integer> timeouts = new HashMap<>();
 
     public void cancelTimeout(Player player) {
         Integer id = timeouts.get(player.getUniqueId());
