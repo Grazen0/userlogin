@@ -73,7 +73,7 @@ public final class UserLogin extends JavaPlugin {
         messagesFile.get().addDefault(Path.WELCOME_LOGIN, "&6Welcome! Use &3/login <password> &6to enter the server");
         messagesFile.get().addDefault(Path.WELCOME_REGISTER, "&6Welcome! Use &3/register <password> <password> &6to register your account");
         messagesFile.get().addDefault(Path.CHAT_DISABLED, "&cYou must first log in to use the chat!");
-        messagesFile.get().addDefault(Path.TIMEOUT, "You stayed for too much time without logging in");
+        messagesFile.get().addDefault(Path.TIMEOUT, "You have stayed for too much time without logging in");
 
         List<String> help = new ArrayList<>();
         help.add("&a----------- | &2[UserLogin Help] &a| -----------");
