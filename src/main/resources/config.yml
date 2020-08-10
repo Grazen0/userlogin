@@ -1,0 +1,44 @@
+#-------------------------------------------------
+#Configuration file for UserLogin
+#For any doubts, feel free to send me a message
+#on my Discord (ElCholoGamer#3291)
+#-------------------------------------------------
+
+# Timeout-kicking settings
+timeout:
+
+  # Enable/disable timeout kicking
+  enabled: true
+
+  # Timeout delay in seconds
+  time: 60
+
+# Password settings
+password:
+
+  # Encrypt passwords in playerData.yml
+  encrypt: false
+
+  # Minimum characters that a password must have
+  minCharacters: 4
+
+# Enable/disable restrictions for non-logged in players
+restrictions:
+
+  # Chat messages
+  chat: true
+
+  # Commands
+  commands: true
+
+  # Player movement
+  movement: false
+
+# Enable/disable certain teleports
+teleports:
+
+  # Teleport players to login location on join
+  toLogin: true
+
+  # Teleport players to spawn when logged in
+  toSpawn: true
