@@ -47,8 +47,13 @@ public class Login implements CommandExecutor, TabCompleter {
 
         // Check if password is correct
         String uuid = player.getUniqueId().toString();
-        String password = Objects.requireNonNull(
-                UserLogin.dataFile.get().getString(uuid + ".password")); // Get stored password
+
+        // Get stored password
+        String password;
+        if(!utils.sqlMode())
+            password = Objects.requireNonNull(UserLogin.dataFile.get().getString(uuid + ".password"));
+        else
+            password = UserLogin.sql.data.get(UUID.fromString(uuid));
 
         // Decrypt stored password if needed
         if (password.startsWith("§")) password = utils.decrypt(password);

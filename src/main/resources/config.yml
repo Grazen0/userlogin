@@ -7,6 +7,21 @@
 # Language file to load
 lang: 'en_US'
 
+# MySQL options
+mysql:
+
+  # Replace YAML storage with MySQL storage
+  enabled: false
+
+  # Interval (in seconds) to save local data to database
+  saveInterval: 300
+
+  # Connection credentials and information
+  host: 'localhost'
+  username: 'root'
+  password: 'password'
+  port: 3306
+
 # Timeout-kicking settings
 timeout:
 

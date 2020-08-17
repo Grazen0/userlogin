@@ -1,4 +1,4 @@
-package com.elcholostudios.userlogin.util;
+package com.elcholostudios.userlogin.util.command;
 
 import org.bukkit.command.CommandSender;
 

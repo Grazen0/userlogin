@@ -61,11 +61,11 @@ public class Utils {
             String password = UserLogin.dataFile.get().getString(key + ".password");
             if (password == null) continue;
             String newPassword = password;
-            if (encrypt) {
-                if (!password.startsWith("§")) newPassword = encrypt(password);
-            } else {
-                if (password.startsWith("§")) newPassword = decrypt(password);
-            }
+            if (encrypt && !password.startsWith("§"))
+                newPassword = encrypt(password);
+            else if (password.startsWith("§"))
+                newPassword = decrypt(password);
+
             UserLogin.dataFile.get().set(key + ".password", newPassword);
         }
         UserLogin.dataFile.save();
@@ -99,7 +99,9 @@ public class Utils {
     }
 
     public boolean isRegistered(Player player) {
-        return UserLogin.dataFile.get().getKeys(true).contains(player.getUniqueId().toString() + ".password");
+        UUID uuid = player.getUniqueId();
+        return (!sqlMode() && UserLogin.dataFile.get().getKeys(true).contains(uuid.toString() + ".password")) ||
+                (sqlMode() && UserLogin.sql.data.containsKey(uuid));
     }
 
     public void updateName(Player player) {
@@ -117,7 +119,7 @@ public class Utils {
                 "unstable, and will definitely cause trouble with this plugin." +
                 ChatColor.GRAY.toString() + ChatColor.ITALIC.toString() + "]";
 
-        Bukkit.getServer().getConsoleSender().sendMessage(msg);
+        consoleLog(msg);
         if (player != null)
             player.sendMessage(msg);
         else {
@@ -161,5 +163,13 @@ public class Utils {
             sendMessage(Path.LOGIN_ANNOUNCEMENT, onlinePlayer,
                     new String[]{"player"}, new String[]{player.getName()});
         }
+    }
+
+    public boolean sqlMode() {
+        return getConfig().getBoolean("mysql.enabled");
+    }
+
+    public void consoleLog(String msg) {
+        Bukkit.getServer().getConsoleSender().sendMessage(msg);
     }
 }

@@ -1,13 +1,10 @@
-package com.elcholostudios.userlogin.commands;
+package com.elcholostudios.userlogin.util.command;
 
-import com.elcholostudios.userlogin.util.SubCommand;
 import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Path;
-import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
-import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
+import org.bukkit.command.*;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -18,6 +15,13 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     private final ArrayList<SubCommand> subCommands = new ArrayList<>();
     private final Utils utils = new Utils();
+
+    public CommandHandler(String mainCommand, JavaPlugin plugin) {
+        PluginCommand command = plugin.getCommand(mainCommand);
+        if(command == null) return;
+
+        command.setExecutor(this);
+    }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {

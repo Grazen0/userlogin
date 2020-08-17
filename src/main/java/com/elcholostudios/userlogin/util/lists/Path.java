@@ -8,6 +8,7 @@ public class Path {
     private static final String MESSAGES = "messages.";
     private static final String WELCOME = MESSAGES + "welcome.";
     public static final String USAGES = COMMANDS + "usages.";
+    public static final String SQL_STATES = COMMANDS + "sqlStates.";
 
     // Command errors
     public static final String PLAYER_ONLY = COMMAND_ERRORS + "player-only";
@@ -15,6 +16,10 @@ public class Path {
     // Commands
     public static final String SET = COMMANDS + "set";
     public static final String RELOAD = COMMANDS + "reload";
+    public static final String SQL_STATE = COMMANDS + "sql-state";
+    public static final String SQL_DISABLED = SQL_STATES + "disabled";
+    public static final String SQL_CONNECTED = SQL_STATES + "connected";
+    public static final String SQL_DISCONNECTED = SQL_STATES + "disconnected";
 
     // Usages
     public static final String USERLOGIN_USAGE = USAGES + "userlogin";

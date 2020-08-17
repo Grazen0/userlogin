@@ -62,13 +62,17 @@ public class Register implements CommandExecutor, TabCompleter {
         String uuid = player.getUniqueId().toString();
         Utils.loggedIn.put(UUID.fromString(uuid), true);
 
-        // Save password, encrypted if enabled
+        // Encrypt password if enabled
         if (utils.getConfig().getBoolean("password.encrypt")) password = utils.encrypt(password);
-        UserLogin.dataFile.get().set(uuid + ".password", password);
 
-        // Set name and save file
-        utils.updateName(player);
-        UserLogin.dataFile.save();
+        if (!utils.sqlMode()) {
+            UserLogin.dataFile.get().set(uuid + ".password", password);
+
+            // Set name and save file
+            utils.updateName(player);
+            UserLogin.dataFile.save();
+        } else
+            UserLogin.sql.data.put(UUID.fromString(uuid), password);
 
         // Send message, cancel timeout, and teleport to spawn if enabled
         utils.sendMessage(Path.REGISTERED, player);

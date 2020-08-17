@@ -1,4 +1,5 @@
-./todo.txt
+# Todo files
+*.txt
 
 # User-specific stuff
 .idea/
