@@ -1,18 +1,17 @@
 package com.elcholostudios.userlogin.util;
 
 import com.elcholostudios.userlogin.UserLogin;
+import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.*;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -146,5 +145,21 @@ public class Utils {
                     (float) section.getDouble("pitch"));
         }
         return loc;
+    }
+
+    public FileConfiguration getConfig() {
+        return UserLogin.plugin.getConfig();
+    }
+
+    public boolean normalMode() {
+        return !Objects.requireNonNull(getConfig().getString("teleports.mode")).toUpperCase().equals("SAVE-POSITION");
+    }
+
+    public void joinAnnounce(Player player) {
+        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+            if (player == onlinePlayer) continue;
+            sendMessage(Path.LOGIN_ANNOUNCEMENT, onlinePlayer,
+                    new String[]{"player"}, new String[]{player.getName()});
+        }
     }
 }

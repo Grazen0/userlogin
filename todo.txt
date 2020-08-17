@@ -1,0 +1,4 @@
+TODO:
+- BungeeCord support
+- MySQL support
+- Think about more ideas for the plugin

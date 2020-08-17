@@ -31,10 +31,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
                 return true;
             }
 
-            // Get arguments and run command
+            // Get an array with sub-arguments
             String[] subArgs = new String[args.length - 1];
             System.arraycopy(args, 1, subArgs, 0, args.length - 1);
 
+            // Run command
             return sub.run(sender, subArgs);
         }
 
@@ -52,14 +53,20 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
         List<String> options = new ArrayList<>();
+
         if (args.length == 1) {
+            // Add all commands, filtered by search
             for (SubCommand sub : this.subCommands)
                 if (sub.getName().startsWith(args[0])) options.add(sub.getName());
         } else if (args.length == 2) {
+            // Check which command matches main command
             for (SubCommand sub : this.subCommands) {
                 if (!sub.getName().equals(args[0])) continue;
+
+                // Add all subs for said command, filtered by search
                 for (String subOption : sub.getSubs())
                     if (subOption.startsWith(args[1])) options.add(subOption);
+                break;
             }
         }
 

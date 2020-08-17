@@ -1,6 +1,5 @@
 package com.elcholostudios.userlogin.events;
 
-import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.entity.Player;
@@ -10,10 +9,12 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class OnChatMessage implements Listener {
 
+    private final Utils utils = new Utils();
+
     @EventHandler
     public void onChatMessage(AsyncPlayerChatEvent e) {
         Player player = e.getPlayer();
-        if (!UserLogin.plugin.getConfig().getBoolean("restrictions.chat") ||
+        if (!utils.getConfig().getBoolean("restrictions.chat") ||
                 Utils.loggedIn.get(player.getUniqueId())) return;
 
         e.setCancelled(true);

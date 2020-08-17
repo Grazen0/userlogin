@@ -7,6 +7,7 @@ public class Path {
     private static final String COMMAND_ERRORS = COMMANDS + "errors.";
     private static final String MESSAGES = "messages.";
     private static final String WELCOME = MESSAGES + "welcome.";
+    public static final String USAGES = COMMANDS + "usages.";
 
     // Command errors
     public static final String PLAYER_ONLY = COMMAND_ERRORS + "player-only";
@@ -14,6 +15,11 @@ public class Path {
     // Commands
     public static final String SET = COMMANDS + "set";
     public static final String RELOAD = COMMANDS + "reload";
+
+    // Usages
+    public static final String USERLOGIN_USAGE = USAGES + "userlogin";
+    public static final String LOGIN_USAGE = USAGES + "login";
+    public static final String REGISTER_USAGE = USAGES + "register";
 
     // Messages
     public static final String NOT_REGISTERED = MESSAGES + "not-registered";
@@ -27,6 +33,7 @@ public class Path {
     public static final String CHAT_DISABLED = MESSAGES + "chat-disabled";
     public static final String TIMEOUT = MESSAGES + "timeout";
     public static final String HELP = MESSAGES + "help";
+    public static final String LOGIN_ANNOUNCEMENT = MESSAGES + "login-announcement";
 
     // Welcome messages
     public static final String WELCOME_LOGIN = WELCOME + "registered";

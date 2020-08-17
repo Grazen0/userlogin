@@ -60,14 +60,23 @@ public class Login implements CommandExecutor, TabCompleter {
 
         // Player logs in
         Utils.loggedIn.put(UUID.fromString(uuid), true);
+        utils.cancelTimeout(player);
+
         utils.updateName(player);
         UserLogin.dataFile.save();
-        utils.cancelTimeout(player);
 
         // Send message and teleport to spawn if enabled
         utils.sendMessage(Path.LOGGED_IN, player);
-        if (UserLogin.plugin.getConfig().getBoolean("teleports.toSpawn"))
+
+        if (utils.normalMode() && utils.getConfig().getBoolean("teleports.toSpawn")) {
             player.teleport(utils.getLocation(Location.SPAWN));
+        } else if (!utils.normalMode()) {
+            org.bukkit.Location loc = utils.getLocation("playerLocations." + uuid);
+            if(loc == null) return true;
+            player.teleport(loc);
+        }
+
+        utils.joinAnnounce(player);
 
         return true;
     }

@@ -9,9 +9,9 @@ import java.io.IOException;
 
 public abstract class Configuration {
 
-    private final String name;
-    private File file;
-    private FileConfiguration fileConfiguration;
+    protected String name;
+    protected File file;
+    protected FileConfiguration fileConfiguration;
 
     public Configuration(String name) {
         this.name = name;
@@ -40,6 +40,7 @@ public abstract class Configuration {
 
     public void reload() {
         fileConfiguration = YamlConfiguration.loadConfiguration(file);
+        this.registerDefaults();
     }
 
     public void save() {

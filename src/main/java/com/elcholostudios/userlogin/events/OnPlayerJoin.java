@@ -22,8 +22,8 @@ public class OnPlayerJoin implements Listener {
 
         // Set a new timeout
         utils.cancelTimeout(player);
-        if (UserLogin.plugin.getConfig().getBoolean("timeout.enabled")) {
-            int seconds = UserLogin.plugin.getConfig().getInt("timeout.time");
+        if (utils.getConfig().getBoolean("timeout.enabled")) {
+            int seconds = utils.getConfig().getInt("timeout.time");
             int id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(
                     UserLogin.plugin, () -> kickPlayer(player), seconds * 20);
             Utils.timeouts.put(player.getUniqueId(), id);
@@ -36,7 +36,7 @@ public class OnPlayerJoin implements Listener {
             utils.sendMessage(Path.WELCOME_REGISTER, player);
 
         // Teleport to login position if enabled
-        if (UserLogin.plugin.getConfig().getBoolean("teleports.toLogin"))
+        if (utils.getConfig().getBoolean("teleports.toLogin"))
             player.teleport(utils.getLocation(Location.LOGIN));
     }
 

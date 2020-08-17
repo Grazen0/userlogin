@@ -1,6 +1,5 @@
 package com.elcholostudios.userlogin.events;
 
-import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.World;
@@ -15,12 +14,14 @@ import java.util.Objects;
 
 public class OnPlayerMove implements Listener {
 
+    private final Utils utils = new Utils();
+
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMove(PlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (e.getTo() != null && (!UserLogin.plugin.getConfig().getBoolean("restrictions.movement") ||
-                !moved(e.getFrom(), e.getTo()) ||
-                Utils.loggedIn.get(player.getUniqueId()))) return;
+        if (!utils.getConfig().getBoolean("restrictions.movement") ||
+                (e.getTo() != null && (!moved(e.getFrom(), e.getTo()))) ||
+                Utils.loggedIn.get(player.getUniqueId())) return;
 
         double x = e.getFrom().getX();
         double y = Objects.requireNonNull(e.getTo()).getY();

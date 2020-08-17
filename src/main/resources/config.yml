@@ -1,8 +1,11 @@
-#-------------------------------------------------
-#Configuration file for UserLogin
-#For any doubts, feel free to send me a message
-#on my Discord (ElCholoGamer#3291)
-#-------------------------------------------------
+# ----------------------------------------------------
+# | Configuration file for UserLogin                 |
+# | For any doubts, feel free to send me a message   |
+# | on my Discord (ElCholoGamer#3291)                |
+# ----------------------------------------------------
+
+# Language file to load
+lang: 'en_US'
 
 # Timeout-kicking settings
 timeout:
@@ -37,8 +40,16 @@ restrictions:
 # Enable/disable certain teleports
 teleports:
 
+  # Teleport mode: Can be either 'NORMAL' or 'SAVE-POSITION'
+  mode: 'NORMAL'
+  # The "SAVE-POSITION" mode teleports the player
+  # to their last position when they log in.
+
+  # The "NORMAL" mode just teleports the player to
+  # the spawn point if said function is enabled
+
   # Teleport players to login location on join
   toLogin: true
 
-  # Teleport players to spawn when logged in
+  # Teleport players to spawn when logged in (Normal mode only)
   toSpawn: true

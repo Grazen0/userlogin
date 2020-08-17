@@ -22,6 +22,7 @@ public class LocationsFile extends Configuration {
         this.get().addDefault("spawn.yaw", 0);
         this.get().addDefault("spawn.pitch", 0);
         this.get().addDefault("spawn.world", "DEFAULT");
+
         this.get().options().copyDefaults(true);
         this.save();
     }

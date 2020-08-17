@@ -46,7 +46,7 @@ public class Register implements CommandExecutor, TabCompleter {
 
         // Check if password is over the minimum amount of characters
         String password = args[0];
-        int minChars = UserLogin.plugin.getConfig().getInt("password.minCharacters");
+        int minChars = utils.getConfig().getInt("password.minCharacters");
         if (password.length() < minChars) {
             utils.sendMessage(Path.SHORT_PASSWORD, player, new String[]{"chars"}, new String[]{Integer.toString(minChars)});
             return true;
@@ -63,7 +63,7 @@ public class Register implements CommandExecutor, TabCompleter {
         Utils.loggedIn.put(UUID.fromString(uuid), true);
 
         // Save password, encrypted if enabled
-        if (UserLogin.plugin.getConfig().getBoolean("password.encrypt")) password = utils.encrypt(password);
+        if (utils.getConfig().getBoolean("password.encrypt")) password = utils.encrypt(password);
         UserLogin.dataFile.get().set(uuid + ".password", password);
 
         // Set name and save file
@@ -73,8 +73,11 @@ public class Register implements CommandExecutor, TabCompleter {
         // Send message, cancel timeout, and teleport to spawn if enabled
         utils.sendMessage(Path.REGISTERED, player);
         utils.cancelTimeout(player);
-        if (UserLogin.plugin.getConfig().getBoolean("teleports.toSpawn"))
+
+        if (utils.getConfig().getBoolean("teleports.toSpawn"))
             player.teleport(utils.getLocation(Location.SPAWN));
+
+        utils.joinAnnounce(player);
 
         return true;
     }
