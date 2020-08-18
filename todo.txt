@@ -1,3 +1,0 @@
-TODO:
-- BungeeCord support
-- Think about more ideas for the plugin
