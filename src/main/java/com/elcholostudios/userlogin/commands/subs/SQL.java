@@ -5,6 +5,8 @@ import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.command.SubCommand;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 public class SQL extends SubCommand {
 
@@ -15,7 +17,7 @@ public class SQL extends SubCommand {
     }
 
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(@NotNull CommandSender sender, String @NotNull [] args) {
         if(args.length > 0) return false;
 
         // Get current MySQL state
@@ -31,7 +33,7 @@ public class SQL extends SubCommand {
         return true;
     }
 
-    private String getMsg(String path) {
+    private @Nullable String getMsg(@NotNull String path) {
         return UserLogin.messagesFile.get().getString(path);
     }
 }

@@ -11,6 +11,8 @@ import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.*;
 import java.util.*;
@@ -22,17 +24,17 @@ public class Utils {
     public static final Map<UUID, Boolean> loggedIn = new HashMap<>();
     public static final Map<UUID, Integer> timeouts = new HashMap<>();
 
-    public void cancelTimeout(Player player) {
+    public void cancelTimeout(@NotNull Player player) {
         Integer id = timeouts.get(player.getUniqueId());
         if (id != null)
             Bukkit.getServer().getScheduler().cancelTask(id);
     }
 
-    public void sendMessage(String path, CommandSender player) {
+    public void sendMessage(@NotNull String path, @NotNull CommandSender player) {
         sendMessage(path, player, new String[0], new String[0]);
     }
 
-    public void sendMessage(String path, CommandSender player, String[] replace, String[] replacement) {
+    public void sendMessage(@NotNull String path, @NotNull CommandSender player, String @NotNull [] replace, String[] replacement) {
         String msg = UserLogin.messagesFile.get().getString(path);
         if (msg == null || msg.equals("")) return;
         msg = color(msg);
@@ -45,7 +47,7 @@ public class Utils {
         player.sendMessage(msg);
     }
 
-    public String color(String s) {
+    public @NotNull String color(@NotNull String s) {
         if (Bukkit.getVersion().contains("1.16")) {
             Pattern pattern = Pattern.compile("#[0-9a-fA-F]{6}");
             Matcher match = pattern.matcher(s);
@@ -88,25 +90,25 @@ public class Utils {
         }
     }
 
-    public String decrypt(String password) {
+    public @NotNull String decrypt(@NotNull String password) {
         try {
             ByteArrayInputStream in = new ByteArrayInputStream(Base64.getDecoder().decode(password.replaceFirst("§", "")));
             ObjectInputStream is = new ObjectInputStream(in);
             return (String) is.readObject();
-        } catch (IOException | ClassNotFoundException e) {
+        } catch (@NotNull IOException | ClassNotFoundException e) {
             System.out.println("Error while trying to decrypt a password");
             e.printStackTrace();
             return password;
         }
     }
 
-    public boolean isRegistered(Player player) {
+    public boolean isRegistered(@NotNull Player player) {
         UUID uuid = player.getUniqueId();
         return (!sqlMode() && UserLogin.dataFile.get().getKeys(true).contains(uuid.toString() + ".password")) ||
                 (sqlMode() && UserLogin.sql.data.containsKey(uuid));
     }
 
-    public void updateName(Player player) {
+    public void updateName(@NotNull Player player) {
         String uuid = player.getUniqueId().toString();
         if (!UserLogin.dataFile.get().getKeys(false).contains(uuid)) return;
 
@@ -114,7 +116,7 @@ public class Utils {
         UserLogin.dataFile.save();
     }
 
-    public void reloadWarn(Player player) {
+    public void reloadWarn(@Nullable Player player) {
         String msg = ChatColor.GRAY.toString() + ChatColor.ITALIC.toString() + "[UserLogin: " +
                 ChatColor.RESET.toString() + ChatColor.DARK_RED.toString() +
                 "A reload has been detected. We advise you to restart the server, as this command is very " +
@@ -131,7 +133,7 @@ public class Utils {
         }
     }
 
-    public Location getLocation(String location) {
+    public @Nullable Location getLocation(@NotNull String location) {
         ConfigurationSection section = UserLogin.locationsFile.get().getConfigurationSection(location);
         if (section == null) return null;
 
@@ -151,7 +153,7 @@ public class Utils {
         return loc;
     }
 
-    public FileConfiguration getConfig() {
+    public @NotNull FileConfiguration getConfig() {
         return UserLogin.plugin.getConfig();
     }
 
@@ -159,7 +161,7 @@ public class Utils {
         return !Objects.requireNonNull(getConfig().getString("teleports.mode")).toUpperCase().equals("SAVE-POSITION");
     }
 
-    public void joinAnnounce(Player player) {
+    public void joinAnnounce(@NotNull Player player) {
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
             if (player == onlinePlayer) continue;
             sendMessage(Path.LOGIN_ANNOUNCEMENT, onlinePlayer,
@@ -171,11 +173,11 @@ public class Utils {
         return getConfig().getBoolean("mysql.enabled");
     }
 
-    public void consoleLog(String msg) {
+    public void consoleLog(@NotNull String msg) {
         Bukkit.getServer().getConsoleSender().sendMessage(msg);
     }
 
-    public void sendToServer(Player player) {
+    public void sendToServer(@NotNull Player player) {
         ByteArrayDataOutput out = ByteStreams.newDataOutput();
         out.writeUTF("Connect");
         out.writeUTF(getConfig().getString("bungeeCord.spawnServer"));

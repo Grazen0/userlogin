@@ -8,6 +8,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 import java.util.UUID;
@@ -15,7 +16,7 @@ import java.util.UUID;
 public class OnPlayerQuit implements Listener {
 
     @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent e) {
+    public void onPlayerQuit(@NotNull PlayerQuitEvent e) {
         // Check if player is already logged in
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();

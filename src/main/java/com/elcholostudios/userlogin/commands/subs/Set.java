@@ -22,7 +22,7 @@ public class Set extends SubCommand {
     }
 
     @Override
-    public boolean run(@NotNull CommandSender sender, String[] args) {
+    public boolean run(@NotNull CommandSender sender, String @NotNull [] args) {
         if (args.length != 1 || !(args[0].equals("login") || args[0].equals("spawn"))) return false;
 
         // Save location

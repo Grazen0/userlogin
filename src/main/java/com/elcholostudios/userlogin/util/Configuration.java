@@ -3,17 +3,18 @@ package com.elcholostudios.userlogin.util;
 import com.elcholostudios.userlogin.UserLogin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.jetbrains.annotations.Nullable;
 
 import java.io.File;
 import java.io.IOException;
 
 public abstract class Configuration {
 
-    protected String name;
+    protected @Nullable String name;
     protected File file;
     protected FileConfiguration fileConfiguration;
 
-    public Configuration(String name) {
+    public Configuration(@Nullable String name) {
         this.name = name;
     }
 

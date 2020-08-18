@@ -16,7 +16,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     private final ArrayList<SubCommand> subCommands = new ArrayList<>();
     private final Utils utils = new Utils();
 
-    public CommandHandler(String mainCommand, JavaPlugin plugin) {
+    public CommandHandler(@NotNull String mainCommand, @NotNull JavaPlugin plugin) {
         PluginCommand command = plugin.getCommand(mainCommand);
         if(command == null) return;
 
@@ -24,7 +24,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (args.length == 0) return false;
 
         // Check for sub-commands with the matching name
@@ -55,7 +55,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String @NotNull [] args) {
         List<String> options = new ArrayList<>();
 
         if (args.length == 1) {

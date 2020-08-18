@@ -1,9 +1,15 @@
 package com.elcholostudios.userlogin;
 
-import com.elcholostudios.userlogin.commands.*;
-import com.elcholostudios.userlogin.commands.subs.*;
+import com.elcholostudios.userlogin.commands.Login;
+import com.elcholostudios.userlogin.commands.Register;
+import com.elcholostudios.userlogin.commands.subs.Help;
+import com.elcholostudios.userlogin.commands.subs.Reload;
+import com.elcholostudios.userlogin.commands.subs.SQL;
+import com.elcholostudios.userlogin.commands.subs.Set;
 import com.elcholostudios.userlogin.events.*;
-import com.elcholostudios.userlogin.files.*;
+import com.elcholostudios.userlogin.files.DataFile;
+import com.elcholostudios.userlogin.files.LocationsFile;
+import com.elcholostudios.userlogin.files.MessagesFile;
 import com.elcholostudios.userlogin.util.Configuration;
 import com.elcholostudios.userlogin.util.Lang;
 import com.elcholostudios.userlogin.util.MySQL;
@@ -14,17 +20,18 @@ import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.Objects;
 
 public final class UserLogin extends JavaPlugin {
 
-    public static CommandHandler handler;
     public static final Configuration messagesFile = new MessagesFile();
     public static final Configuration locationsFile = new LocationsFile();
     public static final Configuration dataFile = new DataFile();
     public static final MySQL sql = new MySQL();
+    public static CommandHandler handler;
     public static UserLogin plugin;
     private final Utils utils = new Utils();
 
@@ -63,18 +70,20 @@ public final class UserLogin extends JavaPlugin {
                 long delay = plugin.getConfig().getLong("mysql.saveInterval") * 20;
                 Bukkit.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, sql::saveData, delay, delay);
 
-                utils.consoleLog(ChatColor.GREEN + "MySQL connected successfully!");
-            } catch (SQLException | ClassNotFoundException e) {
-                utils.consoleLog(
-                        ChatColor.RED + "An error occurred while trying to connect to MySQL database, read logs for more");
+                utils.consoleLog(utils.color(Objects.requireNonNull(utils.getConfig().getString(Path.SQL_CONNECTION_SUCCESS))));
+            } catch (@NotNull SQLException | ClassNotFoundException e) {
+                utils.consoleLog(utils.color(Objects.requireNonNull(
+                        utils.getConfig().getString(Path.SQL_CONNECTION_ERROR))));
+
                 e.printStackTrace();
             }
         }
     }
 
-    private static void setUsage(String command, String path) {
+    private static void setUsage(@NotNull String command, @NotNull String path) {
         Utils utils = new Utils();
-        Objects.requireNonNull(plugin.getCommand(command)).setUsage(utils.color(messagesFile.get().getString(path)));
+        Objects.requireNonNull(plugin.getCommand(command)).setUsage(utils.color(
+                Objects.requireNonNull(messagesFile.get().getString(path))));
     }
 
     @Override
@@ -114,10 +123,10 @@ public final class UserLogin extends JavaPlugin {
         if (!utils.sqlMode()) return;
 
         sql.saveData();
-        utils.consoleLog(ChatColor.AQUA + "Local data saved in MySQL database!");
+        utils.consoleLog(utils.color(Objects.requireNonNull(utils.getConfig().getString(Path.SQL_DATA_SAVED))));
     }
 
-    private void addListener(Listener listener) {
+    private void addListener(@NotNull Listener listener) {
         this.getServer().getPluginManager().registerEvents(listener, this);
     }
 }

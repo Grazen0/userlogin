@@ -1,7 +1,9 @@
 package com.elcholostudios.userlogin.util;
 
+import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
+import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -13,9 +15,9 @@ public class MySQL {
 
     public final Map<UUID, String> data = new HashMap<>();
     private final Utils utils = new Utils();
-    private String database = "userlogin_data";
-    private String table = "player_data";
     public boolean isConnected = false;
+    private @Nullable String database = "userlogin_data";
+    private @Nullable String table = "player_data";
     private Connection connection;
 
     public void connect() throws SQLException, ClassNotFoundException {
@@ -29,8 +31,8 @@ public class MySQL {
         this.database = utils.getConfig().getString("mysql.database");
         this.table = utils.getConfig().getString("mysql.table");
 
-        if(database == null) database = "userlogin_data";
-        if(table == null) table = "player_data";
+        if (database == null) database = "userlogin_data";
+        if (table == null) table = "player_data";
 
         synchronized (this) {
             if (getConnection() != null && !getConnection().isClosed())
@@ -109,7 +111,9 @@ public class MySQL {
                             "('" + uuid.toString() + "', '" + username + "', '" + password + "')");
             }
         } catch (SQLException e) {
-            utils.consoleLog(ChatColor.RED + "An error occurred while trying to save local data to database storage, beware.");
+            utils.consoleLog(utils.color(Objects.requireNonNull(
+                    utils.getConfig().getString(Path.SQL_SAVE_ERROR))));
+
             e.printStackTrace();
         }
     }

@@ -1,6 +1,7 @@
 package com.elcholostudios.userlogin.util.command;
 
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -22,7 +23,7 @@ public abstract class SubCommand {
         return this.name;
     }
 
-    public List<String> getSubs() {
+    public @NotNull List<String> getSubs() {
         return this.subs;
     }
 

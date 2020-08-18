@@ -2,8 +2,8 @@ package com.elcholostudios.userlogin.commands;
 
 import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.Utils;
-import com.elcholostudios.userlogin.util.lists.Location;
 import com.elcholostudios.userlogin.util.lists.Path;
+import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -22,7 +22,7 @@ public class Login implements CommandExecutor, TabCompleter {
     private final Utils utils = new Utils();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         // Check if sender is a player
         if (!(sender instanceof Player)) {
             utils.sendMessage(Path.PLAYER_ONLY, sender);
@@ -76,7 +76,9 @@ public class Login implements CommandExecutor, TabCompleter {
         if (!utils.getConfig().getBoolean("bungeeCord.enabled")) {
             // Teleport to corresponding location
             if (utils.normalMode() && utils.getConfig().getBoolean("teleports.toSpawn")) {
-                player.teleport(utils.getLocation(Location.SPAWN));
+                Location loc = utils.getLocation(com.elcholostudios.userlogin.util.lists.Location.SPAWN);
+                if(loc != null)
+                    player.teleport(loc);
             } else if (!utils.normalMode()) {
                 org.bukkit.Location loc = utils.getLocation("playerLocations." + uuid);
                 if (loc == null) return true;

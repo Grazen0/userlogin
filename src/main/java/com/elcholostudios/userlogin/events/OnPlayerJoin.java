@@ -2,20 +2,21 @@ package com.elcholostudios.userlogin.events;
 
 import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.Utils;
-import com.elcholostudios.userlogin.util.lists.Location;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class OnPlayerJoin implements Listener {
 
     private final Utils utils = new Utils();
 
     @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
+    public void onPlayerJoin(@NotNull PlayerJoinEvent e) {
         e.setJoinMessage(null);
         Player player = e.getPlayer();
         Utils.loggedIn.put(player.getUniqueId(), false);
@@ -36,11 +37,14 @@ public class OnPlayerJoin implements Listener {
             utils.sendMessage(Path.WELCOME_REGISTER, player);
 
         // Teleport to login position if enabled
-        if (utils.getConfig().getBoolean("teleports.toLogin"))
-            player.teleport(utils.getLocation(Location.LOGIN));
+        if (utils.getConfig().getBoolean("teleports.toLogin")) {
+            Location loc = utils.getLocation(com.elcholostudios.userlogin.util.lists.Location.LOGIN);
+            if (loc != null)
+                player.teleport(loc);
+        }
     }
 
-    private void kickPlayer(Player player) {
+    private void kickPlayer(@NotNull Player player) {
         player.kickPlayer(UserLogin.messagesFile.get().getString(Path.TIMEOUT));
     }
 }

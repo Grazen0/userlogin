@@ -9,6 +9,7 @@ import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
+import org.jetbrains.annotations.NotNull;
 
 import java.util.Objects;
 
@@ -17,7 +18,7 @@ public class OnPlayerMove implements Listener {
     private final Utils utils = new Utils();
 
     @EventHandler(priority = EventPriority.HIGHEST)
-    public void onPlayerMove(PlayerMoveEvent e) {
+    public void onPlayerMove(@NotNull PlayerMoveEvent e) {
         Player player = e.getPlayer();
         if (!utils.getConfig().getBoolean("restrictions.movement") ||
                 (e.getTo() != null && (!moved(e.getFrom(), e.getTo()))) ||
@@ -35,7 +36,7 @@ public class OnPlayerMove implements Listener {
         player.setVelocity(speed);
     }
 
-    private boolean moved(Location from, Location to) {
+    private boolean moved(@NotNull Location from, @NotNull Location to) {
         return from.getX() != to.getX() || from.getZ() != from.getZ();
     }
 }

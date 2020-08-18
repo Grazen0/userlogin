@@ -51,6 +51,11 @@ public class Lang {
             config.addDefault(Path.SQL_DISCONNECTED, "Disconnected");
             config.addDefault(Path.SQL_DISABLED, "Disabled");
 
+            config.addDefault(Path.SQL_CONNECTION_SUCCESS, "&aMySQL connected successfully!");
+            config.addDefault(Path.SQL_DATA_SAVED, "&3Local data saved to MySQL database");
+            config.addDefault(Path.SQL_CONNECTION_ERROR, "&cAn error occurred while trying to connect to MySQL database, read logs for more");
+            config.addDefault(Path.SQL_SAVE_ERROR, "&cAn error occurred while saving local data to MySQL database, beware.");
+
             List<String> help = new ArrayList<>();
             help.add("&a----------- | &2[UserLogin Help] &a| -----------");
             help.add("&2/ul help: &aShows this help list");
@@ -93,6 +98,11 @@ public class Lang {
             config.addDefault(Path.SQL_CONNECTED, "Conectado");
             config.addDefault(Path.SQL_DISCONNECTED, "Desconectado");
             config.addDefault(Path.SQL_DISABLED, "Desactivado");
+
+            config.addDefault(Path.SQL_CONNECTION_SUCCESS, "&aBase de datos MySQL conectada!");
+            config.addDefault(Path.SQL_DATA_SAVED, "&3Datos locales guardados en la base de datos");
+            config.addDefault(Path.SQL_CONNECTION_ERROR, "&cError al conectar a la base de datos MySQL, leer el error para más información");
+            config.addDefault(Path.SQL_SAVE_ERROR, "&cError al guardar los datos locales en la base de datos.");
 
             help.clear();
             help.add("&a--------- | &2[Ayuda de UserLogin] &a| ---------");

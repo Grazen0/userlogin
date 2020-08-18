@@ -5,6 +5,7 @@ import com.elcholostudios.userlogin.util.command.SubCommand;
 import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.command.CommandSender;
+import org.jetbrains.annotations.NotNull;
 
 public class Help extends SubCommand {
 
@@ -15,7 +16,7 @@ public class Help extends SubCommand {
     }
 
     @Override
-    public boolean run(CommandSender sender, String[] args) {
+    public boolean run(@NotNull CommandSender sender, String @NotNull [] args) {
         if (args.length > 0) return false;
 
         for (String str : UserLogin.messagesFile.get().getStringList(Path.HELP)) {

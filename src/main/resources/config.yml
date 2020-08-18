@@ -20,7 +20,7 @@ timeout:
 # Password options
 password:
 
-  # Encrypt passwords in playerData.yml
+  # Encrypt passwords when saving them to playerData.yml/MySQL database
   encrypt: false
 
   # Minimum characters that a password must have
@@ -33,7 +33,7 @@ restrictions:
   # Chat messages
   chat: true
 
-  # Commands
+  # Command execution
   commands: true
 
   # Player movement

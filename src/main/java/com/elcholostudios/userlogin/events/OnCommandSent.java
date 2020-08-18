@@ -4,13 +4,14 @@ import com.elcholostudios.userlogin.util.Utils;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerCommandPreprocessEvent;
+import org.jetbrains.annotations.NotNull;
 
 public class OnCommandSent implements Listener {
 
     private final Utils utils = new Utils();
 
     @EventHandler
-    public void onCommandSent(PlayerCommandPreprocessEvent e) {
+    public void onCommandSent(@NotNull PlayerCommandPreprocessEvent e) {
         String msg = e.getMessage() + " ";
         if (utils.getConfig().getBoolean("restrictions.commands")
                 && !Utils.loggedIn.get(e.getPlayer().getUniqueId()) &&

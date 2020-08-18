@@ -1,19 +1,25 @@
 package com.elcholostudios.userlogin.util.lists;
 
+import org.jetbrains.annotations.NotNull;
+
 public class Path {
 
     // Sections
     private static final String COMMANDS = "commands.";
+    private static final String OTHER = "other.";
     private static final String COMMAND_ERRORS = COMMANDS + "errors.";
     private static final String MESSAGES = "messages.";
     private static final String WELCOME = MESSAGES + "welcome.";
-    public static final String USAGES = COMMANDS + "usages.";
-    public static final String SQL_STATES = COMMANDS + "sqlStates.";
+    private static final String USAGES = COMMANDS + "usages.";
+
+    private static final String SQL_STATES = COMMANDS + "sqlStates.";
+    private static final String SQL = OTHER + "mysql.";
+    private static final String SQL_ERRORS = SQL + "errors.";
 
     // Command errors
     public static final String PLAYER_ONLY = COMMAND_ERRORS + "player-only";
 
-    // Commands
+    // Commands messages
     public static final String SET = COMMANDS + "set";
     public static final String RELOAD = COMMANDS + "reload";
     public static final String SQL_STATE = COMMANDS + "sql-state";
@@ -21,12 +27,18 @@ public class Path {
     public static final String SQL_CONNECTED = SQL_STATES + "connected";
     public static final String SQL_DISCONNECTED = SQL_STATES + "disconnected";
 
-    // Usages
+    // MySQL messages and errors
+    public static final String SQL_SAVE_ERROR = SQL_ERRORS + "save-failed";
+    public static final String SQL_CONNECTION_SUCCESS = SQL + "connected";
+    public static final String SQL_DATA_SAVED = SQL + "data-saved";
+    public static final String SQL_CONNECTION_ERROR = SQL_ERRORS + "connection-error";
+
+    // Command usages
     public static final String USERLOGIN_USAGE = USAGES + "userlogin";
     public static final String LOGIN_USAGE = USAGES + "login";
     public static final String REGISTER_USAGE = USAGES + "register";
 
-    // Messages
+    // Player messages
     public static final String NOT_REGISTERED = MESSAGES + "not-registered";
     public static final String ALREADY_REGISTERED = MESSAGES + "already-registered";
     public static final String ALREADY_LOGGED_IN = MESSAGES + "already-logged-in";

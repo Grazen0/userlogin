@@ -21,7 +21,7 @@ public class Register implements CommandExecutor, TabCompleter {
     private final Utils utils = new Utils();
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
+    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         // Check if sender is a player
         if (!(sender instanceof Player)) {
             utils.sendMessage(Path.PLAYER_ONLY, sender);
@@ -80,8 +80,11 @@ public class Register implements CommandExecutor, TabCompleter {
 
         if (!utils.getConfig().getBoolean("bungeeCord.enabled")) {
             // Send to spawn if enabled
-            if (utils.getConfig().getBoolean("teleports.toSpawn"))
-                player.teleport(utils.getLocation(Location.SPAWN));
+            if (utils.getConfig().getBoolean("teleports.toSpawn")) {
+                org.bukkit.Location loc = utils.getLocation(Location.SPAWN);
+                if (loc != null)
+                    player.teleport(loc);
+            }
 
             // Announce join message to other players
             utils.joinAnnounce(player);
