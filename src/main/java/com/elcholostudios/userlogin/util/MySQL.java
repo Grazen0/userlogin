@@ -13,8 +13,8 @@ public class MySQL {
 
     public final Map<UUID, String> data = new HashMap<>();
     private final Utils utils = new Utils();
-    private final String database = "userlogin_data";
-    private final String table = "player_data";
+    private String database = "userlogin_data";
+    private String table = "player_data";
     public boolean isConnected = false;
     private Connection connection;
 
@@ -24,6 +24,10 @@ public class MySQL {
         String username = utils.getConfig().getString("mysql.username");
         String password = utils.getConfig().getString("mysql.password");
         int port = utils.getConfig().getInt("mysql.port");
+
+        // Get database and table from config
+        this.database = utils.getConfig().getString("mysql.database");
+        this.table = utils.getConfig().getString("mysql.table");
 
         synchronized (this) {
             if (getConnection() != null && !getConnection().isClosed())

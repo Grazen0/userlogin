@@ -54,7 +54,7 @@ teleports:
   # Teleport players to login location on join
   toLogin: true
 
-  # Teleport players to spawn when logged in (Normal mode only)
+  # Teleport players to spawn when logged in (Normal, non-BungeeCord mode only)
   toSpawn: true
 
 
@@ -76,6 +76,10 @@ mysql:
 
   # Interval (in seconds) between which local data will be saved to the database
   saveInterval: 300
+
+  # Database and table to store the data in
+  database: 'userlogin_data'
+  table: 'player_data'
 
   # Connection credentials and information
   host: 'localhost'
