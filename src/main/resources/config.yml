@@ -16,6 +16,7 @@ timeout:
   # Timeout delay in seconds
   time: 60
 
+
 # Password options
 password:
 
@@ -24,6 +25,7 @@ password:
 
   # Minimum characters that a password must have
   minCharacters: 4
+
 
 # Enable/disable restrictions for non-logged in players
 restrictions:
@@ -36,6 +38,7 @@ restrictions:
 
   # Player movement
   movement: false
+
 
 # Enable/disable certain teleports
 teleports:
@@ -54,14 +57,16 @@ teleports:
   # Teleport players to spawn when logged in (Normal mode only)
   toSpawn: true
 
+
 # BungeeCord options
 bungeeCord:
 
   # Enable BungeeCord functionalities
-  enabled: true
+  enabled: false
 
   # Server to send the player when logged in
   spawnServer: 'LOBBY'
+
 
 # MySQL options
 mysql:
