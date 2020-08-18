@@ -29,6 +29,9 @@ public class MySQL {
         this.database = utils.getConfig().getString("mysql.database");
         this.table = utils.getConfig().getString("mysql.table");
 
+        if(database == null) database = "userlogin_data";
+        if(table == null) table = "player_data";
+
         synchronized (this) {
             if (getConnection() != null && !getConnection().isClosed())
                 return;
