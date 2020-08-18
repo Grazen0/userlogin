@@ -19,6 +19,7 @@ public class MySQL {
     private Connection connection;
 
     public void connect() throws SQLException, ClassNotFoundException {
+        // Get credentials from config
         String host = utils.getConfig().getString("mysql.host");
         String username = utils.getConfig().getString("mysql.username");
         String password = utils.getConfig().getString("mysql.password");
@@ -28,6 +29,7 @@ public class MySQL {
             if (getConnection() != null && !getConnection().isClosed())
                 return;
 
+            // Get driver and set connection
             this.isConnected = false;
             Class.forName("com.mysql.jdbc.Driver");
             setConnection(DriverManager.getConnection(
@@ -49,10 +51,10 @@ public class MySQL {
                         "( `UUID` VARCHAR(45) NOT NULL , `USERNAME` VARCHAR(45) NOT NULL , " +
                         "`PASSWORD` VARCHAR(45) NOT NULL , PRIMARY KEY (`UUID`)) ENGINE = InnoDB;");
 
-            // Map data from database
+            // Map the current data queried from the database
             data.clear();
-
             ResultSet rows = query("SELECT * FROM `" + database + "`.`" + table + "`");
+
             while (rows.next()) {
                 data.put(
                         UUID.fromString(rows.getString("UUID")),
@@ -83,11 +85,13 @@ public class MySQL {
     public synchronized void saveData() {
         try {
             for (UUID uuid : data.keySet()) {
+                // Get password and the associated player's username
                 String password = data.get(uuid);
                 String username = Bukkit.getServer().getOfflinePlayer(uuid).getName();
 
                 // Checks if row with the UUID exists
                 if (query("SELECT * FROM " + table + " WHERE UUID='" + uuid.toString() + "'").next()) {
+                    // Update an existing row
                     update("UPDATE " + database + "." + table + " SET USERNAME='" + username + "' " +
                             "WHERE UUID='" + uuid.toString() + "'");
 

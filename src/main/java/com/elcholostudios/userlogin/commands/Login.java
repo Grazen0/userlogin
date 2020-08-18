@@ -50,7 +50,7 @@ public class Login implements CommandExecutor, TabCompleter {
 
         // Get stored password
         String password;
-        if(!utils.sqlMode())
+        if (!utils.sqlMode())
             password = Objects.requireNonNull(UserLogin.dataFile.get().getString(uuid + ".password"));
         else
             password = UserLogin.sql.data.get(UUID.fromString(uuid));
@@ -70,18 +70,24 @@ public class Login implements CommandExecutor, TabCompleter {
         utils.updateName(player);
         UserLogin.dataFile.save();
 
-        // Send message and teleport to spawn if enabled
+        // Send join message to player
         utils.sendMessage(Path.LOGGED_IN, player);
 
-        if (utils.normalMode() && utils.getConfig().getBoolean("teleports.toSpawn")) {
-            player.teleport(utils.getLocation(Location.SPAWN));
-        } else if (!utils.normalMode()) {
-            org.bukkit.Location loc = utils.getLocation("playerLocations." + uuid);
-            if(loc == null) return true;
-            player.teleport(loc);
-        }
+        if (!utils.getConfig().getBoolean("bungeeCord.enabled")) {
+            // Teleport to corresponding location
+            if (utils.normalMode() && utils.getConfig().getBoolean("teleports.toSpawn")) {
+                player.teleport(utils.getLocation(Location.SPAWN));
+            } else if (!utils.normalMode()) {
+                org.bukkit.Location loc = utils.getLocation("playerLocations." + uuid);
+                if (loc == null) return true;
+                player.teleport(loc);
+            }
 
-        utils.joinAnnounce(player);
+            utils.joinAnnounce(player);
+        } else {
+            // Connect to spawn server
+            utils.sendToServer(player);
+        }
 
         return true;
     }

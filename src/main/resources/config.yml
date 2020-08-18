@@ -7,21 +7,6 @@
 # Language file to load
 lang: 'en_US'
 
-# MySQL options
-mysql:
-
-  # Replace YAML storage with MySQL storage
-  enabled: false
-
-  # Interval (in seconds) to save local data to database
-  saveInterval: 300
-
-  # Connection credentials and information
-  host: 'localhost'
-  username: 'root'
-  password: 'password'
-  port: 3306
-
 # Timeout-kicking settings
 timeout:
 
@@ -31,7 +16,7 @@ timeout:
   # Timeout delay in seconds
   time: 60
 
-# Password settings
+# Password options
 password:
 
   # Encrypt passwords in playerData.yml
@@ -68,3 +53,27 @@ teleports:
 
   # Teleport players to spawn when logged in (Normal mode only)
   toSpawn: true
+
+# BungeeCord options
+bungeeCord:
+
+  # Enable BungeeCord functionalities
+  enabled: true
+
+  # Server to send the player when logged in
+  spawnServer: 'LOBBY'
+
+# MySQL options
+mysql:
+
+  # Replace YAML storage with MySQL storage
+  enabled: false
+
+  # Interval (in seconds) between which local data will be saved to the database
+  saveInterval: 300
+
+  # Connection credentials and information
+  host: 'localhost'
+  username: 'root'
+  password: 'password'
+  port: 3306

@@ -78,10 +78,17 @@ public class Register implements CommandExecutor, TabCompleter {
         utils.sendMessage(Path.REGISTERED, player);
         utils.cancelTimeout(player);
 
-        if (utils.getConfig().getBoolean("teleports.toSpawn"))
-            player.teleport(utils.getLocation(Location.SPAWN));
+        if (!utils.getConfig().getBoolean("bungeeCord.enabled")) {
+            // Send to spawn if enabled
+            if (utils.getConfig().getBoolean("teleports.toSpawn"))
+                player.teleport(utils.getLocation(Location.SPAWN));
 
-        utils.joinAnnounce(player);
+            // Announce join message to other players
+            utils.joinAnnounce(player);
+        } else {
+            // Connect player to spawn server
+            utils.sendToServer(player);
+        }
 
         return true;
     }

@@ -3,17 +3,17 @@ version: ${project.version}
 main: com.elcholostudios.userlogin.UserLogin
 api-version: 1.16
 authors: [ElCholoGamer]
-description: A login security system to you server
+description: A login security system for you server
 website: www.spigotmc.org
 commands:
   userlogin:
     description: The main command for UserLogin
-    usage: "§cCorrect usage: /<command> <sub> (Use /ul help for more)"
+    usage: '§cCorrect usage: /<command> <sub> (Use /ul help for more)'
     aliases: [ul]
     permission: ul.userlogin
   register:
     description: Registers your user with the given password
-    usage: "§cCorrect usage: /<command> <password> <password>"
+    usage: '§cCorrect usage: /<command> <password> <password>'
   login:
     description: Logs in your user with the given password
-    usage: "§cCorrect usage: /<command> <password>"
+    usage: '§cCorrect usage: /<command> <password>'

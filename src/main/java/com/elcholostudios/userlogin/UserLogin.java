@@ -1,15 +1,9 @@
 package com.elcholostudios.userlogin;
 
-import com.elcholostudios.userlogin.commands.Login;
-import com.elcholostudios.userlogin.commands.Register;
-import com.elcholostudios.userlogin.commands.subs.Help;
-import com.elcholostudios.userlogin.commands.subs.Reload;
-import com.elcholostudios.userlogin.commands.subs.SQL;
-import com.elcholostudios.userlogin.commands.subs.Set;
+import com.elcholostudios.userlogin.commands.*;
+import com.elcholostudios.userlogin.commands.subs.*;
 import com.elcholostudios.userlogin.events.*;
-import com.elcholostudios.userlogin.files.DataFile;
-import com.elcholostudios.userlogin.files.LocationsFile;
-import com.elcholostudios.userlogin.files.MessagesFile;
+import com.elcholostudios.userlogin.files.*;
 import com.elcholostudios.userlogin.util.Configuration;
 import com.elcholostudios.userlogin.util.Lang;
 import com.elcholostudios.userlogin.util.MySQL;
@@ -55,7 +49,7 @@ public final class UserLogin extends JavaPlugin {
         setUsage("register", Path.REGISTER_USAGE);
 
         // Cancel all plugin tasks
-        Bukkit.getServer().getScheduler().cancelTasks(plugin);
+        plugin.getServer().getScheduler().cancelTasks(plugin);
 
         if (!utils.sqlMode()) {
             // Update passwords (Encrypt or decrypt each one of them if needed)
@@ -87,6 +81,9 @@ public final class UserLogin extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        // Create BungeeCord messaging channel
+        this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
         // Listeners setup
         addListener(new OnPlayerJoin());
         addListener(new OnCommandSent());
@@ -117,10 +114,10 @@ public final class UserLogin extends JavaPlugin {
         if (!utils.sqlMode()) return;
 
         sql.saveData();
-        utils.consoleLog(ChatColor.GREEN + "MySQL connection closed!");
+        utils.consoleLog(ChatColor.AQUA + "Local data saved in MySQL database!");
     }
 
     private void addListener(Listener listener) {
-        Bukkit.getServer().getPluginManager().registerEvents(listener, this);
+        this.getServer().getPluginManager().registerEvents(listener, this);
     }
 }

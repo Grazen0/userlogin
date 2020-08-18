@@ -2,6 +2,8 @@ package com.elcholostudios.userlogin.util;
 
 import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.lists.Path;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -171,5 +173,13 @@ public class Utils {
 
     public void consoleLog(String msg) {
         Bukkit.getServer().getConsoleSender().sendMessage(msg);
+    }
+
+    public void sendToServer(Player player) {
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        out.writeUTF("Connect");
+        out.writeUTF(getConfig().getString("bungeeCord.spawnServer"));
+
+        player.sendPluginMessage(UserLogin.plugin, "BungeeCord", out.toByteArray());
     }
 }
