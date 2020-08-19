@@ -1,6 +1,6 @@
 package com.elcholostudios.userlogin.files;
 
-import com.elcholostudios.userlogin.util.Configuration;
+import com.elcholostudios.userlogin.util.data.Configuration;
 
 public class DataFile extends Configuration {
 

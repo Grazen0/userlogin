@@ -1,5 +1,6 @@
-package com.elcholostudios.userlogin.util;
+package com.elcholostudios.userlogin.util.data;
 
+import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;

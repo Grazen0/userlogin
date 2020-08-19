@@ -10,11 +10,10 @@ import com.elcholostudios.userlogin.events.*;
 import com.elcholostudios.userlogin.files.DataFile;
 import com.elcholostudios.userlogin.files.LocationsFile;
 import com.elcholostudios.userlogin.files.MessagesFile;
-import com.elcholostudios.userlogin.util.Configuration;
-import com.elcholostudios.userlogin.util.Lang;
-import com.elcholostudios.userlogin.util.MySQL;
-import com.elcholostudios.userlogin.util.Utils;
+import com.elcholostudios.userlogin.util.*;
 import com.elcholostudios.userlogin.util.command.CommandHandler;
+import com.elcholostudios.userlogin.util.data.Configuration;
+import com.elcholostudios.userlogin.util.data.MySQL;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
@@ -114,6 +113,9 @@ public final class UserLogin extends JavaPlugin {
         Objects.requireNonNull(getCommand("register")).setExecutor(new Register());
 
         pluginSetup();
+
+        // Setup bStats
+        Metrics metrics = new Metrics(this, 8586);
 
         utils.consoleLog(ChatColor.GREEN + "UserLogin enabled!");
     }
