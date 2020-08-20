@@ -30,8 +30,12 @@ public class Register implements CommandExecutor, TabCompleter {
 
         // Check if player is not already logged in
         Player player = (Player) sender;
-        if (Utils.loggedIn.get(player.getUniqueId())) {
-            utils.sendMessage(Path.ALREADY_LOGGED_IN, player);
+        try {
+            if (Utils.loggedIn.get(player.getUniqueId())) {
+                utils.sendMessage(Path.ALREADY_LOGGED_IN, player);
+                return true;
+            }
+        } catch (NullPointerException ignored) {
             return true;
         }
 

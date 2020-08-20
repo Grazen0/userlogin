@@ -2,8 +2,6 @@ package com.elcholostudios.userlogin.util;
 
 import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.lists.Path;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -124,33 +122,41 @@ public class Utils {
                 ChatColor.GRAY.toString() + ChatColor.ITALIC.toString() + "]";
 
         consoleLog(msg);
-        if (player != null)
+        if (player != null) {
             player.sendMessage(msg);
-        else {
-            for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
-                if (onlinePlayer.isOp()) onlinePlayer.sendMessage(msg);
-            }
+            return;
+        }
+
+        for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
+            if (onlinePlayer.isOp()) onlinePlayer.sendMessage(msg);
         }
     }
 
     public @Nullable Location getLocation(@NotNull String location) {
+        // Get section
         ConfigurationSection section = UserLogin.locationsFile.get().getConfigurationSection(location);
         if (section == null) return null;
 
+        // Get coordinates
         String worldName = section.getString("world");
-        Location loc;
-        if (worldName == null || worldName.equals("DEFAULT"))
-            loc = Bukkit.getWorlds().get(0).getSpawnLocation();
-        else {
-            loc = new Location(
-                    Bukkit.getWorld(worldName),
-                    section.getInt("x"),
-                    section.getInt("y"),
-                    section.getInt("z"),
-                    (float) section.getDouble("yaw"),
-                    (float) section.getDouble("pitch"));
-        }
-        return loc;
+        int x = section.getInt("x");
+        int y = section.getInt("y");
+        int z = section.getInt("z");
+        float yaw = (float) section.getDouble("yaw");
+        float pitch = (float) section.getDouble("pitch");
+
+        // Return default location if options are on default values
+        if (worldName == null || (worldName.equals("DEFAULT") && (x + y + z + yaw + pitch) == 0))
+            return Bukkit.getWorlds().get(0).getSpawnLocation();
+
+        // Return actual location
+        return new Location(
+                Bukkit.getWorld(worldName),
+                section.getInt("x"),
+                section.getInt("y"),
+                section.getInt("z"),
+                (float) section.getDouble("yaw"),
+                (float) section.getDouble("pitch"));
     }
 
     public @NotNull FileConfiguration getConfig() {
@@ -158,7 +164,8 @@ public class Utils {
     }
 
     public boolean normalMode() {
-        return !Objects.requireNonNull(getConfig().getString("teleports.mode")).toUpperCase().equals("SAVE-POSITION");
+        return !Objects.requireNonNull(getConfig().
+                getString("teleports.mode")).toUpperCase().equals("SAVE-POSITION");
     }
 
     public void joinAnnounce(@NotNull Player player) {
@@ -178,10 +185,19 @@ public class Utils {
     }
 
     public void sendToServer(@NotNull Player player) {
-        ByteArrayDataOutput out = ByteStreams.newDataOutput();
-        out.writeUTF("Connect");
-        out.writeUTF(getConfig().getString("bungeeCord.spawnServer"));
 
-        player.sendPluginMessage(UserLogin.plugin, "BungeeCord", out.toByteArray());
+        ByteArrayOutputStream bout = new ByteArrayOutputStream();
+        DataOutputStream out = new DataOutputStream(bout);
+        try {
+            String server = getConfig().getString("bungeeCord.spawnServer");
+            if (server == null) return;
+
+            out.writeUTF("Connect");
+            out.writeUTF(server);
+
+            player.sendPluginMessage(UserLogin.plugin, "BungeeCord", bout.toByteArray());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

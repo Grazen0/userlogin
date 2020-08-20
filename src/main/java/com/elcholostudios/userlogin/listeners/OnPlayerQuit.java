@@ -1,4 +1,4 @@
-package com.elcholostudios.userlogin.events;
+package com.elcholostudios.userlogin.listeners;
 
 import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.Utils;
@@ -20,7 +20,9 @@ public class OnPlayerQuit implements Listener {
         // Check if player is already logged in
         Player player = e.getPlayer();
         UUID uuid = player.getUniqueId();
-        if (!Utils.loggedIn.get(uuid)) return;
+        try {
+            if (!Utils.loggedIn.get(uuid)) return;
+        } catch (NullPointerException ignored) { }
 
         // Save the player's location
         Location loc = player.getLocation();

@@ -1,4 +1,4 @@
-package com.elcholostudios.userlogin.util.command;
+package com.elcholostudios.userlogin.api.command;
 
 import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Path;

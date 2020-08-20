@@ -1,7 +1,7 @@
 package com.elcholostudios.userlogin.files;
 
 import com.elcholostudios.userlogin.UserLogin;
-import com.elcholostudios.userlogin.util.data.Configuration;
+import com.elcholostudios.userlogin.api.Configuration;
 import com.elcholostudios.userlogin.util.Utils;
 import org.bukkit.configuration.file.YamlConfiguration;
 

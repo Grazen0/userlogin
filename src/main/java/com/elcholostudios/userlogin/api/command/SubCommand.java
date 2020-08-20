@@ -1,4 +1,4 @@
-package com.elcholostudios.userlogin.util.command;
+package com.elcholostudios.userlogin.api.command;
 
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

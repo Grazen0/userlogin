@@ -6,13 +6,13 @@ import com.elcholostudios.userlogin.commands.subs.Help;
 import com.elcholostudios.userlogin.commands.subs.Reload;
 import com.elcholostudios.userlogin.commands.subs.SQL;
 import com.elcholostudios.userlogin.commands.subs.Set;
-import com.elcholostudios.userlogin.events.*;
+import com.elcholostudios.userlogin.listeners.*;
 import com.elcholostudios.userlogin.files.DataFile;
 import com.elcholostudios.userlogin.files.LocationsFile;
 import com.elcholostudios.userlogin.files.MessagesFile;
 import com.elcholostudios.userlogin.util.*;
-import com.elcholostudios.userlogin.util.command.CommandHandler;
-import com.elcholostudios.userlogin.util.data.Configuration;
+import com.elcholostudios.userlogin.api.command.CommandHandler;
+import com.elcholostudios.userlogin.api.Configuration;
 import com.elcholostudios.userlogin.util.data.MySQL;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
@@ -93,12 +93,12 @@ public final class UserLogin extends JavaPlugin {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         // Listeners setup
-        addListener(new OnPlayerJoin());
-        addListener(new OnCommandSent());
-        addListener(new OnConsoleCommand());
-        addListener(new OnChatMessage());
-        addListener(new OnPlayerMove());
-        addListener(new OnPlayerQuit());
+        this.addListener(new OnPlayerJoin());
+        this.addListener(new OnChatMessage());
+        this.addListener(new OnPlayerMove());
+        this.addListener(new OnPlayerQuit());
+        this.addListener(new ReloadListener());
+        this.addListener(new OnServerReload());
 
         // Command setup
         handler = new CommandHandler("userlogin", this);
@@ -116,6 +116,10 @@ public final class UserLogin extends JavaPlugin {
 
         // Setup bStats
         Metrics metrics = new Metrics(this, 8586);
+        metrics.addCustomChart(new Metrics.SimplePie("data_type",
+                () -> this.utils.sqlMode() ? "MySQL" : "YAML"));
+        metrics.addCustomChart(new Metrics.SimplePie("lang",
+                () -> this.getConfig().getString("lang")));
 
         utils.consoleLog(ChatColor.GREEN + "UserLogin enabled!");
     }

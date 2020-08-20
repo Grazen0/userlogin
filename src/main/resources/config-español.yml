@@ -1,0 +1,88 @@
+# ----------------------------------------------------
+# | Configuración de UserLogin                       |
+# | Para preguntas o reportar bugs, puedes escribir  |
+# | a mi  Discord (ElCholoGamer#3291)                |
+# ----------------------------------------------------
+
+# Archivo de lenguaje a usar
+lang: 'en_US'
+
+# Opciones de kickeo automático
+timeout:
+
+  # Activar/desactivar el kickeo automático
+  enabled: true
+
+  # Tiempo de espera para el kickeo
+  time: 60
+
+
+# Opciones para las contraseñas
+password:
+
+  # Encriptar contraseñas al almacenarlas en playerData.yml/base de datos MySQL
+  encrypt: false
+
+  # Caracteres mínimos que debe tener una contraseña
+  minCharacters: 4
+
+
+# Habilitar/desabilitar restricciones para jugadores no-logeados
+restrictions:
+
+  # Mensajes de chat
+  chat: true
+
+  # Uso de comandos (Aparte de /login y /register)
+  commands: true
+
+  # Movimiento del jugador
+  movement: false
+
+
+# Habilitar/deshabilitar ciertos teletransportes
+teleports:
+
+  # Modo de teletransportación (Puede ser "NORMAL" o "SAVE-POSITION")
+  mode: 'NORMAL'
+  # El modo "SAVE-POSITION" teletransporta al jugador
+  # a su última posición antes de haberse desconectado
+
+  # El modo "NORMAL" teletransporta al jugador al
+  # punto de spawn (Si la opción está habilitada)
+
+  # Teletransportar jugadores al punto de login al conectarse
+  toLogin: true
+
+  # Teletransportar al jugador al punto de spawn cuando se logee (Modo "NORMAL", sin BungeeCord)
+  toSpawn: true
+
+
+# Opciones de BungeeCord
+bungeeCord:
+
+  # Activar/desactivar BungeeCord
+  enabled: false
+
+  # Servidor al cual enviar al jugador cuando se logee
+  spawnServer: 'LOBBY'
+
+
+# Opciones de MySQL
+mysql:
+
+  # Usar una base de datos MySQL para guardar los datos en lugar de archivos YAML
+  enabled: false
+
+  # Intervalo (en segundos) entre el cual los datos serán enviados a la base de datos MySQL
+  saveInterval: 300
+
+  # Base de datos y tabla para almacenar los datos
+  database: 'userlogin_data'
+  table: 'player_data'
+
+  # Credenciales para acceder a la base de datos MySQL
+  host: 'localhost'
+  username: 'root'
+  password: 'password'
+  port: 3306

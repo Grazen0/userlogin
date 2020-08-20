@@ -1,4 +1,4 @@
-package com.elcholostudios.userlogin.util.data;
+package com.elcholostudios.userlogin.api;
 
 import com.elcholostudios.userlogin.UserLogin;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -19,7 +19,7 @@ public abstract class Configuration {
     }
 
     public void setup() {
-        file = new File(UserLogin.plugin.getDataFolder(), name + ".yml");
+        file = new File(UserLogin.plugin.getDataFolder(), this.name + ".yml");
 
         if (!file.exists()) {
             try {
@@ -30,7 +30,7 @@ public abstract class Configuration {
             }
         }
 
-        reload();
+        this.reload();
     }
 
     public abstract void registerDefaults();
@@ -40,13 +40,13 @@ public abstract class Configuration {
     }
 
     public void reload() {
-        fileConfiguration = YamlConfiguration.loadConfiguration(file);
+        this.fileConfiguration = YamlConfiguration.loadConfiguration(file);
         this.registerDefaults();
     }
 
     public void save() {
         try {
-            fileConfiguration.save(file);
+            this.fileConfiguration.save(file);
         } catch (IOException e) {
             System.out.println("Error while trying to save \"" + name + ".yml\"!");
             e.printStackTrace();

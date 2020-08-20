@@ -1,4 +1,4 @@
-package com.elcholostudios.userlogin.events;
+package com.elcholostudios.userlogin.listeners;
 
 import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.Utils;

@@ -31,8 +31,12 @@ public class Login implements CommandExecutor, TabCompleter {
 
         // Check if player is not already logged in
         Player player = (Player) sender;
-        if (Utils.loggedIn.get(player.getUniqueId())) {
-            utils.sendMessage(Path.ALREADY_LOGGED_IN, player);
+        try {
+            if (Utils.loggedIn.get(player.getUniqueId())) {
+                utils.sendMessage(Path.ALREADY_LOGGED_IN, player);
+                return true;
+            }
+        } catch (NullPointerException ignored) {
             return true;
         }
 
@@ -77,12 +81,12 @@ public class Login implements CommandExecutor, TabCompleter {
             // Teleport to corresponding location
             if (utils.normalMode() && utils.getConfig().getBoolean("teleports.toSpawn")) {
                 Location loc = utils.getLocation(com.elcholostudios.userlogin.util.lists.Location.SPAWN);
-                if(loc != null)
+                if (loc != null)
                     player.teleport(loc);
             } else if (!utils.normalMode()) {
                 org.bukkit.Location loc = utils.getLocation("playerLocations." + uuid);
-                if (loc == null) return true;
-                player.teleport(loc);
+                if (loc != null)
+                    player.teleport(loc);
             }
 
             utils.joinAnnounce(player);

@@ -2,7 +2,7 @@ package com.elcholostudios.userlogin.commands.subs;
 
 import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.lists.Path;
-import com.elcholostudios.userlogin.util.command.SubCommand;
+import com.elcholostudios.userlogin.api.command.SubCommand;
 import com.elcholostudios.userlogin.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
