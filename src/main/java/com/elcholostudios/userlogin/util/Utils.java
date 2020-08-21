@@ -167,7 +167,8 @@ public class Utils {
                 getString("teleports.mode")).toUpperCase().equals("SAVE-POSITION");
     }
 
-    public void joinAnnounce(@NotNull Player player, String msg) {
+    public void joinAnnounce(@NotNull Player player, @Nullable String msg) {
+        if(msg == null) return;
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
             if (player != onlinePlayer)
                 player.sendMessage(msg);

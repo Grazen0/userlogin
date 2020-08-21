@@ -19,13 +19,11 @@ import com.elcholostudios.userlogin.util.data.MySQL;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.Objects;
-import java.util.UUID;
 
 public final class UserLogin extends JavaPlugin {
 
@@ -132,20 +130,5 @@ public final class UserLogin extends JavaPlugin {
         // Save data to MySQL database
         sql.saveData();
         utils.consoleLog(utils.color(Objects.requireNonNull(utils.getConfig().getString(Path.SQL_DATA_SAVED))));
-    }
-
-    // API stuff
-    public static boolean isLoggedIn(String player) {
-        Player p = plugin.getServer().getPlayer(player);
-        if(p == null) return false;
-        return isLoggedIn(p);
-    }
-
-    public static boolean isLoggedIn(Player player) {
-        return isLoggedIn(player.getUniqueId());
-    }
-
-    public static boolean isLoggedIn(UUID uuid) {
-        return Utils.loggedIn.get(uuid);
     }
 }

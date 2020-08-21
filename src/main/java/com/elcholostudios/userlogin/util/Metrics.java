@@ -53,7 +53,7 @@ public class Metrics {
     private static final String URL = "https://bStats.org/submitData/bukkit";
 
     // Is bStats enabled on this server?
-    private boolean enabled;
+    private final boolean enabled;
 
     // Should failed requests be logged?
     private static boolean logFailedRequests;
@@ -176,6 +176,7 @@ public class Metrics {
         timer.scheduleAtFixedRate(new TimerTask() {
             @Override
             public void run() {
+                assert plugin != null;
                 if (!plugin.isEnabled()) { // Plugin was disabled
                     timer.cancel();
                     return;
@@ -199,6 +200,7 @@ public class Metrics {
     public @NotNull JsonObject getPluginData() {
         JsonObject data = new JsonObject();
 
+        assert plugin != null;
         String pluginName = plugin.getDescription().getName();
         String pluginVersion = plugin.getDescription().getVersion();
 
@@ -296,6 +298,7 @@ public class Metrics {
                             } catch (ClassNotFoundException e) {
                                 // minecraft version 1.14+
                                 if (logFailedRequests) {
+                                    assert this.plugin != null;
                                     this.plugin.getLogger().log(Level.SEVERE, "Encountered unexpected exception", e);
                                 }
                             }
@@ -311,6 +314,7 @@ public class Metrics {
         new Thread(() -> {
             try {
                 // Send the data
+                assert plugin != null;
                 sendData(plugin, data);
             } catch (Exception e) {
                 // Something went wrong! :(
@@ -348,6 +352,7 @@ public class Metrics {
         connection.addRequestProperty("Accept", "application/json");
         connection.addRequestProperty("Connection", "close");
         connection.addRequestProperty("Content-Encoding", "gzip"); // We gzip our request
+        assert compressedData != null;
         connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
         connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
         connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);

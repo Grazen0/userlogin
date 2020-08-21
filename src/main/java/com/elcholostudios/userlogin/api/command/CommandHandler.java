@@ -16,6 +16,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     private final List<SubCommand> subCommands = new ArrayList<>();
     private final Utils utils = new Utils();
 
+    /**
+     * Represents a main command that handles multiple sub-commands
+     * @param mainCommand The main command to associate this handler to
+     * @param plugin The JavaPlugin for this command
+     */
     public CommandHandler(@NotNull String mainCommand, @NotNull JavaPlugin plugin) {
         PluginCommand command = plugin.getCommand(mainCommand);
         if(command == null) return;
@@ -23,6 +28,15 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
         command.setExecutor(this);
     }
 
+    /**
+     * Executes the command, and returns its state,
+     * whether it is true or false.
+     * @param sender The source of the command
+     * @param command The command executed
+     * @param label The label of the executed command
+     * @param args Arguments used in the command
+     * @return True if the command was successful, false otherwise
+     */
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, String @NotNull [] args) {
         if (args.length == 0) return false;
@@ -46,10 +60,22 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
         return false;
     }
 
+    /**
+     * Adds a sub-command to this handler
+     * @param sub The sub-command to add
+     */
     public void addCommand(SubCommand sub) {
         this.subCommands.add(sub);
     }
 
+    /**
+     * Gets the list of tab-completions to show on the command
+     * @param sender The source that is typing the command
+     * @param command The typed command
+     * @param alias The alias of the command used
+     * @param args The current arguments of the command
+     * @return The list of words to tab-complete
+     */
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String @NotNull [] args) {
         List<String> options = new ArrayList<>();

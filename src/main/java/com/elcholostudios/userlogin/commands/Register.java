@@ -1,9 +1,9 @@
 package com.elcholostudios.userlogin.commands;
 
 import com.elcholostudios.userlogin.UserLogin;
+import com.elcholostudios.userlogin.api.event.PlayerLoginEvent;
 import com.elcholostudios.userlogin.api.event.enums.DestinationType;
 import com.elcholostudios.userlogin.api.event.enums.LoginType;
-import com.elcholostudios.userlogin.api.event.PlayerLoginEvent;
 import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.command.Command;
@@ -68,7 +68,7 @@ public class Register implements CommandExecutor, TabCompleter {
         PlayerLoginEvent event = new PlayerLoginEvent(player, LoginType.REGISTER);
 
         if (utils.normalMode() && !utils.getConfig().getBoolean("teleports.toSpawn"))
-            event.setDestinationWorld(null);
+            event.setDestinationLoc(null);
 
         UserLogin.plugin.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled())
@@ -93,12 +93,13 @@ public class Register implements CommandExecutor, TabCompleter {
             UserLogin.sql.data.put(UUID.fromString(uuid), password);
 
         // Send message, cancel timeout, and teleport to spawn if enabled
-        player.sendMessage(event.getMessage());
+        if (event.getMessage() != null)
+            player.sendMessage(event.getMessage());
 
         if (event.getDestinationType() == DestinationType.NORMAL) {
             // Send to spawn if enabled
-            if (event.getDestinationWorld() != null)
-                player.teleport(event.getDestinationWorld());
+            if (event.getDestinationLoc() != null)
+                player.teleport(event.getDestinationLoc());
 
             // Announce join message to other players
             utils.joinAnnounce(player, event.getAnnouncement());

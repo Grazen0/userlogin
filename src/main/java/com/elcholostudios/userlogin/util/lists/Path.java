@@ -1,7 +1,5 @@
 package com.elcholostudios.userlogin.util.lists;
 
-import org.jetbrains.annotations.NotNull;
-
 public class Path {
 
     // Sections

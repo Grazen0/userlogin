@@ -1,9 +1,9 @@
 package com.elcholostudios.userlogin.commands;
 
 import com.elcholostudios.userlogin.UserLogin;
+import com.elcholostudios.userlogin.api.event.PlayerLoginEvent;
 import com.elcholostudios.userlogin.api.event.enums.DestinationType;
 import com.elcholostudios.userlogin.api.event.enums.LoginType;
-import com.elcholostudios.userlogin.api.event.PlayerLoginEvent;
 import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.command.Command;
@@ -85,19 +85,20 @@ public class Login implements CommandExecutor, TabCompleter {
         UserLogin.dataFile.save();
 
         // Send join message to player
-        player.sendMessage(event.getMessage());
-
+        if (event.getMessage() != null)
+            player.sendMessage(event.getMessage());
         // Teleport player
         if (event.getDestinationType() == DestinationType.NORMAL) {
-            if (event.getDestinationWorld() != null)
-                player.teleport(event.getDestinationWorld());
+            if (event.getDestinationLoc() != null)
+                player.teleport(event.getDestinationLoc());
 
             utils.joinAnnounce(player, event.getAnnouncement());
             return true;
         }
 
         // Connect to spawn server
-        utils.sendToServer(player, event.getDestinationServer());
+        if (event.getDestinationServer() != null)
+            utils.sendToServer(player, event.getDestinationServer());
         return true;
     }
 
