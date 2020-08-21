@@ -1,28 +1,31 @@
 package com.elcholostudios.userlogin;
 
+import com.elcholostudios.userlogin.api.Configuration;
+import com.elcholostudios.userlogin.api.command.CommandHandler;
 import com.elcholostudios.userlogin.commands.Login;
 import com.elcholostudios.userlogin.commands.Register;
 import com.elcholostudios.userlogin.commands.subs.Help;
 import com.elcholostudios.userlogin.commands.subs.Reload;
 import com.elcholostudios.userlogin.commands.subs.SQL;
 import com.elcholostudios.userlogin.commands.subs.Set;
-import com.elcholostudios.userlogin.listeners.*;
 import com.elcholostudios.userlogin.files.DataFile;
 import com.elcholostudios.userlogin.files.LocationsFile;
 import com.elcholostudios.userlogin.files.MessagesFile;
-import com.elcholostudios.userlogin.util.*;
-import com.elcholostudios.userlogin.api.command.CommandHandler;
-import com.elcholostudios.userlogin.api.Configuration;
+import com.elcholostudios.userlogin.listeners.*;
+import com.elcholostudios.userlogin.util.Lang;
+import com.elcholostudios.userlogin.util.Metrics;
+import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.data.MySQL;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
-import org.bukkit.event.Listener;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import org.jetbrains.annotations.NotNull;
 
 import java.sql.SQLException;
 import java.util.Objects;
+import java.util.UUID;
 
 public final class UserLogin extends JavaPlugin {
 
@@ -30,7 +33,6 @@ public final class UserLogin extends JavaPlugin {
     public static final Configuration locationsFile = new LocationsFile();
     public static final Configuration dataFile = new DataFile();
     public static final MySQL sql = new MySQL();
-    public static CommandHandler handler;
     public static UserLogin plugin;
     private final Utils utils = new Utils();
 
@@ -93,28 +95,27 @@ public final class UserLogin extends JavaPlugin {
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         // Listeners setup
-        this.addListener(new OnPlayerJoin());
-        this.addListener(new OnChatMessage());
-        this.addListener(new OnPlayerMove());
-        this.addListener(new OnPlayerQuit());
-        this.addListener(new ReloadListener());
-        this.addListener(new OnServerReload());
+        this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
+        this.getServer().getPluginManager().registerEvents(new OnChatMessage(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerQuit(), this);
+        this.getServer().getPluginManager().registerEvents(new ReloadListener(), this);
+        this.getServer().getPluginManager().registerEvents(new OnServerReload(), this);
 
         // Command setup
-        handler = new CommandHandler("userlogin", this);
+        CommandHandler handler = new CommandHandler("userlogin", this);
 
         handler.addCommand(new Help());
         handler.addCommand(new Set());
         handler.addCommand(new Reload());
         handler.addCommand(new SQL());
-        handler.trim();
 
         Objects.requireNonNull(getCommand("login")).setExecutor(new Login());
         Objects.requireNonNull(getCommand("register")).setExecutor(new Register());
 
         pluginSetup();
 
-        // Setup bStats
+        // bStats setup
         Metrics metrics = new Metrics(this, 8586);
         metrics.addCustomChart(new Metrics.SimplePie("data_type",
                 () -> this.utils.sqlMode() ? "MySQL" : "YAML"));
@@ -128,11 +129,23 @@ public final class UserLogin extends JavaPlugin {
     public synchronized void onDisable() {
         if (!utils.sqlMode()) return;
 
+        // Save data to MySQL database
         sql.saveData();
         utils.consoleLog(utils.color(Objects.requireNonNull(utils.getConfig().getString(Path.SQL_DATA_SAVED))));
     }
 
-    private void addListener(@NotNull Listener listener) {
-        this.getServer().getPluginManager().registerEvents(listener, this);
+    // API stuff
+    public static boolean isLoggedIn(String player) {
+        Player p = plugin.getServer().getPlayer(player);
+        if(p == null) return false;
+        return isLoggedIn(p);
+    }
+
+    public static boolean isLoggedIn(Player player) {
+        return isLoggedIn(player.getUniqueId());
+    }
+
+    public static boolean isLoggedIn(UUID uuid) {
+        return Utils.loggedIn.get(uuid);
     }
 }

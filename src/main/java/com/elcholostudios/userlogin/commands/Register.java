@@ -1,8 +1,10 @@
 package com.elcholostudios.userlogin.commands;
 
 import com.elcholostudios.userlogin.UserLogin;
+import com.elcholostudios.userlogin.api.event.enums.DestinationType;
+import com.elcholostudios.userlogin.api.event.enums.LoginType;
+import com.elcholostudios.userlogin.api.event.PlayerLoginEvent;
 import com.elcholostudios.userlogin.util.Utils;
-import com.elcholostudios.userlogin.util.lists.Location;
 import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -62,9 +64,21 @@ public class Register implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        // Call register event
+        PlayerLoginEvent event = new PlayerLoginEvent(player, LoginType.REGISTER);
+
+        if (utils.normalMode() && !utils.getConfig().getBoolean("teleports.toSpawn"))
+            event.setDestinationWorld(null);
+
+        UserLogin.plugin.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled())
+            return true;
+
         // Player gets registered
         String uuid = player.getUniqueId().toString();
+
         Utils.loggedIn.put(UUID.fromString(uuid), true);
+        utils.cancelTimeout(player);
 
         // Encrypt password if enabled
         if (utils.getConfig().getBoolean("password.encrypt")) password = utils.encrypt(password);
@@ -79,24 +93,20 @@ public class Register implements CommandExecutor, TabCompleter {
             UserLogin.sql.data.put(UUID.fromString(uuid), password);
 
         // Send message, cancel timeout, and teleport to spawn if enabled
-        utils.sendMessage(Path.REGISTERED, player);
-        utils.cancelTimeout(player);
+        player.sendMessage(event.getMessage());
 
-        if (!utils.getConfig().getBoolean("bungeeCord.enabled")) {
+        if (event.getDestinationType() == DestinationType.NORMAL) {
             // Send to spawn if enabled
-            if (utils.getConfig().getBoolean("teleports.toSpawn")) {
-                org.bukkit.Location loc = utils.getLocation(Location.SPAWN);
-                if (loc != null)
-                    player.teleport(loc);
-            }
+            if (event.getDestinationWorld() != null)
+                player.teleport(event.getDestinationWorld());
 
             // Announce join message to other players
-            utils.joinAnnounce(player);
-        } else {
-            // Connect player to spawn server
-            utils.sendToServer(player);
+            utils.joinAnnounce(player, event.getAnnouncement());
+            return true;
         }
 
+        // Connect player to spawn server
+        utils.sendToServer(player, "");
         return true;
     }
 

@@ -1,7 +1,6 @@
 package com.elcholostudios.userlogin.util;
 
 import com.elcholostudios.userlogin.UserLogin;
-import com.elcholostudios.userlogin.util.lists.Path;
 import org.bukkit.Bukkit;
 import org.bukkit.ChatColor;
 import org.bukkit.Location;
@@ -168,11 +167,10 @@ public class Utils {
                 getString("teleports.mode")).toUpperCase().equals("SAVE-POSITION");
     }
 
-    public void joinAnnounce(@NotNull Player player) {
+    public void joinAnnounce(@NotNull Player player, String msg) {
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
-            if (player == onlinePlayer) continue;
-            sendMessage(Path.LOGIN_ANNOUNCEMENT, onlinePlayer,
-                    new String[]{"player"}, new String[]{player.getName()});
+            if (player != onlinePlayer)
+                player.sendMessage(msg);
         }
     }
 
@@ -184,13 +182,11 @@ public class Utils {
         Bukkit.getServer().getConsoleSender().sendMessage(msg);
     }
 
-    public void sendToServer(@NotNull Player player) {
+    public void sendToServer(@NotNull Player player, @NotNull String server) {
 
         ByteArrayOutputStream bout = new ByteArrayOutputStream();
         DataOutputStream out = new DataOutputStream(bout);
         try {
-            String server = getConfig().getString("bungeeCord.spawnServer");
-            if (server == null) return;
 
             out.writeUTF("Connect");
             out.writeUTF(server);

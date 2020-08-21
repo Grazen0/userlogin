@@ -13,7 +13,7 @@ import java.util.List;
 
 public class CommandHandler implements CommandExecutor, TabCompleter {
 
-    private final ArrayList<SubCommand> subCommands = new ArrayList<>();
+    private final List<SubCommand> subCommands = new ArrayList<>();
     private final Utils utils = new Utils();
 
     public CommandHandler(@NotNull String mainCommand, @NotNull JavaPlugin plugin) {
@@ -48,10 +48,6 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     public void addCommand(SubCommand sub) {
         this.subCommands.add(sub);
-    }
-
-    public void trim() {
-        this.subCommands.trimToSize();
     }
 
     @Override

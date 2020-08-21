@@ -1,9 +1,11 @@
 package com.elcholostudios.userlogin.commands;
 
 import com.elcholostudios.userlogin.UserLogin;
+import com.elcholostudios.userlogin.api.event.enums.DestinationType;
+import com.elcholostudios.userlogin.api.event.enums.LoginType;
+import com.elcholostudios.userlogin.api.event.PlayerLoginEvent;
 import com.elcholostudios.userlogin.util.Utils;
 import com.elcholostudios.userlogin.util.lists.Path;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -60,12 +62,20 @@ public class Login implements CommandExecutor, TabCompleter {
             password = UserLogin.sql.data.get(UUID.fromString(uuid));
 
         // Decrypt stored password if needed
-        if (password.startsWith("§")) password = utils.decrypt(password);
+        if (password.startsWith("§"))
+            password = utils.decrypt(password);
 
         if (!args[0].equals(password)) {
             utils.sendMessage(Path.INCORRECT_PASSWORD, player);
             return true;
         }
+
+        // Call login event
+        PlayerLoginEvent event = new PlayerLoginEvent(player, LoginType.LOGIN);
+        UserLogin.plugin.getServer().getPluginManager().callEvent(event);
+
+        if (event.isCancelled())
+            return true;
 
         // Player logs in
         Utils.loggedIn.put(UUID.fromString(uuid), true);
@@ -75,26 +85,19 @@ public class Login implements CommandExecutor, TabCompleter {
         UserLogin.dataFile.save();
 
         // Send join message to player
-        utils.sendMessage(Path.LOGGED_IN, player);
+        player.sendMessage(event.getMessage());
 
-        if (!utils.getConfig().getBoolean("bungeeCord.enabled")) {
-            // Teleport to corresponding location
-            if (utils.normalMode() && utils.getConfig().getBoolean("teleports.toSpawn")) {
-                Location loc = utils.getLocation(com.elcholostudios.userlogin.util.lists.Location.SPAWN);
-                if (loc != null)
-                    player.teleport(loc);
-            } else if (!utils.normalMode()) {
-                org.bukkit.Location loc = utils.getLocation("playerLocations." + uuid);
-                if (loc != null)
-                    player.teleport(loc);
-            }
+        // Teleport player
+        if (event.getDestinationType() == DestinationType.NORMAL) {
+            if (event.getDestinationWorld() != null)
+                player.teleport(event.getDestinationWorld());
 
-            utils.joinAnnounce(player);
-        } else {
-            // Connect to spawn server
-            utils.sendToServer(player);
+            utils.joinAnnounce(player, event.getAnnouncement());
+            return true;
         }
 
+        // Connect to spawn server
+        utils.sendToServer(player, event.getDestinationServer());
         return true;
     }
 
