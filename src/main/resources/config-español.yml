@@ -31,13 +31,16 @@ password:
 restrictions:
 
   # Mensajes de chat
-  chat: true
+  chat: false
 
   # Uso de comandos (Aparte de /login y /register)
-  commands: true
+  commands: false
 
   # Movimiento del jugador
   movement: false
+
+  # Romper bloques
+  blockBreak: false
 
 
 # Habilitar/deshabilitar ciertos teletransportes

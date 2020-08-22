@@ -1,7 +1,7 @@
 # ----------------------------------------------------
 # | Configuration file for UserLogin                 |
-# | For any doubts, feel free to send me a message   |
-# | on my Discord (ElCholoGamer#3291)                |
+# | For any doubts, you can join my Discord server   |
+# | with this link: https://discord.gg/HdnP32P       |
 # ----------------------------------------------------
 
 # Language file to load
@@ -31,13 +31,16 @@ password:
 restrictions:
 
   # Chat messages
-  chat: true
+  chat: false
 
   # Command execution
-  commands: true
+  commands: false
 
   # Player movement
   movement: false
+
+  # Block breaking
+  blockBreak: false
 
 
 # Enable/disable certain teleports
