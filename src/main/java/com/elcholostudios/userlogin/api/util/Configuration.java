@@ -1,4 +1,4 @@
-package com.elcholostudios.userlogin.api;
+package com.elcholostudios.userlogin.api.util;
 
 import com.elcholostudios.userlogin.UserLogin;
 import org.bukkit.configuration.file.FileConfiguration;

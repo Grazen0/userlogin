@@ -1,5 +1,6 @@
-package com.elcholostudios.userlogin;
+package com.elcholostudios.userlogin.api;
 
+import com.elcholostudios.userlogin.UserLogin;
 import com.elcholostudios.userlogin.util.Utils;
 import org.bukkit.entity.Player;
 import org.jetbrains.annotations.NotNull;

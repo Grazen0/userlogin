@@ -5,7 +5,7 @@ import com.elcholostudios.userlogin.api.Configuration;
 public class LocationsFile extends Configuration {
 
     public LocationsFile() {
-        super("locations");
+        super("locations.yml");
     }
 
     @Override

@@ -100,6 +100,7 @@ public final class UserLogin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new ReloadListener(), this);
         this.getServer().getPluginManager().registerEvents(new OnServerReload(), this);
         this.getServer().getPluginManager().registerEvents(new OnBlockBroken(), this);
+        this.getServer().getPluginManager().registerEvents(new OnPlayerCommand(), this);
 
         // Command setup
         CommandHandler handler = new CommandHandler("userlogin", this);
