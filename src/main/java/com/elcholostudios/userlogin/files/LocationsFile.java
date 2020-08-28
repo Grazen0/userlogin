@@ -1,6 +1,6 @@
 package com.elcholostudios.userlogin.files;
 
-import com.elcholostudios.userlogin.api.Configuration;
+import com.elcholostudios.userlogin.api.util.Configuration;
 
 public class LocationsFile extends Configuration {
 

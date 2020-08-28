@@ -1,7 +1,7 @@
 package com.elcholostudios.userlogin;
 
-import com.elcholostudios.userlogin.api.Configuration;
 import com.elcholostudios.userlogin.api.command.CommandHandler;
+import com.elcholostudios.userlogin.api.util.Configuration;
 import com.elcholostudios.userlogin.commands.Login;
 import com.elcholostudios.userlogin.commands.Register;
 import com.elcholostudios.userlogin.commands.subs.Help;
