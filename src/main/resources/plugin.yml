@@ -1,7 +1,6 @@
 name: UserLogin
 version: ${project.version}
-main: com.elcholostudios.userlogin.UserLogin
-api-version: 1.16
+main: com.elchologamer.userlogin.UserLogin
 authors: [ElCholoGamer]
 description: A login security system for you server
 website: www.spigotmc.org
@@ -14,6 +13,8 @@ commands:
   register:
     description: Registers your user with the given password
     usage: '§cCorrect usage: /<command> <password> <password>'
+    aliases: [reg]
   login:
     description: Logs in your user with the given password
     usage: '§cCorrect usage: /<command> <password>'
+    aliases: [log]
