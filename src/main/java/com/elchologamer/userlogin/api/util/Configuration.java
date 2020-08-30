@@ -11,7 +11,7 @@ import java.io.IOException;
 public abstract class Configuration {
 
     protected @Nullable String name;
-    protected File file;
+    protected @Nullable File file;
     protected FileConfiguration fileConfiguration;
 
     /**
@@ -28,15 +28,13 @@ public abstract class Configuration {
      */
     public void setup() {
         if (this.name == null) return;
-        file = new File(UserLogin.plugin.getDataFolder(), this.name);
+        this.file = new File(UserLogin.plugin.getDataFolder(), this.name);
 
-        if (!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Failed to create \"" + name + ".yml\" file!");
-                e.printStackTrace();
-            }
+        try {
+            file.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Failed to create \"" + name + ".yml\" file!");
+            e.printStackTrace();
         }
 
         this.reload();

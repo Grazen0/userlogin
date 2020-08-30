@@ -74,7 +74,7 @@ public class Login implements CommandExecutor, TabCompleter {
         return true;
     }
 
-    public void login(Player player) {
+    public void login(@NotNull Player player) {
         // Call login event
         PlayerLoginEvent event = new PlayerLoginEvent(player, LoginType.LOGIN);
         UserLogin.plugin.getServer().getPluginManager().callEvent(event);

@@ -1,4 +1,4 @@
-package com.elchologamer.userlogin.files;
+package com.elchologamer.userlogin.util.files;
 
 import com.elchologamer.userlogin.api.util.Configuration;
 

@@ -437,7 +437,7 @@ public class Metrics {
             return chart;
         }
 
-        protected abstract @Nullable JsonObject getChartData() throws Exception;
+        protected abstract  @Nullable JsonObject getChartData() throws Exception;
 
     }
 

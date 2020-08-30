@@ -1,4 +1,4 @@
-package com.elchologamer.userlogin.files;
+package com.elchologamer.userlogin.util.files;
 
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.util.Configuration;
@@ -23,9 +23,9 @@ public class MessagesFile extends Configuration {
         folder.mkdir();
 
         // Load lang file specified in config
-        name = utils.getConfig().getString("lang");
+        this.name = this.utils.getConfig().getString("lang");
         if (name == null) name = "en_US";
-        file = new File(UserLogin.plugin.getDataFolder(), "lang\\" + name + ".yml");
+        this.file = new File(UserLogin.plugin.getDataFolder(), "lang\\" + this.name + ".yml");
 
         reload();
     }
@@ -36,15 +36,12 @@ public class MessagesFile extends Configuration {
 
     @Override
     public void reload() {
-        // Create lang file if necessary
-        if (!file.exists()) {
-            System.out.println("Lang file \"" + name + "\" not found! Creating default values...");
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                System.out.println("Error while trying to create lang file");
-                e.printStackTrace();
-            }
+        // Create file if necessary
+        try {
+            this.file.createNewFile();
+        } catch (IOException e) {
+            System.out.println("Error while trying to create lang file \"" + this.name + "\"");
+            e.printStackTrace();
         }
 
         // Load configuration and register default values

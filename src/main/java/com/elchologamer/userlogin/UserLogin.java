@@ -8,9 +8,9 @@ import com.elchologamer.userlogin.commands.subs.Help;
 import com.elchologamer.userlogin.commands.subs.Reload;
 import com.elchologamer.userlogin.commands.subs.SQL;
 import com.elchologamer.userlogin.commands.subs.Set;
-import com.elchologamer.userlogin.files.DataFile;
-import com.elchologamer.userlogin.files.LocationsFile;
-import com.elchologamer.userlogin.files.MessagesFile;
+import com.elchologamer.userlogin.util.files.DataFile;
+import com.elchologamer.userlogin.util.files.LocationsFile;
+import com.elchologamer.userlogin.util.files.MessagesFile;
 import com.elchologamer.userlogin.listeners.*;
 import com.elchologamer.userlogin.util.Lang;
 import com.elchologamer.userlogin.util.Metrics;
@@ -94,19 +94,14 @@ public final class UserLogin extends JavaPlugin {
         // Create BungeeCord messaging channel
         this.getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
-        // Listeners setup
+        // Register event listeners
         this.getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
-        this.getServer().getPluginManager().registerEvents(new OnChatMessage(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerQuit(), this);
         this.getServer().getPluginManager().registerEvents(new ReloadListener(), this);
-        this.getServer().getPluginManager().registerEvents(new OnServerReload(), this);
-        this.getServer().getPluginManager().registerEvents(new OnBlockBroken(), this);
-        this.getServer().getPluginManager().registerEvents(new OnPlayerCommand(), this);
-        this.getServer().getPluginManager().registerEvents(new OnItemDrop(), this);
-        this.getServer().getPluginManager().registerEvents(new OnItemPickup(), this);
+        this.getServer().getPluginManager().registerEvents(new GeneralListener(), this);
 
-        // Command setup
+        // Set CommandHandler for "userlogin" command
         CommandHandler handler = new CommandHandler("userlogin", this);
 
         handler.addCommand(new Help());
@@ -114,9 +109,11 @@ public final class UserLogin extends JavaPlugin {
         handler.addCommand(new Reload());
         handler.addCommand(new SQL());
 
+        // Set command executors
         Objects.requireNonNull(getCommand("login")).setExecutor(new Login());
         Objects.requireNonNull(getCommand("register")).setExecutor(new Register());
 
+        // General plugin setup
         pluginSetup();
 
         // bStats setup
