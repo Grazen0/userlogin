@@ -58,7 +58,8 @@ public abstract class Configuration {
      * Reloads the YAML configuration of this file.
      */
     public void reload() {
-        this.fileConfiguration = YamlConfiguration.loadConfiguration(file);
+        if(this.file == null) return;
+        this.fileConfiguration = YamlConfiguration.loadConfiguration(this.file);
         this.registerDefaults();
     }
 
@@ -66,8 +67,10 @@ public abstract class Configuration {
      * Saves the YAML file configuration to the file.
      */
     public void save() {
+        if(this.file == null) return;
+
         try {
-            this.fileConfiguration.save(file);
+            this.fileConfiguration.save(this.file);
         } catch (IOException e) {
             System.out.println("Error while trying to save \"" + name + ".yml\"!");
             e.printStackTrace();

@@ -123,7 +123,7 @@ public final class UserLogin extends JavaPlugin {
         metrics.addCustomChart(new Metrics.SimplePie("lang",
                 () -> this.getConfig().getString("lang")));
 
-        utils.consoleLog(ChatColor.GREEN + "UserLogin enabled!");
+        utils.consoleLog(ChatColor.GREEN + "UserLogin " + this.getDescription().getVersion() + " enabled!");
     }
 
     @Override

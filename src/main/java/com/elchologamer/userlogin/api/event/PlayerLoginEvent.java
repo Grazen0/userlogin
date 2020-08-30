@@ -15,6 +15,7 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Objects;
 
+@SuppressWarnings("unused")
 public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     protected static final HandlerList HANDLERS_LIST = new HandlerList();
@@ -60,6 +61,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @return This event's handler list.
      */
+    @SuppressWarnings("unused")
     public static @NotNull HandlerList getHandlerList() {
         return HANDLERS_LIST;
     }
@@ -108,6 +110,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @param message New message.
      */
+    @SuppressWarnings("unused")
     public void setMessage(String message) {
         this.message = message;
     }
@@ -126,6 +129,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @param announcement New announcement message.
      */
+    @SuppressWarnings("unused")
     public void setAnnouncement(String announcement) {
         this.announcement = announcement;
     }
@@ -162,6 +166,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @param destinationServer New destination server.
      */
+    @SuppressWarnings("unused")
     public void setDestinationServer(@NotNull String destinationServer) {
         this.destinationServer = destinationServer;
     }
@@ -180,6 +185,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @param type New destination type.
      */
+    @SuppressWarnings("unused")
     public void setDestinationType(DestinationType type) {
         this.destinationType = type;
     }
@@ -189,6 +195,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @return Login type of the player.
      */
+    @SuppressWarnings("unused")
     public LoginType getLoginType() {
         return this.loginType;
     }

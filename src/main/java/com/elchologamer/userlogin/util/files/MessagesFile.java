@@ -36,6 +36,8 @@ public class MessagesFile extends Configuration {
 
     @Override
     public void reload() {
+        if(this.file == null) return;
+
         // Create file if necessary
         try {
             this.file.createNewFile();

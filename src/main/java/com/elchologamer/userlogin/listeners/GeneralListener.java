@@ -37,13 +37,10 @@ public class GeneralListener implements Listener {
     }
 
     @EventHandler
-    public void onPlayerCommand(@NotNull PlayerCommandPreprocessEvent e) {
-        try {
-            if (!UserLoginAPI.isLoggedIn(e.getPlayer()) && utils.getConfig().getBoolean("restrictions.commands") &&
-                    !e.getMessage().startsWith("/login") && !e.getMessage().startsWith("/register"))
-                e.setCancelled(true);
-        } catch (NullPointerException ignored) {
-        }
+    public void onPlayerCommand(@NotNull PlayerCommandPreprocessEvent e) throws NullPointerException {
+        if (!UserLoginAPI.isLoggedIn(e.getPlayer()) && utils.getConfig().getBoolean("restrictions.commands") &&
+                !e.getMessage().startsWith("/login") && !e.getMessage().startsWith("/register"))
+            e.setCancelled(true);
     }
 
     @EventHandler

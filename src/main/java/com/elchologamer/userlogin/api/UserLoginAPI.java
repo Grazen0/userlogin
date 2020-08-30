@@ -7,6 +7,7 @@ import org.jetbrains.annotations.NotNull;
 
 import java.util.UUID;
 
+@SuppressWarnings("unused")
 public class UserLoginAPI {
 
     /**
