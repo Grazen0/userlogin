@@ -56,6 +56,8 @@ public final class UserLogin extends JavaPlugin {
 
         // Cancel all plugin tasks
         plugin.getServer().getScheduler().cancelTasks(plugin);
+        Utils.playerIP.clear();
+        Utils.timeouts.clear();
 
         if (!utils.sqlMode()) {
             // Update passwords (Encrypt or decrypt each one of them if needed)
@@ -101,6 +103,8 @@ public final class UserLogin extends JavaPlugin {
         this.getServer().getPluginManager().registerEvents(new OnServerReload(), this);
         this.getServer().getPluginManager().registerEvents(new OnBlockBroken(), this);
         this.getServer().getPluginManager().registerEvents(new OnPlayerCommand(), this);
+        this.getServer().getPluginManager().registerEvents(new OnItemDrop(), this);
+        this.getServer().getPluginManager().registerEvents(new OnItemPickup(), this);
 
         // Command setup
         CommandHandler handler = new CommandHandler("userlogin", this);

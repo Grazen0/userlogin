@@ -15,17 +15,17 @@ public class ReloadListener implements Listener {
         if ((e.getCommand() + " ").startsWith("reload ")) {
             ServerReloadEvent event = new ServerReloadEvent(e.getSender());
             UserLogin.plugin.getServer().getPluginManager().callEvent(event);
-            if(event.isCancelled())
+            if (event.isCancelled())
                 e.setCancelled(true);
         }
     }
 
     @EventHandler
     public void onPlayerCommand(@NotNull PlayerCommandPreprocessEvent e) {
-        if((e.getMessage() + " ").startsWith("/reload ")) {
+        if ((e.getMessage() + " ").startsWith("/reload ")) {
             ServerReloadEvent event = new ServerReloadEvent(e.getPlayer());
             UserLogin.plugin.getServer().getPluginManager().callEvent(event);
-            if(event.isCancelled())
+            if (event.isCancelled())
                 e.setCancelled(true);
         }
     }

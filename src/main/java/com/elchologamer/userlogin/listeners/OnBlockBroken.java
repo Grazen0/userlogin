@@ -12,7 +12,7 @@ public class OnBlockBroken implements Listener {
 
     @EventHandler(priority = EventPriority.HIGH)
     public void onBlockBroken(BlockBreakEvent e) {
-        if(utils.getConfig().getBoolean("restrictions.blockBreak") &&
+        if (utils.getConfig().getBoolean("restrictions.blockBreak") &&
                 !Utils.loggedIn.get(e.getPlayer().getUniqueId()))
             e.setCancelled(true);
     }

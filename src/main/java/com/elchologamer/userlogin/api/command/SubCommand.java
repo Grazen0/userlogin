@@ -15,7 +15,8 @@ public abstract class SubCommand {
     /**
      * A command that can be executed by a CommandHandler,
      * must be registered in it.
-     * @param name The name of the sub-command.
+     *
+     * @param name       The name of the sub-command.
      * @param playerOnly Whether the sub-command is player-only or not.
      */
     public SubCommand(String name, boolean playerOnly) {
@@ -25,14 +26,16 @@ public abstract class SubCommand {
 
     /**
      * Executes the command and returns its result, whether it is true or false.
+     *
      * @param sender The sender of the command.
-     * @param args The arguments of the command.
+     * @param args   The arguments of the command.
      * @return The result of the command: True if successful, false otherwise.
      */
     public abstract boolean run(CommandSender sender, String[] args);
 
     /**
      * Gets the name of the command.
+     *
      * @return This command's name.
      */
     public String getName() {
@@ -42,6 +45,7 @@ public abstract class SubCommand {
     /**
      * Gets the list of strings to be shown as sub-commands
      * in the tab-completion of the CommandHandler.
+     *
      * @return String list of sub-command names.
      */
     public @NotNull List<String> getSubs() {
@@ -51,6 +55,7 @@ public abstract class SubCommand {
     /**
      * Adds a string to the sub-command list
      * of this sub-command.
+     *
      * @param sub The string to add.
      */
     public void addSub(String sub) {
@@ -59,6 +64,7 @@ public abstract class SubCommand {
 
     /**
      * Checks if this sub-command is player-only
+     *
      * @return True if the command is player-only, false otherwise.
      */
     public boolean isPlayerOnly() {

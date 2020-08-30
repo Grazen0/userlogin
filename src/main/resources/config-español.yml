@@ -42,6 +42,11 @@ restrictions:
   # Romper bloques
   blockBreak: false
 
+  # Soltar items
+  itemDrop: false
+
+  # Recoger items
+  itemPickup: false
 
 # Habilitar/deshabilitar ciertos teletransportes
 teleports:
@@ -59,6 +64,18 @@ teleports:
 
   # Teletransportar al jugador al punto de spawn cuando se logee (Modo "NORMAL", sin BungeeCord)
   toSpawn: true
+
+
+# Opciones de recuerdo de IP de jugadores
+ipRecords:
+
+  # Permitir que los jugadores se logeen automáticamente
+  # si entran con la misma dirección IP consecutivamente
+  enabled: false
+
+  # Tiempo (segundos) en el que se recordará
+  # la dirección IP de los jugadores
+  delay: 30
 
 
 # Opciones de BungeeCord

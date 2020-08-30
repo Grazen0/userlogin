@@ -31,7 +31,8 @@ public class MessagesFile extends Configuration {
     }
 
     @Override
-    public void registerDefaults() { }
+    public void registerDefaults() {
+    }
 
     @Override
     public void reload() {

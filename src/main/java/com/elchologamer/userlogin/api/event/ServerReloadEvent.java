@@ -14,6 +14,7 @@ public class ServerReloadEvent extends Event implements Cancellable {
 
     /**
      * Event called when a server reload occurs.
+     *
      * @param source The sender of the reload command.
      */
     public ServerReloadEvent(CommandSender source) {
@@ -23,6 +24,7 @@ public class ServerReloadEvent extends Event implements Cancellable {
 
     /**
      * Gets the handlers for this event.
+     *
      * @return This event's handler list.
      */
     public static @NotNull HandlerList getHandlerList() {
@@ -31,6 +33,7 @@ public class ServerReloadEvent extends Event implements Cancellable {
 
     /**
      * Gets the sender/source of the command.
+     *
      * @return Source of the reload command.
      */
     public CommandSender getSource() {
@@ -39,6 +42,7 @@ public class ServerReloadEvent extends Event implements Cancellable {
 
     /**
      * Gets the handlers for this event.
+     *
      * @return This event's handler list.
      */
     @Override
@@ -49,6 +53,7 @@ public class ServerReloadEvent extends Event implements Cancellable {
 
     /**
      * Checks if the event is currently canceled.
+     *
      * @return True if the event is cancelled, false otherwise.
      */
     @Override
@@ -58,6 +63,7 @@ public class ServerReloadEvent extends Event implements Cancellable {
 
     /**
      * Sets the cancelled state of the event.
+     *
      * @param cancel Value to assign to the cancelled state.
      */
     @Override

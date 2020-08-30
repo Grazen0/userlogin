@@ -1,8 +1,8 @@
 package com.elchologamer.userlogin.commands.subs;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.api.command.SubCommand;
+import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.lists.Path;
 import org.bukkit.command.CommandSender;
 import org.jetbrains.annotations.NotNull;

@@ -70,36 +70,44 @@ public class Login implements CommandExecutor, TabCompleter {
             return true;
         }
 
+        this.login(player);
+        return true;
+    }
+
+    public void login(Player player) {
         // Call login event
         PlayerLoginEvent event = new PlayerLoginEvent(player, LoginType.LOGIN);
         UserLogin.plugin.getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled())
-            return true;
+            return;
 
         // Player logs in
-        Utils.loggedIn.put(UUID.fromString(uuid), true);
+        Utils.loggedIn.put(player.getUniqueId(), true);
         utils.cancelTimeout(player);
 
-        utils.updateName(player);
-        UserLogin.dataFile.save();
+        // Update name if MySQL mode is disabled
+        if (!utils.sqlMode()) {
+            utils.updateName(player);
+            UserLogin.dataFile.save();
+        }
 
         // Send join message to player
         if (event.getMessage() != null)
             player.sendMessage(event.getMessage());
+
         // Teleport player
         if (event.getDestinationType() == DestinationType.NORMAL) {
             if (event.getDestinationLoc() != null)
                 player.teleport(event.getDestinationLoc());
 
             utils.joinAnnounce(player, event.getAnnouncement());
-            return true;
+            return;
         }
 
         // Connect to spawn server
         if (event.getDestinationServer() != null)
             utils.sendToServer(player, event.getDestinationServer());
-        return true;
     }
 
     @Override

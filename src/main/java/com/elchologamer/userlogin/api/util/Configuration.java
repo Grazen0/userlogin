@@ -16,6 +16,7 @@ public abstract class Configuration {
 
     /**
      * Represents a YAML configuration file.
+     *
      * @param name The name/path of the file. (E.g. "messages.yml")
      */
     public Configuration(@Nullable String name) {
@@ -26,7 +27,7 @@ public abstract class Configuration {
      * Creates the file, adds its default values and loads the configuration.
      */
     public void setup() {
-        if(this.name == null) return;
+        if (this.name == null) return;
         file = new File(UserLogin.plugin.getDataFolder(), this.name);
 
         if (!file.exists()) {
@@ -48,6 +49,7 @@ public abstract class Configuration {
 
     /**
      * Gets the file configuration for this file.
+     *
      * @return YAML file configuration.
      */
     public FileConfiguration get() {

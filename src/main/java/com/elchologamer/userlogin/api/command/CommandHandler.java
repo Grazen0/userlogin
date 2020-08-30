@@ -18,12 +18,13 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     /**
      * Represents a main command that handles multiple sub-commands
+     *
      * @param mainCommand The main command to associate this handler to
-     * @param plugin The JavaPlugin for this command
+     * @param plugin      The JavaPlugin for this command
      */
     public CommandHandler(@NotNull String mainCommand, @NotNull JavaPlugin plugin) {
         PluginCommand command = plugin.getCommand(mainCommand);
-        if(command == null) return;
+        if (command == null) return;
 
         command.setExecutor(this);
     }
@@ -31,10 +32,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
     /**
      * Executes the command, and returns its state,
      * whether it is true or false.
-     * @param sender The source of the command
+     *
+     * @param sender  The source of the command
      * @param command The command executed
-     * @param label The label of the executed command
-     * @param args Arguments used in the command
+     * @param label   The label of the executed command
+     * @param args    Arguments used in the command
      * @return True if the command was successful, false otherwise
      */
     @Override
@@ -62,6 +64,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     /**
      * Adds a sub-command to this handler
+     *
      * @param sub The sub-command to add
      */
     public void addCommand(SubCommand sub) {
@@ -70,10 +73,11 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
 
     /**
      * Gets the list of tab-completions to show on the command
-     * @param sender The source that is typing the command
+     *
+     * @param sender  The source that is typing the command
      * @param command The typed command
-     * @param alias The alias of the command used
-     * @param args The current arguments of the command
+     * @param alias   The alias of the command used
+     * @param args    The current arguments of the command
      * @return The list of words to tab-complete
      */
     @Override

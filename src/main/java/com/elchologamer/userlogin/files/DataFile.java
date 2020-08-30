@@ -9,5 +9,6 @@ public class DataFile extends Configuration {
     }
 
     @Override
-    public void registerDefaults() { }
+    public void registerDefaults() {
+    }
 }

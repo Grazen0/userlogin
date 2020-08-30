@@ -30,7 +30,8 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
     /**
      * Event called whenever a player successfully
      * logs in or gets registered onto the server.
-     * @param player The logged-in player.
+     *
+     * @param player    The logged-in player.
      * @param loginType The type of login, can be either LOGIN or REGISTER.
      */
     public PlayerLoginEvent(@NotNull Player player, LoginType loginType) {
@@ -56,6 +57,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Gets the handlers for this event.
+     *
      * @return This event's handler list.
      */
     public static @NotNull HandlerList getHandlerList() {
@@ -64,6 +66,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Gets the handlers for this event.
+     *
      * @return This event's handler list.
      */
     @Override
@@ -73,6 +76,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Checks if the event is currently canceled.
+     *
      * @return True if the event is cancelled, false otherwise.
      */
     @Override
@@ -82,6 +86,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Sets the cancelled state of the event.
+     *
      * @param cancel Value to assign to the cancelled state.
      */
     @Override
@@ -91,6 +96,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Gets the message that will be sent to the player.
+     *
      * @return Current login/register message.
      */
     public String getMessage() {
@@ -99,6 +105,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Sets the message that will be sent to the player.
+     *
      * @param message New message.
      */
     public void setMessage(String message) {
@@ -107,6 +114,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Gets the announcement message that will be sent to other players.
+     *
      * @return Current announcement message.
      */
     public String getAnnouncement() {
@@ -115,6 +123,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Sets the announcement message that will be sent to other players.
+     *
      * @param announcement New announcement message.
      */
     public void setAnnouncement(String announcement) {
@@ -123,6 +132,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Gets the teleport destination for the player.
+     *
      * @return Current destination location.
      */
     public @Nullable org.bukkit.Location getDestinationLoc() {
@@ -131,6 +141,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Sets the teleport destination for the player.
+     *
      * @param destinationLoc New destination.
      */
     public void setDestinationLoc(@Nullable org.bukkit.Location destinationLoc) {
@@ -139,6 +150,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Gets the destination server's name for the player. (BungeeCord)
+     *
      * @return Current destination server.
      */
     public @Nullable String getDestinationServer() {
@@ -147,6 +159,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Sets the destination server for the player. (BungeeCord)
+     *
      * @param destinationServer New destination server.
      */
     public void setDestinationServer(@NotNull String destinationServer) {
@@ -155,6 +168,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Gets the destination type for the player, can be either NORMAL or BUNGEECORD.
+     *
      * @return Current destination type.
      */
     public DestinationType getDestinationType() {
@@ -163,6 +177,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Sets the destination type for the player's teleport.
+     *
      * @param type New destination type.
      */
     public void setDestinationType(DestinationType type) {
@@ -171,6 +186,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     /**
      * Gets the login type of the player, can be either LOGIN or REGISTER.
+     *
      * @return Login type of the player.
      */
     public LoginType getLoginType() {

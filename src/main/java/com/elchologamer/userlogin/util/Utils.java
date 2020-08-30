@@ -20,6 +20,7 @@ public class Utils {
 
     public static final Map<UUID, Boolean> loggedIn = new HashMap<>();
     public static final Map<UUID, Integer> timeouts = new HashMap<>();
+    public static final Map<UUID, String> playerIP = new HashMap<>();
 
     public void cancelTimeout(@NotNull Player player) {
         Integer id = timeouts.get(player.getUniqueId());
@@ -138,9 +139,9 @@ public class Utils {
 
         // Get coordinates
         String worldName = section.getString("world");
-        int x = section.getInt("x");
-        int y = section.getInt("y");
-        int z = section.getInt("z");
+        double x = section.getDouble("x");
+        double y = section.getDouble("y");
+        double z = section.getDouble("z");
         float yaw = (float) section.getDouble("yaw");
         float pitch = (float) section.getDouble("pitch");
 
@@ -168,7 +169,7 @@ public class Utils {
     }
 
     public void joinAnnounce(@NotNull Player player, @Nullable String msg) {
-        if(msg == null) return;
+        if (msg == null) return;
         for (Player onlinePlayer : Bukkit.getServer().getOnlinePlayers()) {
             if (player != onlinePlayer)
                 player.sendMessage(msg);

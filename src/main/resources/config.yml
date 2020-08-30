@@ -42,6 +42,12 @@ restrictions:
   # Block breaking
   blockBreak: false
 
+  # Drop items
+  itemDrop: false
+
+  # Pick up items
+  itemPickup: false
+
 
 # Enable/disable certain teleports
 teleports:
@@ -59,6 +65,18 @@ teleports:
 
   # Teleport players to spawn when logged in (Normal, non-BungeeCord mode only)
   toSpawn: true
+
+
+# Player IP record options
+ipRecords:
+
+  # Allow players to bypass login if they enter with the
+  # same IP address consecutively
+  enabled: false
+
+  # Time (seconds) in which the player's IP
+  # will be remembered
+  delay: 30
 
 
 # BungeeCord options
