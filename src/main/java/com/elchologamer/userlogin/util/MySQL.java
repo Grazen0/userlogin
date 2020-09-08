@@ -1,20 +1,17 @@
-package com.elchologamer.userlogin.util.data;
+package com.elchologamer.userlogin.util;
 
-import com.elchologamer.userlogin.util.Utils;
+import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.lists.Path;
-import org.bukkit.Bukkit;
 import org.jetbrains.annotations.Nullable;
 
 import java.sql.*;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Objects;
 import java.util.UUID;
 
 public class MySQL {
 
     public final Map<UUID, String> data = new HashMap<>();
-    private final Utils utils = new Utils();
     public boolean isConnected = false;
     private @Nullable String database = "userlogin_data";
     private @Nullable String table = "player_data";
@@ -22,14 +19,14 @@ public class MySQL {
 
     public void connect() throws SQLException, ClassNotFoundException {
         // Get credentials from config
-        String host = utils.getConfig().getString("mysql.host");
-        String username = utils.getConfig().getString("mysql.username");
-        String password = utils.getConfig().getString("mysql.password");
-        int port = utils.getConfig().getInt("mysql.port");
+        String host = Utils.getConfig().getString("mysql.host");
+        String username = Utils.getConfig().getString("mysql.username");
+        String password = Utils.getConfig().getString("mysql.password");
+        int port = Utils.getConfig().getInt("mysql.port");
 
         // Get database and table from config
-        this.database = utils.getConfig().getString("mysql.database");
-        this.table = utils.getConfig().getString("mysql.table");
+        database = Utils.getConfig().getString("mysql.database");
+        table = Utils.getConfig().getString("mysql.table");
 
         if (database == null) database = "userlogin_data";
         if (table == null) table = "player_data";
@@ -38,11 +35,13 @@ public class MySQL {
             if (getConnection() != null && !getConnection().isClosed())
                 return;
 
-            // Get driver and set connection
-            this.isConnected = false;
+            // Check driver and set connection
+            isConnected = false;
             Class.forName("com.mysql.jdbc.Driver");
+
+            boolean useSSL = UserLogin.getPlugin().getConfig().getBoolean("mysql.useSSL", false);
             setConnection(DriverManager.getConnection(
-                    "jdbc:mysql://" + host + ":" + port + "/",
+                    String.format("jdbc:mysql://%s:%d?useSSL=%b", host, port, useSSL),
                     username, password));
 
             // Create database schema
@@ -51,7 +50,7 @@ public class MySQL {
 
             // Connect to database
             setConnection(DriverManager.getConnection(
-                    "jdbc:mysql://" + host + ":" + port + "/" + database,
+                    String.format("jdbc:mysql://%s:%d/%s?useSSL=%b", host, port, database, useSSL),
                     username, password));
 
             // Create table if it does not exist
@@ -71,16 +70,15 @@ public class MySQL {
                 );
             }
 
-            boolean encrypt = utils.getConfig().getBoolean("password.encrypt");
+            boolean encrypt = Utils.getConfig().getBoolean("password.encrypt");
             for (UUID uuid : data.keySet()) {
                 String dataPassword = data.get(uuid);
                 if (dataPassword == null) continue;
-                if (encrypt && !Objects.requireNonNull(password).startsWith("§"))
-                    dataPassword = utils.encrypt(dataPassword);
+                if (encrypt && !dataPassword.startsWith("§"))
+                    dataPassword = Utils.encrypt(dataPassword);
                 else {
-                    assert password != null;
-                    if (password.startsWith("§"))
-                        dataPassword = utils.decrypt(password);
+                    if (dataPassword.startsWith("§"))
+                        dataPassword = Utils.decrypt(password);
                 }
 
                 data.put(uuid, dataPassword);
@@ -96,7 +94,7 @@ public class MySQL {
             for (UUID uuid : data.keySet()) {
                 // Get password and the associated player's username
                 String password = data.get(uuid);
-                String username = Bukkit.getServer().getOfflinePlayer(uuid).getName();
+                String username = UserLogin.getPlugin().getServer().getOfflinePlayer(uuid).getName();
 
                 // Checks if row with the UUID exists
                 if (query("SELECT * FROM " + table + " WHERE UUID='" + uuid.toString() + "'").next()) {
@@ -111,9 +109,7 @@ public class MySQL {
                             "('" + uuid.toString() + "', '" + username + "', '" + password + "')");
             }
         } catch (SQLException e) {
-            utils.consoleLog(utils.color(Objects.requireNonNull(
-                    utils.getConfig().getString(Path.SQL_SAVE_ERROR))));
-
+            Utils.log(Utils.color(UserLogin.messagesFile.get().getString(Path.SQL_SAVE_ERROR)));
             e.printStackTrace();
         }
     }

@@ -9,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class Reload extends SubCommand {
 
-    private final Utils utils = new Utils();
-
     public Reload() {
         super("reload", false);
     }
@@ -19,12 +17,12 @@ public class Reload extends SubCommand {
     public boolean run(@NotNull CommandSender sender, String @NotNull [] args) {
         if (args.length > 0) return false;
 
-        if (utils.sqlMode())
+        if (Utils.sqlMode())
             UserLogin.sql.saveData();
 
-        UserLogin.pluginSetup();
+        UserLogin.getPlugin().pluginSetup();
 
-        utils.sendMessage(Path.RELOAD, sender);
+        Utils.sendMessage(Path.RELOAD, sender);
         return true;
     }
 }

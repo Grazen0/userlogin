@@ -13,8 +13,6 @@ import java.util.Objects;
 
 public class Set extends SubCommand {
 
-    private final Utils utils = new Utils();
-
     public Set() {
         super("set", true);
         this.addSub("spawn");
@@ -44,7 +42,7 @@ public class Set extends SubCommand {
         UserLogin.locationsFile.save();
 
         // Send message
-        utils.sendMessage(Path.SET, player, new String[]{"type", "x", "y", "z", "yaw", "pitch", "world"},
+        Utils.sendMessage(Path.SET, player, new String[]{"type", "x", "y", "z", "yaw", "pitch", "world"},
                 new String[]{args[0], Integer.toString(x), Integer.toString(y), Integer.toString(z),
                         Float.toString(yaw), Float.toString(pitch), world});
         return true;

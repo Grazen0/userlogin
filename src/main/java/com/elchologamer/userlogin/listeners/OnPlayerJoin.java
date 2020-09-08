@@ -4,8 +4,8 @@ import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.commands.Login;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.lists.Path;
-import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -17,8 +17,6 @@ import java.util.UUID;
 
 public class OnPlayerJoin implements Listener {
 
-    private final Utils utils = new Utils();
-
     @EventHandler
     public void onPlayerJoin(@NotNull PlayerJoinEvent e) {
         e.setJoinMessage(null);
@@ -26,15 +24,15 @@ public class OnPlayerJoin implements Listener {
         Utils.loggedIn.put(player.getUniqueId(), false);
 
         // Teleport to login position if enabled
-        if (utils.getConfig().getBoolean("teleports.toLogin")) {
-            Location loc = utils.getLocation(com.elchologamer.userlogin.util.lists.Location.LOGIN);
+        if (Utils.getConfig().getBoolean("teleports.toLogin")) {
+            Location loc = Utils.getLocation(com.elchologamer.userlogin.util.lists.Location.LOGIN);
             if (loc != null)
                 player.teleport(loc);
         }
 
         // IP record system
         InetSocketAddress address = player.getAddress();
-        if (utils.isRegistered(player) &&  utils.getConfig().getBoolean("ipRecords.enabled") && address != null) {
+        if (Utils.isRegistered(player) && Utils.getConfig().getBoolean("ipRecords.enabled") && address != null) {
             // Check if stored address equals to player's address
             UUID uuid = player.getUniqueId();
             String recordedHost = Utils.playerIP.get(uuid);
@@ -46,20 +44,30 @@ public class OnPlayerJoin implements Listener {
         }
 
         // Set a new timeout
-        utils.cancelTimeout(player);
-        if (utils.getConfig().getBoolean("timeout.enabled")) {
-            int id = Bukkit.getServer().getScheduler().scheduleSyncDelayedTask(
-                    UserLogin.plugin,
+        Utils.cancelTimeout(player);
+        if (Utils.getConfig().getBoolean("timeout.enabled")) {
+            int id = UserLogin.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(
+                    UserLogin.getPlugin(),
                     () -> player.kickPlayer(UserLogin.messagesFile.get().getString(Path.TIMEOUT)),
-                    utils.getConfig().getInt("timeout.time") * 20);
+                    Utils.getConfig().getInt("timeout.time") * 20);
 
             Utils.timeouts.put(player.getUniqueId(), id);
         }
 
         // Send respective welcome message
-        if (utils.isRegistered(player))
-            utils.sendMessage(Path.WELCOME_LOGIN, player);
-        else
-            utils.sendMessage(Path.WELCOME_REGISTER, player);
+        if (Utils.isRegistered(player)) {
+            Utils.sendMessage(Path.WELCOME_LOGIN, player);
+        } else {
+            Utils.sendMessage(Path.WELCOME_REGISTER, player);
+        }
+
+        ConfigurationSection section = Utils.getConfig().getConfigurationSection("joinTitle");
+        if (section.getBoolean("enabled", false))
+            player.sendTitle(
+                    Utils.color(UserLogin.messagesFile.get().getString(Path.JOIN_TITLE)),
+                    Utils.color(UserLogin.messagesFile.get().getString(Path.JOIN_SUBTITLE)),
+                    section.getInt("fadeIn"),
+                    section.getInt("duration"),
+                    section.getInt("fadeOut"));
     }
 }

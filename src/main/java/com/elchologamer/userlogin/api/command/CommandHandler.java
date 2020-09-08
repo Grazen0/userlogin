@@ -14,7 +14,6 @@ import java.util.List;
 public class CommandHandler implements CommandExecutor, TabCompleter {
 
     private final List<SubCommand> subCommands = new ArrayList<>();
-    private final Utils utils = new Utils();
 
     /**
      * Represents a main command that handles multiple sub-commands
@@ -47,7 +46,7 @@ public class CommandHandler implements CommandExecutor, TabCompleter {
         for (SubCommand sub : this.subCommands) {
             if (!sub.getName().equals(args[0])) continue;
             if (sub.isPlayerOnly() && !(sender instanceof Player)) {
-                utils.sendMessage(Path.PLAYER_ONLY, sender);
+                Utils.sendMessage(Path.PLAYER_ONLY, sender);
                 return true;
             }
 

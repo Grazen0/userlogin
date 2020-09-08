@@ -51,18 +51,15 @@ restrictions:
 # Habilitar/deshabilitar ciertos teletransportes
 teleports:
 
-  # Modo de teletransportación (Puede ser "NORMAL" o "SAVE-POSITION")
-  mode: 'NORMAL'
-  # El modo "SAVE-POSITION" teletransporta al jugador
+  # Guardar las posiciones de los jugadores al desconectarse
+  save-position: false
+  # El modo save-position teletransporta al jugador
   # a su última posición antes de haberse desconectado
-
-  # El modo "NORMAL" teletransporta al jugador al
-  # punto de spawn (Si la opción está habilitada)
 
   # Teletransportar jugadores al punto de login al conectarse
   toLogin: true
 
-  # Teletransportar al jugador al punto de spawn cuando se logee (Modo "NORMAL", sin BungeeCord)
+  # Teletransportar al jugador al punto de spawn cuando se logee (Modo normal, sin BungeeCord)
   toSpawn: true
 
 
@@ -86,6 +83,18 @@ bungeeCord:
 
   # Servidor al cual enviar al jugador cuando se logee
   spawnServer: 'LOBBY'
+
+
+# Opciones de título de bienvenida
+joinTitle:
+
+  # Activar/desactivar
+  enabled: false
+
+  # Duración del título (ticks)
+  fadeIn: 10
+  duration: 70
+  fadeOut: 20
 
 
 # Opciones de MySQL

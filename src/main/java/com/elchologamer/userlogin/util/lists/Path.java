@@ -9,6 +9,7 @@ public class Path {
     private static final String MESSAGES = "messages.";
     private static final String WELCOME = MESSAGES + "welcome.";
     private static final String USAGES = COMMANDS + "usages.";
+    private static final String PLAYER_JOIN_TITLE = WELCOME + "join-title";
 
     private static final String SQL_STATES = COMMANDS + "sqlStates.";
     private static final String SQL = OTHER + "mysql.";
@@ -53,4 +54,6 @@ public class Path {
     // Welcome messages
     public static final String WELCOME_LOGIN = WELCOME + "registered";
     public static final String WELCOME_REGISTER = WELCOME + "unregistered";
+    public static final String JOIN_TITLE = PLAYER_JOIN_TITLE + "title";
+    public static final String JOIN_SUBTITLE = PLAYER_JOIN_TITLE + "subtitle";
 }

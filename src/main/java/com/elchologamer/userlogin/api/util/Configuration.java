@@ -27,8 +27,8 @@ public abstract class Configuration {
      * Creates the file, adds its default values and loads the configuration.
      */
     public void setup() {
-        if (this.name == null) return;
-        this.file = new File(UserLogin.plugin.getDataFolder(), this.name);
+        if (name == null) return;
+        file = new File(UserLogin.getPlugin().getDataFolder(), name);
 
         try {
             file.createNewFile();
@@ -37,7 +37,7 @@ public abstract class Configuration {
             e.printStackTrace();
         }
 
-        this.reload();
+        reload();
     }
 
     /**
@@ -58,19 +58,19 @@ public abstract class Configuration {
      * Reloads the YAML configuration of this file.
      */
     public void reload() {
-        if(this.file == null) return;
-        this.fileConfiguration = YamlConfiguration.loadConfiguration(this.file);
-        this.registerDefaults();
+        if (file == null) return;
+        fileConfiguration = YamlConfiguration.loadConfiguration(file);
+        registerDefaults();
     }
 
     /**
      * Saves the YAML file configuration to the file.
      */
     public void save() {
-        if(this.file == null) return;
+        if (file == null) return;
 
         try {
-            this.fileConfiguration.save(this.file);
+            fileConfiguration.save(file);
         } catch (IOException e) {
             System.out.println("Error while trying to save \"" + name + ".yml\"!");
             e.printStackTrace();

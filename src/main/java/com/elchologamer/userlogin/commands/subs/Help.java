@@ -9,8 +9,6 @@ import org.jetbrains.annotations.NotNull;
 
 public class Help extends SubCommand {
 
-    private final Utils utils = new Utils();
-
     public Help() {
         super("help", false);
     }
@@ -20,7 +18,7 @@ public class Help extends SubCommand {
         if (args.length > 0) return false;
 
         for (String str : UserLogin.messagesFile.get().getStringList(Path.HELP)) {
-            sender.sendMessage(utils.color(str));
+            sender.sendMessage(Utils.color(str));
         }
         return true;
     }

@@ -4,6 +4,9 @@
 # | with this link: https://discord.gg/HdnP32P       |
 # ----------------------------------------------------
 
+# Enable update checking
+checkUpdates: true
+
 # Language file to load
 lang: 'en_US'
 
@@ -52,18 +55,15 @@ restrictions:
 # Enable/disable certain teleports
 teleports:
 
-  # Teleport mode: Can be either 'NORMAL' or 'SAVE-POSITION'
-  mode: 'NORMAL'
-  # The "SAVE-POSITION" mode teleports the player
+  # Save players' position on logout
+  save-position: false
+  # The save-position mode teleports the player
   # to their last position when they log in.
-
-  # The "NORMAL" mode just teleports the player to
-  # the spawn point if said function is enabled
 
   # Teleport players to login location on join
   toLogin: true
 
-  # Teleport players to spawn when logged in (Normal, non-BungeeCord mode only)
+  # Teleport players to spawn when logged in (Normal mode, non-BungeeCord only)
   toSpawn: true
 
 
@@ -88,6 +88,17 @@ bungeeCord:
   # Server to send the player when logged in
   spawnServer: 'LOBBY'
 
+# Join title settings
+joinTitle:
+
+  # Send players a title message on join
+  enabled: false
+
+  # Fade duration (ticks)
+  fadeIn: 10
+  duration: 70
+  fadeOut: 20
+
 
 # MySQL options
 mysql:
@@ -97,6 +108,9 @@ mysql:
 
   # Interval (in seconds) between which local data will be saved to the database
   saveInterval: 300
+
+  # Use SSL for database connection
+  useSSL: false
 
   # Database and table to store the data in
   database: 'userlogin_data'

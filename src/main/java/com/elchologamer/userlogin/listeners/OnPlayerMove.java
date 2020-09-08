@@ -15,12 +15,10 @@ import java.util.Objects;
 
 public class OnPlayerMove implements Listener {
 
-    private final Utils utils = new Utils();
-
     @EventHandler(priority = EventPriority.HIGHEST)
     public void onPlayerMove(@NotNull PlayerMoveEvent e) {
         Player player = e.getPlayer();
-        if (!utils.getConfig().getBoolean("restrictions.movement") ||
+        if (!Utils.getConfig().getBoolean("restrictions.movement") ||
                 (e.getTo() != null && (!moved(e.getFrom(), e.getTo()))) ||
                 Utils.loggedIn.get(player.getUniqueId())) return;
 

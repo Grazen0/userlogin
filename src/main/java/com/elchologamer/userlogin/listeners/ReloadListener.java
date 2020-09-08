@@ -14,7 +14,7 @@ public class ReloadListener implements Listener {
     public void onConsoleCommand(@NotNull ServerCommandEvent e) {
         if ((e.getCommand() + " ").startsWith("reload ")) {
             ServerReloadEvent event = new ServerReloadEvent(e.getSender());
-            UserLogin.plugin.getServer().getPluginManager().callEvent(event);
+            UserLogin.getPlugin().getServer().getPluginManager().callEvent(event);
             if (event.isCancelled())
                 e.setCancelled(true);
         }
@@ -24,7 +24,7 @@ public class ReloadListener implements Listener {
     public void onPlayerCommand(@NotNull PlayerCommandPreprocessEvent e) {
         if ((e.getMessage() + " ").startsWith("/reload ")) {
             ServerReloadEvent event = new ServerReloadEvent(e.getPlayer());
-            UserLogin.plugin.getServer().getPluginManager().callEvent(event);
+            UserLogin.getPlugin().getServer().getPluginManager().callEvent(event);
             if (event.isCancelled())
                 e.setCancelled(true);
         }

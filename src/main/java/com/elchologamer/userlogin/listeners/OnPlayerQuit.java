@@ -16,8 +16,6 @@ import java.util.UUID;
 
 public class OnPlayerQuit implements Listener {
 
-    private final Utils utils = new Utils();
-
     @EventHandler
     public void onPlayerQuit(@NotNull PlayerQuitEvent e) throws NullPointerException {
         // Check if player is already logged in
@@ -40,13 +38,12 @@ public class OnPlayerQuit implements Listener {
 
         // Store IP address if enabled
         InetSocketAddress address = player.getAddress();
-        if (utils.getConfig().getBoolean("ipRecords.enabled") && address != null) {
-            Utils.playerIP.put(uuid, address.getHostString());
+        if (!Utils.getConfig().getBoolean("ipRecords.enabled") || address != null) return;
+        Utils.playerIP.put(uuid, address.getHostString());
 
-            // Schedule IP deletion
-            UserLogin.plugin.getServer().getScheduler().scheduleSyncDelayedTask(UserLogin.plugin,
-                    () -> Utils.playerIP.put(uuid, null),
-                    utils.getConfig().getLong("ipRecords.delay") * 20);
-        }
+        // Schedule IP deletion
+        UserLogin.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(UserLogin.getPlugin(),
+                () -> Utils.playerIP.put(uuid, null),
+                Utils.getConfig().getLong("ipRecords.delay") * 20);
     }
 }

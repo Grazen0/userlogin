@@ -14,11 +14,11 @@ public class Lang {
 
     public static void createDefaultLang() {
         // Create lang folder
-        File folder = new File(UserLogin.plugin.getDataFolder(), "lang\\");
+        File folder = new File(UserLogin.getPlugin().getDataFolder(), "lang\\");
         folder.mkdir();
 
-        File en_US = new File(UserLogin.plugin.getDataFolder(), "lang\\en_US.yml");
-        File es_ES = new File(UserLogin.plugin.getDataFolder(), "lang\\es_ES.yml");
+        File en_US = new File(UserLogin.getPlugin().getDataFolder(), "lang\\en_US.yml");
+        File es_ES = new File(UserLogin.getPlugin().getDataFolder(), "lang\\es_ES.yml");
 
         try {
             // English language
@@ -41,6 +41,8 @@ public class Lang {
             config.addDefault(Path.CHAT_DISABLED, "&cYou must first log in to use the chat!");
             config.addDefault(Path.TIMEOUT, "You have stayed for too much time without logging in");
             config.addDefault(Path.LOGIN_ANNOUNCEMENT, "&e{player} has joined the server!");
+            config.addDefault(Path.JOIN_TITLE, "&6Welcome to the server!");
+            config.addDefault(Path.JOIN_SUBTITLE, "&9Have fun!");
 
             config.addDefault(Path.USERLOGIN_USAGE, "&cCorrect usage: /<command> <sub> (Use /ul help for more)");
             config.addDefault(Path.LOGIN_USAGE, "&cCorrect usage: /<command> <password>");
@@ -89,6 +91,8 @@ public class Lang {
             config.addDefault(Path.CHAT_DISABLED, "&cDebes estar logeado para usar el chat!");
             config.addDefault(Path.TIMEOUT, "Te has quedado mucho tiempo sin logearte");
             config.addDefault(Path.LOGIN_ANNOUNCEMENT, "&e{player} se ha unido al servidor!");
+            config.addDefault(Path.JOIN_TITLE, "&6Bienvenido al servidor!");
+            config.addDefault(Path.JOIN_SUBTITLE, "&9Diviértete!");
 
             config.addDefault(Path.USERLOGIN_USAGE, "&cUso correcto: /<command> <sub> (Usa &4/ul help &para más)");
             config.addDefault(Path.LOGIN_USAGE, "&cUso correcto: /<command> <password>");

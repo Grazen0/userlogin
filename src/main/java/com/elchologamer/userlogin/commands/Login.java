@@ -21,13 +21,11 @@ import java.util.UUID;
 
 public class Login implements CommandExecutor, TabCompleter {
 
-    private final Utils utils = new Utils();
-
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
         // Check if sender is a player
         if (!(sender instanceof Player)) {
-            utils.sendMessage(Path.PLAYER_ONLY, sender);
+            Utils.sendMessage(Path.PLAYER_ONLY, sender);
             return true;
         }
 
@@ -35,7 +33,7 @@ public class Login implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
         try {
             if (Utils.loggedIn.get(player.getUniqueId())) {
-                utils.sendMessage(Path.ALREADY_LOGGED_IN, player);
+                Utils.sendMessage(Path.ALREADY_LOGGED_IN, player);
                 return true;
             }
         } catch (NullPointerException ignored) {
@@ -43,8 +41,8 @@ public class Login implements CommandExecutor, TabCompleter {
         }
 
         // Check if player is registered
-        if (!utils.isRegistered(player)) {
-            utils.sendMessage(Path.NOT_REGISTERED, player);
+        if (!Utils.isRegistered(player)) {
+            Utils.sendMessage(Path.NOT_REGISTERED, player);
             return true;
         }
 
@@ -56,17 +54,17 @@ public class Login implements CommandExecutor, TabCompleter {
 
         // Get stored password
         String password;
-        if (!utils.sqlMode())
+        if (!Utils.sqlMode())
             password = Objects.requireNonNull(UserLogin.dataFile.get().getString(uuid + ".password"));
         else
             password = UserLogin.sql.data.get(UUID.fromString(uuid));
 
         // Decrypt stored password if needed
         if (password.startsWith("§"))
-            password = utils.decrypt(password);
+            password = Utils.decrypt(password);
 
         if (!args[0].equals(password)) {
-            utils.sendMessage(Path.INCORRECT_PASSWORD, player);
+            Utils.sendMessage(Path.INCORRECT_PASSWORD, player);
             return true;
         }
 
@@ -77,18 +75,18 @@ public class Login implements CommandExecutor, TabCompleter {
     public void login(@NotNull Player player) {
         // Call login event
         PlayerLoginEvent event = new PlayerLoginEvent(player, LoginType.LOGIN);
-        UserLogin.plugin.getServer().getPluginManager().callEvent(event);
+        UserLogin.getPlugin().getServer().getPluginManager().callEvent(event);
 
         if (event.isCancelled())
             return;
 
         // Player logs in
         Utils.loggedIn.put(player.getUniqueId(), true);
-        utils.cancelTimeout(player);
+        Utils.cancelTimeout(player);
 
         // Update name if MySQL mode is disabled
-        if (!utils.sqlMode()) {
-            utils.updateName(player);
+        if (!Utils.sqlMode()) {
+            Utils.updateName(player);
             UserLogin.dataFile.save();
         }
 
@@ -101,13 +99,13 @@ public class Login implements CommandExecutor, TabCompleter {
             if (event.getDestinationLoc() != null)
                 player.teleport(event.getDestinationLoc());
 
-            utils.joinAnnounce(player, event.getAnnouncement());
+            Utils.joinAnnounce(player, event.getAnnouncement());
             return;
         }
 
         // Connect to spawn server
         if (event.getDestinationServer() != null)
-            utils.sendToServer(player, event.getDestinationServer());
+            Utils.sendToServer(player, event.getDestinationServer());
     }
 
     @Override

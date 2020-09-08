@@ -10,8 +10,6 @@ import org.jetbrains.annotations.Nullable;
 
 public class SQL extends SubCommand {
 
-    private final Utils utils = new Utils();
-
     public SQL() {
         super("sql", false);
     }
@@ -22,14 +20,14 @@ public class SQL extends SubCommand {
 
         // Get current MySQL state
         String state;
-        if (!utils.sqlMode())
+        if (!Utils.sqlMode())
             state = getMsg(Path.SQL_DISABLED);
         else if (UserLogin.sql.isConnected)
             state = getMsg(Path.SQL_CONNECTED);
         else
             state = getMsg(Path.SQL_DISCONNECTED);
 
-        utils.sendMessage(Path.SQL_STATE, sender, new String[]{"state"}, new String[]{state});
+        Utils.sendMessage(Path.SQL_STATE, sender, new String[]{"state"}, new String[]{state});
         return true;
     }
 

@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin.util;
 
+import com.elchologamer.userlogin.UserLogin;
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -132,7 +133,7 @@ public class Metrics {
         if (enabled) {
             boolean found = false;
             // Search for all other bStats Metrics classes to see if we are the first one
-            for (Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
+            for (Class<?> service : UserLogin.getPlugin().getServer().getServicesManager().getKnownServices()) {
                 try {
                     service.getField("B_STATS_VERSION"); // Our identifier :)
                     found = true; // We aren't the first
@@ -141,7 +142,7 @@ public class Metrics {
                 }
             }
             // Register our service
-            Bukkit.getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
+            UserLogin.getPlugin().getServer().getServicesManager().register(Metrics.class, this, plugin, ServicePriority.Normal);
             if (!found) {
                 // We are the first!
                 startSubmitting();
@@ -171,26 +172,54 @@ public class Metrics {
     }
 
     /**
-     * Starts the Scheduler which submits our data every 30 minutes.
+     * Sends the data to the bStats server.
+     *
+     * @param plugin Any plugin. It's just used to get a logger instance.
+     * @param data   The data to send.
+     * @throws Exception If the request failed.
      */
-    private void startSubmitting() {
-        final Timer timer = new Timer(true); // We use a timer cause the Bukkit scheduler is affected by server lags
-        timer.scheduleAtFixedRate(new TimerTask() {
-            @Override
-            public void run() {
-                assert plugin != null;
-                if (!plugin.isEnabled()) { // Plugin was disabled
-                    timer.cancel();
-                    return;
-                }
-                // Nevertheless we want our code to run in the Bukkit main thread, so we have to use the Bukkit scheduler
-                // Don't be afraid! The connection to the bStats server is still async, only the stats collection is sync ;)
-                Bukkit.getScheduler().runTask(plugin, () -> submitData());
+    private static void sendData(@NotNull Plugin plugin, @Nullable JsonObject data) throws Exception {
+        if (data == null) {
+            throw new IllegalArgumentException("Data cannot be null!");
+        }
+        if (UserLogin.getPlugin().getServer().isPrimaryThread()) {
+            throw new IllegalAccessException("This method must not be called from the main thread!");
+        }
+        if (logSentData) {
+            plugin.getLogger().info("Sending data to bStats: " + data);
+        }
+        HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
+
+        // Compress the data to save bandwidth
+        byte[] compressedData = compress(data.toString());
+
+        // Add headers
+        connection.setRequestMethod("POST");
+        connection.addRequestProperty("Accept", "application/json");
+        connection.addRequestProperty("Connection", "close");
+        connection.addRequestProperty("Content-Encoding", "gzip"); // We gzip our request
+        assert compressedData != null;
+        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
+        connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
+        connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
+
+        // Send data
+        connection.setDoOutput(true);
+        try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
+            outputStream.write(compressedData);
+        }
+
+        StringBuilder builder = new StringBuilder();
+        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
+            String line;
+            while ((line = bufferedReader.readLine()) != null) {
+                builder.append(line);
             }
-        }, 1000 * 60 * 5, 1000 * 60 * 30);
-        // Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough time to start
-        // WARNING: Changing the frequency has no effect but your plugin WILL be blocked/deleted!
-        // WARNING: Just don't do it!
+        }
+
+        if (logResponseStatusText) {
+            plugin.getLogger().info("Sent data to bStats and received response: " + builder);
+        }
     }
 
     /**
@@ -224,6 +253,29 @@ public class Metrics {
     }
 
     /**
+     * Starts the Scheduler which submits our data every 30 minutes.
+     */
+    private void startSubmitting() {
+        final Timer timer = new Timer(true); // We use a timer cause the Bukkit scheduler is affected by server lags
+        timer.scheduleAtFixedRate(new TimerTask() {
+            @Override
+            public void run() {
+                assert plugin != null;
+                if (!plugin.isEnabled()) { // Plugin was disabled
+                    timer.cancel();
+                    return;
+                }
+                // Nevertheless we want our code to run in the Bukkit main thread, so we have to use the Bukkit scheduler
+                // Don't be afraid! The connection to the bStats server is still async, only the stats collection is sync ;)
+                UserLogin.getPlugin().getServer().getScheduler().runTask(plugin, () -> submitData());
+            }
+        }, 1000 * 60 * 5, 1000 * 60 * 30);
+        // Submit the data every 30 minutes, first time after 5 minutes to give other plugins enough time to start
+        // WARNING: Changing the frequency has no effect but your plugin WILL be blocked/deleted!
+        // WARNING: Just don't do it!
+    }
+
+    /**
      * Gets the server specific data.
      *
      * @return The server specific data.
@@ -236,10 +288,10 @@ public class Metrics {
             // This fixes java.lang.NoSuchMethodError: org.bukkit.Bukkit.getOnlinePlayers()Ljava/util/Collection;
             Method onlinePlayersMethod = Class.forName("org.bukkit.Server").getMethod("getOnlinePlayers");
             playerAmount = onlinePlayersMethod.getReturnType().equals(Collection.class)
-                    ? ((Collection<?>) onlinePlayersMethod.invoke(Bukkit.getServer())).size()
-                    : ((Player[]) onlinePlayersMethod.invoke(Bukkit.getServer())).length;
+                    ? ((Collection<?>) onlinePlayersMethod.invoke(UserLogin.getPlugin().getServer())).size()
+                    : ((Player[]) onlinePlayersMethod.invoke(UserLogin.getPlugin().getServer())).length;
         } catch (Exception e) {
-            playerAmount = Bukkit.getOnlinePlayers().size(); // Just use the new method if the Reflection failed
+            playerAmount = UserLogin.getPlugin().getServer().getOnlinePlayers().size(); // Just use the new method if the Reflection failed
         }
         int onlineMode = Bukkit.getOnlineMode() ? 1 : 0;
         String bukkitVersion = Bukkit.getVersion();
@@ -278,11 +330,11 @@ public class Metrics {
 
         JsonArray pluginData = new JsonArray();
         // Search for all other bStats Metrics classes to get their plugin data
-        for (Class<?> service : Bukkit.getServicesManager().getKnownServices()) {
+        for (Class<?> service : UserLogin.getPlugin().getServer().getServicesManager().getKnownServices()) {
             try {
                 service.getField("B_STATS_VERSION"); // Our identifier :)
 
-                for (RegisteredServiceProvider<?> provider : Bukkit.getServicesManager().getRegistrations(service)) {
+                for (RegisteredServiceProvider<?> provider : UserLogin.getPlugin().getServer().getServicesManager().getRegistrations(service)) {
                     try {
                         Object plugin = provider.getService().getMethod("getPluginData").invoke(provider.getProvider());
                         if (plugin instanceof JsonObject) {
@@ -327,57 +379,6 @@ public class Metrics {
                 }
             }
         }).start();
-    }
-
-    /**
-     * Sends the data to the bStats server.
-     *
-     * @param plugin Any plugin. It's just used to get a logger instance.
-     * @param data   The data to send.
-     * @throws Exception If the request failed.
-     */
-    private static void sendData(@NotNull Plugin plugin, @Nullable JsonObject data) throws Exception {
-        if (data == null) {
-            throw new IllegalArgumentException("Data cannot be null!");
-        }
-        if (Bukkit.isPrimaryThread()) {
-            throw new IllegalAccessException("This method must not be called from the main thread!");
-        }
-        if (logSentData) {
-            plugin.getLogger().info("Sending data to bStats: " + data);
-        }
-        HttpsURLConnection connection = (HttpsURLConnection) new URL(URL).openConnection();
-
-        // Compress the data to save bandwidth
-        byte[] compressedData = compress(data.toString());
-
-        // Add headers
-        connection.setRequestMethod("POST");
-        connection.addRequestProperty("Accept", "application/json");
-        connection.addRequestProperty("Connection", "close");
-        connection.addRequestProperty("Content-Encoding", "gzip"); // We gzip our request
-        assert compressedData != null;
-        connection.addRequestProperty("Content-Length", String.valueOf(compressedData.length));
-        connection.setRequestProperty("Content-Type", "application/json"); // We send our data in JSON format
-        connection.setRequestProperty("User-Agent", "MC-Server/" + B_STATS_VERSION);
-
-        // Send data
-        connection.setDoOutput(true);
-        try (DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream())) {
-            outputStream.write(compressedData);
-        }
-
-        StringBuilder builder = new StringBuilder();
-        try (BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(connection.getInputStream()))) {
-            String line;
-            while ((line = bufferedReader.readLine()) != null) {
-                builder.append(line);
-            }
-        }
-
-        if (logResponseStatusText) {
-            plugin.getLogger().info("Sent data to bStats and received response: " + builder);
-        }
     }
 
     /**
@@ -430,14 +431,14 @@ public class Metrics {
                 chart.add("data", data);
             } catch (Throwable t) {
                 if (logFailedRequests) {
-                    Bukkit.getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);
+                    UserLogin.getPlugin().getLogger().log(Level.WARNING, "Failed to get data for custom chart with id " + chartId, t);
                 }
                 return null;
             }
             return chart;
         }
 
-        protected abstract  @Nullable JsonObject getChartData() throws Exception;
+        protected abstract @Nullable JsonObject getChartData() throws Exception;
 
     }
 

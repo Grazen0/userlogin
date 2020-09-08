@@ -10,8 +10,6 @@ import java.io.IOException;
 
 public class MessagesFile extends Configuration {
 
-    private final Utils utils = new Utils();
-
     public MessagesFile() {
         super(null);
     }
@@ -19,13 +17,13 @@ public class MessagesFile extends Configuration {
     @Override
     public void setup() {
         // Create lang folder
-        File folder = new File(UserLogin.plugin.getDataFolder(), "lang\\");
+        File folder = new File(UserLogin.getPlugin().getDataFolder(), "lang\\");
         folder.mkdir();
 
         // Load lang file specified in config
-        this.name = this.utils.getConfig().getString("lang");
+        name = Utils.getConfig().getString("lang");
         if (name == null) name = "en_US";
-        this.file = new File(UserLogin.plugin.getDataFolder(), "lang\\" + this.name + ".yml");
+        file = new File(UserLogin.getPlugin().getDataFolder(), "lang\\" + name + ".yml");
 
         reload();
     }
@@ -36,13 +34,13 @@ public class MessagesFile extends Configuration {
 
     @Override
     public void reload() {
-        if(this.file == null) return;
+        if (file == null) return;
 
         // Create file if necessary
         try {
-            this.file.createNewFile();
+            file.createNewFile();
         } catch (IOException e) {
-            System.out.println("Error while trying to create lang file \"" + this.name + "\"");
+            System.out.println("Error while trying to create lang file \"" + name + "\"");
             e.printStackTrace();
         }
 

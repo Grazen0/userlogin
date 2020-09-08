@@ -19,7 +19,6 @@ import java.util.Objects;
 public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     protected static final HandlerList HANDLERS_LIST = new HandlerList();
-    protected final Utils utils = new Utils();
     protected String message;
     protected String announcement;
     protected boolean cancelled;
@@ -39,21 +38,21 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
         super(player);
         this.loginType = loginType;
         this.cancelled = false;
-        this.message = utils.color(Objects.requireNonNull(UserLogin.messagesFile.get().
+        this.message = Utils.color(Objects.requireNonNull(UserLogin.messagesFile.get().
                 getString(this.loginType == LoginType.LOGIN ? Path.LOGGED_IN : Path.REGISTERED)));
 
-        this.announcement = utils.color(Objects.requireNonNull(UserLogin.messagesFile.get().getString(
+        this.announcement = Utils.color(Objects.requireNonNull(UserLogin.messagesFile.get().getString(
                 Path.LOGIN_ANNOUNCEMENT)).replace("{player}", this.player.getName()));
 
-        this.destinationLoc = utils.normalMode() ? utils.getLocation(Location.SPAWN) :
-                utils.getLocation("playerLocations." + player.getUniqueId().toString());
-        if (utils.normalMode() && !utils.getConfig().getBoolean("teleports.toSpawn"))
+        this.destinationLoc = Utils.normalMode() ? Utils.getLocation(Location.SPAWN) :
+                Utils.getLocation("playerLocations." + player.getUniqueId().toString());
+        if (Utils.normalMode() && !Utils.getConfig().getBoolean("teleports.toSpawn"))
             this.destinationLoc = null;
 
-        this.destinationType = !utils.getConfig().getBoolean("bungeeCord.enabled") ?
+        this.destinationType = !Utils.getConfig().getBoolean("bungeeCord.enabled") ?
                 DestinationType.NORMAL : DestinationType.BUNGEECORD;
 
-        this.destinationServer = utils.getConfig().getString("bungeeCord.spawnServer");
+        this.destinationServer = Utils.getConfig().getString("bungeeCord.spawnServer");
     }
 
     /**

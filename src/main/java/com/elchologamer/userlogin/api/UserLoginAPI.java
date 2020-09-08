@@ -17,7 +17,7 @@ public class UserLoginAPI {
      * @return True if the player is logged in, false otherwise
      */
     public static boolean isLoggedIn(@NotNull String player) {
-        Player p = UserLogin.plugin.getServer().getPlayer(player);
+        Player p = UserLogin.getPlugin().getServer().getPlayer(player);
         if (p == null) return false;
         return isLoggedIn(p);
     }
