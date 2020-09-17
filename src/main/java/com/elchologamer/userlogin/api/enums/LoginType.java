@@ -1,4 +1,4 @@
-package com.elchologamer.userlogin.api.event.enums;
+package com.elchologamer.userlogin.api.enums;
 
 public enum LoginType {
 

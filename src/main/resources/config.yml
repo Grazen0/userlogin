@@ -1,14 +1,17 @@
-# ----------------------------------------------------
-# | Configuration file for UserLogin.                 |
+# +--------------------------------------------------+
+# | Configuration file for UserLogin.                |
 # | For any doubts, you can join my Discord server   |
 # | with this link: https://discord.gg/HdnP32P       |
-# ----------------------------------------------------
+# +--------------------------------------------------+
 
 # Enable update checking
 checkUpdates: true
 
 # Language file to load
 lang: 'en_US'
+
+# Interval in seconds to repeat the login welcome message (-1 to disable)
+repeatingWelcomeMsg: -1
 
 # Timeout-kicking settings
 timeout:
@@ -41,6 +44,8 @@ restrictions:
 
   # Player movement
   movement: false
+  # Move warning frequency (-1 to disable move warnings)
+  move-warn-frequency: 20
 
   # Block breaking
   blockBreak: false
@@ -48,7 +53,7 @@ restrictions:
   # Drop items
   itemDrop: false
 
-  # Pick up items
+  # Pick up items (1.12+ only)
   itemPickup: false
 
 
@@ -56,8 +61,8 @@ restrictions:
 teleports:
 
   # Save players' position on logout
-  save-position: false
-  # The save-position mode teleports the player
+  savePosition: false
+  # The savePosition mode teleports the player
   # to their last position when they log in.
 
   # Teleport players to login location on join
@@ -79,6 +84,13 @@ ipRecords:
   delay: 30
 
 
+# Command aliases (Format: [ alias1, alias2, alias3... ])
+commandAliases:
+  login: [ ]
+  register: [ ]
+  userlogin: [ ul ]
+
+
 # BungeeCord options
 bungeeCord:
 
@@ -87,6 +99,7 @@ bungeeCord:
 
   # Server to send the player when logged in
   spawnServer: 'LOBBY'
+
 
 # Join title settings
 joinTitle:
@@ -109,7 +122,7 @@ mysql:
   # Interval (in seconds) between which local data will be saved to the database
   saveInterval: 300
 
-  # Use SSL for database connection
+  # Use SSL (Secure Sockets Layer) for database connection
   useSSL: false
 
   # Database and table to store the data in

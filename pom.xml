@@ -6,7 +6,7 @@
 
     <groupId>com.elchologamer</groupId>
     <artifactId>UserLogin</artifactId>
-    <version>2.5.0</version>
+    <version>2.6.0</version>
     <packaging>jar</packaging>
 
     <name>UserLogin</name>
@@ -69,14 +69,15 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.1-R0.1-SNAPSHOT</version>
+            <version>1.16.3-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.jetbrains</groupId>
-            <artifactId>annotations</artifactId>
-            <version>LATEST</version>
-            <scope>compile</scope>
+            <groupId>com.elchologamer</groupId>
+            <artifactId>PluginAPI</artifactId>
+            <version>1.0.0</version>
+            <scope>system</scope>
+            <systemPath>C:/Users/josed/IdeaProjects/Libs/PluginAPI.jar</systemPath>
         </dependency>
     </dependencies>
 </project>

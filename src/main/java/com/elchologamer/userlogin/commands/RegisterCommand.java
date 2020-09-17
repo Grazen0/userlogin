@@ -1,27 +1,32 @@
 package com.elchologamer.userlogin.commands;
 
+import com.elchologamer.pluginapi.util.command.SpigotCommand;
 import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.api.UserLoginAPI;
+import com.elchologamer.userlogin.api.enums.DestinationType;
+import com.elchologamer.userlogin.api.enums.LoginType;
 import com.elchologamer.userlogin.api.event.PlayerLoginEvent;
-import com.elchologamer.userlogin.api.event.enums.DestinationType;
-import com.elchologamer.userlogin.api.event.enums.LoginType;
+import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.util.lists.Path;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class Register implements CommandExecutor, TabCompleter {
+public class RegisterCommand extends SpigotCommand {
+
+    private final UserLogin plugin;
+
+    public RegisterCommand(UserLogin plugin) {
+        super("register");
+        this.plugin = plugin;
+    }
 
     @Override
-    public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String @NotNull [] args) {
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         // Check if sender is a player
         if (!(sender instanceof Player)) {
             Utils.sendMessage(Path.PLAYER_ONLY, sender);
@@ -30,17 +35,13 @@ public class Register implements CommandExecutor, TabCompleter {
 
         // Check if player is not already logged in
         Player player = (Player) sender;
-        try {
-            if (Utils.loggedIn.get(player.getUniqueId())) {
-                Utils.sendMessage(Path.ALREADY_LOGGED_IN, player);
-                return true;
-            }
-        } catch (NullPointerException ignored) {
+        if (UserLoginAPI.isLoggedIn(player)) {
+            Utils.sendMessage(Path.ALREADY_LOGGED_IN, player);
             return true;
         }
 
         // Check if player is not already registered
-        if (Utils.isRegistered(player)) {
+        if (UserLoginAPI.isRegistered(player)) {
             Utils.sendMessage(Path.ALREADY_REGISTERED, player);
             return true;
         }
@@ -50,7 +51,7 @@ public class Register implements CommandExecutor, TabCompleter {
 
         // Check if password is over the minimum amount of characters
         String password = args[0];
-        int minChars = Utils.getConfig().getInt("password.minCharacters");
+        int minChars = plugin.getConfig().getInt("password.minCharacters");
         if (password.length() < minChars) {
             Utils.sendMessage(Path.SHORT_PASSWORD, player, new String[]{"chars"}, new String[]{Integer.toString(minChars)});
             return true;
@@ -75,20 +76,20 @@ public class Register implements CommandExecutor, TabCompleter {
         // Player gets registered
         String uuid = player.getUniqueId().toString();
 
-        Utils.loggedIn.put(UUID.fromString(uuid), true);
+        Utils.changeLoggedIn(player, true);
         Utils.cancelTimeout(player);
 
         // Encrypt password if enabled
-        if (Utils.getConfig().getBoolean("password.encrypt")) password = Utils.encrypt(password);
+        if (plugin.getConfig().getBoolean("password.encrypt")) password = Utils.encrypt(password);
 
         if (!Utils.sqlMode()) {
-            UserLogin.dataFile.get().set(uuid + ".password", password);
+            plugin.getPlayerData().get().set(uuid + ".password", password);
 
             // Set name and save file
             Utils.updateName(player);
-            UserLogin.dataFile.save();
+            plugin.getPlayerData().save();
         } else
-            UserLogin.sql.data.put(UUID.fromString(uuid), password);
+            UserLogin.getPlugin().getSQL().getData().put(UUID.fromString(uuid), password);
 
         // Send message, cancel timeout, and teleport to spawn if enabled
         if (event.getMessage() != null)
@@ -110,7 +111,7 @@ public class Register implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         return new ArrayList<>();
     }
 }

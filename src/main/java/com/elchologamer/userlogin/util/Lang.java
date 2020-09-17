@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.util;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.lists.Path;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -43,10 +42,16 @@ public class Lang {
             config.addDefault(Path.LOGIN_ANNOUNCEMENT, "&e{player} has joined the server!");
             config.addDefault(Path.JOIN_TITLE, "&6Welcome to the server!");
             config.addDefault(Path.JOIN_SUBTITLE, "&9Have fun!");
+            config.addDefault(Path.MOVE_WARNING, "&cYou have to login to move!");
+            config.addDefault(Path.NO_PERMISSION, "&cYou don't have permission to use this command");
 
-            config.addDefault(Path.USERLOGIN_USAGE, "&cCorrect usage: /<command> <sub> (Use /ul help for more)");
-            config.addDefault(Path.LOGIN_USAGE, "&cCorrect usage: /<command> <password>");
-            config.addDefault(Path.REGISTER_USAGE, "&cCorrect usage: /<command> <password> <password>");
+            config.addDefault(Path.USERLOGIN_DESCRIPTION, "The main command for UserLogin");
+            config.addDefault(Path.LOGIN_DESCRIPTION, "Logs in your user with the given password");
+            config.addDefault(Path.REGISTER_DESCRIPTION, "Registers your user with the given password");
+
+            config.addDefault(Path.USERLOGIN_USAGE, "&cCorrect usage: /userlogin <command> (Use /ul help for more)");
+            config.addDefault(Path.LOGIN_USAGE, "&cCorrect usage: /login <password>");
+            config.addDefault(Path.REGISTER_USAGE, "&cCorrect usage: /register <password> <password>");
 
             config.addDefault(Path.SQL_STATE, "&eCurrent MySQL status: &6{state}");
             config.addDefault(Path.SQL_CONNECTED, "Connected");
@@ -93,10 +98,16 @@ public class Lang {
             config.addDefault(Path.LOGIN_ANNOUNCEMENT, "&e{player} se ha unido al servidor!");
             config.addDefault(Path.JOIN_TITLE, "&6Bienvenido al servidor!");
             config.addDefault(Path.JOIN_SUBTITLE, "&9Diviértete!");
+            config.addDefault(Path.MOVE_WARNING, "&cTienes que logearte para moverte!");
+            config.addDefault(Path.NO_PERMISSION, "&cNo tienes permiso para usar este comando");
 
-            config.addDefault(Path.USERLOGIN_USAGE, "&cUso correcto: /<command> <sub> (Usa &4/ul help &para más)");
-            config.addDefault(Path.LOGIN_USAGE, "&cUso correcto: /<command> <password>");
-            config.addDefault(Path.REGISTER_USAGE, "&cUso correcto: /<command> <password> <password>");
+            config.addDefault(Path.USERLOGIN_DESCRIPTION, "Comando principal para UserLogin");
+            config.addDefault(Path.LOGIN_DESCRIPTION, "Te logea al servidor con la contraseña ingresada");
+            config.addDefault(Path.REGISTER_DESCRIPTION, "Te registra con la contraseña ingresada");
+
+            config.addDefault(Path.USERLOGIN_USAGE, "&cUso correcto: /userlogin <command> (Usa &4/ul help &para más)");
+            config.addDefault(Path.LOGIN_USAGE, "&cUso correcto: /login <password>");
+            config.addDefault(Path.REGISTER_USAGE, "&cUso correcto: /register <password> <password>");
 
             config.addDefault(Path.SQL_STATE, "&eEstado de MySQL actual: &6{state}");
             config.addDefault(Path.SQL_CONNECTED, "Conectado");

@@ -1,11 +1,17 @@
-# ---------------------------------------------------------
+# +-------------------------------------------------------+
 # | Configuración de UserLogin.                           |
 # | Para preguntas o reportar bugs, unirte a mi           |
 # | servidor de Discord aquí: https://discord.gg/HdnP32P  |
-# ---------------------------------------------------------
+# +-------------------------------------------------------+
+
+# Revisar por nuevas versions
+checkUpdates: true
 
 # Archivo de lenguaje a usar
 lang: 'en_US'
+
+# Intervalo en segundos para repetir el mensaje de bienvenida (-1 para desactivar)
+repeatingWelcomeMsg: -1
 
 # Opciones de kickeo automático
 timeout:
@@ -38,6 +44,8 @@ restrictions:
 
   # Movimiento del jugador
   movement: false
+  # Frecuencia para avisar al jugador de la restricción (-1 para desactivar)
+  move-warn-frequency: 20
 
   # Romper bloques
   blockBreak: false
@@ -48,12 +56,13 @@ restrictions:
   # Recoger items
   itemPickup: false
 
+
 # Habilitar/deshabilitar ciertos teletransportes
 teleports:
 
   # Guardar las posiciones de los jugadores al desconectarse
-  save-position: false
-  # El modo save-position teletransporta al jugador
+  savePosition: false
+  # El modo savePosition teletransporta al jugador
   # a su última posición antes de haberse desconectado
 
   # Teletransportar jugadores al punto de login al conectarse
@@ -63,7 +72,7 @@ teleports:
   toSpawn: true
 
 
-# Opciones de recuerdo de IP de jugadores
+# Opciones de recuerdo de IP de jugadores (Sólo en modo no-BungeeCord)
 ipRecords:
 
   # Permitir que los jugadores se logeen automáticamente
@@ -73,6 +82,13 @@ ipRecords:
   # Tiempo (segundos) en el que se recordará
   # la dirección IP de los jugadores
   delay: 30
+
+
+# Alias para comandos (Formato: [ alias1, alias2, alias3... ])
+commandAliases:
+  login: [ ]
+  register: [ ]
+  userlogin: [ ul ]
 
 
 # Opciones de BungeeCord
@@ -105,6 +121,9 @@ mysql:
 
   # Intervalo (en segundos) entre el cual los datos serán enviados a la base de datos MySQL
   saveInterval: 300
+
+  # Usar SSL para la conexión
+  useSSL: false
 
   # Base de datos y tabla para almacenar los datos
   database: 'userlogin_data'

@@ -1,74 +1,116 @@
 package com.elchologamer.userlogin;
 
-import com.elchologamer.userlogin.api.command.CommandHandler;
-import com.elchologamer.userlogin.api.util.Configuration;
-import com.elchologamer.userlogin.commands.Login;
-import com.elchologamer.userlogin.commands.Register;
-import com.elchologamer.userlogin.commands.subs.Help;
-import com.elchologamer.userlogin.commands.subs.Reload;
-import com.elchologamer.userlogin.commands.subs.SQL;
-import com.elchologamer.userlogin.commands.subs.Set;
+import com.elchologamer.pluginapi.SpigotPlugin;
+import com.elchologamer.pluginapi.util.CustomConfig;
+import com.elchologamer.pluginapi.util.Metrics;
+import com.elchologamer.pluginapi.util.command.CommandHandler;
+import com.elchologamer.pluginapi.util.command.SpigotCommand;
+import com.elchologamer.userlogin.commands.LoginCommand;
+import com.elchologamer.userlogin.commands.RegisterCommand;
+import com.elchologamer.userlogin.commands.subs.HelpCommand;
+import com.elchologamer.userlogin.commands.subs.ReloadCommand;
+import com.elchologamer.userlogin.commands.subs.SetCommand;
+import com.elchologamer.userlogin.commands.subs.SqlCommand;
 import com.elchologamer.userlogin.listeners.*;
 import com.elchologamer.userlogin.util.Lang;
-import com.elchologamer.userlogin.util.Metrics;
 import com.elchologamer.userlogin.util.MySQL;
+import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.util.files.DataFile;
-import com.elchologamer.userlogin.util.files.LocationsFile;
-import com.elchologamer.userlogin.util.files.MessagesFile;
-import com.elchologamer.userlogin.util.lists.Path;
 import org.bukkit.ChatColor;
-import org.bukkit.plugin.java.JavaPlugin;
-import org.jetbrains.annotations.NotNull;
+import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 
+import java.io.File;
 import java.sql.SQLException;
-import java.util.Objects;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
-public final class UserLogin extends JavaPlugin {
+public final class UserLogin extends SpigotPlugin {
 
-    public static final Configuration messagesFile = new MessagesFile();
-    public static final Configuration locationsFile = new LocationsFile();
-    public static final Configuration dataFile = new DataFile();
-    public static final MySQL sql = new MySQL();
     private static UserLogin plugin;
+    private final CustomConfig locationsFile = new CustomConfig("locations.yml");
+    private final CustomConfig dataFile = new CustomConfig("playerData.yml");
+    private final MySQL sql = new MySQL();
+    private final Map<String, FileConfiguration> langMap = new HashMap<>();
 
-    private static void setUsage(@NotNull String command, @NotNull String path) {
-        Objects.requireNonNull(plugin.getCommand(command)).setUsage(Utils.color(
-                Objects.requireNonNull(messagesFile.get().getString(path))));
-    }
+    private final LoginCommand loginCommand = new LoginCommand(this);
+    private final RegisterCommand registerCommand = new RegisterCommand(this);
+    private final CommandHandler mainCommand = new CommandHandler("userlogin", null, null, "ul.userlogin", null);
 
     public static UserLogin getPlugin() {
         return plugin;
     }
 
+    private void setCommand(SpigotCommand command) {
+        if (command == null) return;
+        command.unregister();
+
+        String name = command.getName();
+
+        command.setUsage(getMessage("commands.usages." + name, "/" + name))
+                .setDescription(getMessage("commands.descriptions." + name, ""));
+
+        List<String> aliases = getConfig().getStringList("commandAliases." + name);
+        if (!getConfig().isConfigurationSection("commandAliases") && name.equals("userlogin"))
+            aliases.add("ul");
+
+        command.setAliases(aliases);
+        command.register();
+    }
+
     public void pluginSetup() {
         // Add default configuration
-        plugin.saveDefaultConfig();
-        plugin.reloadConfig();
+        saveDefaultConfig();
+        reloadConfig();
 
         // Create default language files
         Lang.createDefaultLang();
 
         // Set up configurations
-        messagesFile.setup();
-        locationsFile.setup();
-        dataFile.setup();
+        locationsFile.saveDefault();
+        dataFile.saveDefault();
+
+        // Load lang files
+        File langFolder = new File(getDataFolder(), "lang\\");
+        langFolder.mkdir();
+
+        langMap.clear();
+        File[] files = langFolder.listFiles();
+        if (files != null) {
+            for (File file : files) {
+                langMap.put(file.getName().replace(".yml", ""),
+                        YamlConfiguration.loadConfiguration(file));
+            }
+        }
 
         // Set usages for commands
-        setUsage("userlogin", Path.USERLOGIN_USAGE);
-        setUsage("login", Path.LOGIN_USAGE);
-        setUsage("register", Path.REGISTER_USAGE);
+        setCommand(mainCommand);
+        setCommand(loginCommand);
+        setCommand(registerCommand);
+
+        setPermissionMessage(getMessage(Path.NO_PERMISSION));
 
         // Cancel all plugin tasks
-        plugin.getServer().getScheduler().cancelTasks(plugin);
+        getServer().getScheduler().cancelTasks(plugin);
         Utils.playerIP.clear();
         Utils.timeouts.clear();
 
         if (!Utils.sqlMode()) {
             // Update passwords (Encrypt or decrypt each one of them if needed)
-            Utils.updatePasswords(plugin.getConfig().getBoolean("password.encrypt"));
+            for (String key : dataFile.get().getKeys(false)) {
+                String password = dataFile.get().getString(key + ".password");
+                if (password == null) continue;
+                if (getConfig().getBoolean("password.encrypt"))
+                    password = Utils.encrypt(password);
+                else
+                    password = Utils.decrypt(password);
+
+                dataFile.get().set(key + ".password", password);
+            }
+            dataFile.save();
         } else {
-            plugin.getServer().getScheduler().scheduleSyncDelayedTask(plugin, () -> {
+            getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
                 try {
                     // Close current connection
                     if (sql.getConnection() != null && !sql.getConnection().isClosed())
@@ -78,12 +120,12 @@ public final class UserLogin extends JavaPlugin {
                     sql.connect();
 
                     // Schedule data saving repeating task
-                    long delay = plugin.getConfig().getLong("mysql.saveInterval") * 20;
-                    UserLogin.plugin.getServer().getScheduler().scheduleSyncRepeatingTask(plugin, sql::saveData, delay, delay);
+                    long delay = getConfig().getLong("mysql.saveInterval") * 20;
+                    getServer().getScheduler().scheduleSyncRepeatingTask(this, sql::saveData, delay, delay);
 
-                    Utils.log(Utils.color(messagesFile.get().getString(Path.SQL_CONNECTION_SUCCESS)));
-                } catch (@NotNull SQLException | ClassNotFoundException e) {
-                    Utils.log(Utils.color(messagesFile.get().getString(Path.SQL_CONNECTION_ERROR)));
+                    Utils.log(getMessage(Path.SQL_CONNECTION_SUCCESS));
+                } catch (SQLException | ClassNotFoundException e) {
+                    Utils.log(getMessage(Path.SQL_CONNECTION_ERROR));
                     Utils.log(ChatColor.DARK_RED + e.getMessage());
                 }
             });
@@ -94,29 +136,31 @@ public final class UserLogin extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
-        // Create BungeeCord messaging channel
+        // Plugin messaging setup
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         // Register event listeners
-        getServer().getPluginManager().registerEvents(new OnPlayerJoin(), this);
+        getServer().getPluginManager().registerEvents(new OnPlayerJoin(this), this);
         getServer().getPluginManager().registerEvents(new OnPlayerMove(), this);
-        getServer().getPluginManager().registerEvents(new OnPlayerQuit(), this);
-        getServer().getPluginManager().registerEvents(new ReloadListener(), this);
+        getServer().getPluginManager().registerEvents(new OnPlayerQuit(this), this);
         getServer().getPluginManager().registerEvents(new GeneralListener(), this);
+        try {
+            Class.forName("org.bukkit.event.entity.EntityPickupItemEvent");
+            getServer().getPluginManager().registerEvents(new OnItemPickup(), this);
+        } catch (ClassNotFoundException ignored) {
+        }
+        listenReloads();
 
-        // Set CommandHandler for "userlogin" command
-        CommandHandler handler = new CommandHandler("userlogin", this);
+        // Register commands
+        mainCommand.addSubCommands(
+                new HelpCommand(),
+                new SetCommand(locationsFile),
+                new ReloadCommand(),
+                new SqlCommand())
+                .register();
+        loginCommand.register();
+        registerCommand.register();
 
-        handler.addCommand(new Help());
-        handler.addCommand(new Set());
-        handler.addCommand(new Reload());
-        handler.addCommand(new SQL());
-
-        // Set command executors
-        Objects.requireNonNull(getCommand("login")).setExecutor(new Login());
-        Objects.requireNonNull(getCommand("register")).setExecutor(new Register());
-
-        // General plugin setup
         pluginSetup();
 
         // bStats setup
@@ -124,24 +168,26 @@ public final class UserLogin extends JavaPlugin {
         metrics.addCustomChart(new Metrics.SimplePie("data_type",
                 () -> Utils.sqlMode() ? "MySQL" : "YAML"));
         metrics.addCustomChart(new Metrics.SimplePie("lang",
-                () -> getConfig().getString("lang")));
+                () -> getConfig().getString("lang", "en_US")));
 
         // Check for new versions
         String version = getDescription().getVersion();
         if (getConfig().getBoolean("checkUpdates", true)) {
-            Utils.log(ChatColor.BLUE + "Checking for updates...");
-            String latest = Utils.fetch("https://api.spigotmc.org/legacy/update.php?resource=80669");
-            if (latest != null) {
+            getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+                String latest = getLatestVersion(80669);
+                if (latest == null) {
+                    Utils.log(ChatColor.RED + "Unable to get latest version");
+                    return;
+                }
+
                 if (!latest.equalsIgnoreCase(version))
                     Utils.log(ChatColor.YELLOW + "A new UserLogin version is available! (v" + latest + ")");
                 else
-                    Utils.log(ChatColor.GREEN + "Running latest version!");
-            } else {
-                Utils.log(ChatColor.RED + "Unable to get latest version");
-            }
+                    Utils.log(ChatColor.GREEN + "Running latest version! (v" + version + ")");
+            });
         }
 
-        Utils.log(ChatColor.GREEN + "UserLogin v" + version + " enabled!");
+        logEnabled();
     }
 
     @Override
@@ -150,6 +196,33 @@ public final class UserLogin extends JavaPlugin {
 
         // Save data to MySQL database
         sql.saveData();
-        Utils.log(Utils.color(messagesFile.get().getString(Path.SQL_DATA_SAVED)));
+        Utils.log(getMessage(Path.SQL_DATA_SAVED));
+    }
+
+    public FileConfiguration getMessages() {
+        String lang = getConfig().getString("lang", "en_US");
+        return langMap.get(lang);
+    }
+
+    public String getMessage(String path, String def) {
+        FileConfiguration config = getMessages();
+        return Utils.color(config == null ? "" : config.getString(path, def));
+    }
+
+    @Override
+    public String getMessage(String path) {
+        return getMessage(path, null);
+    }
+
+    public CustomConfig getLocations() {
+        return locationsFile;
+    }
+
+    public CustomConfig getPlayerData() {
+        return dataFile;
+    }
+
+    public MySQL getSQL() {
+        return sql;
     }
 }

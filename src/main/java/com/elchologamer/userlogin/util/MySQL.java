@@ -1,8 +1,7 @@
 package com.elchologamer.userlogin.util;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.lists.Path;
-import org.jetbrains.annotations.Nullable;
+import org.bukkit.ChatColor;
 
 import java.sql.*;
 import java.util.HashMap;
@@ -11,88 +10,98 @@ import java.util.UUID;
 
 public class MySQL {
 
-    public final Map<UUID, String> data = new HashMap<>();
-    public boolean isConnected = false;
-    private @Nullable String database = "userlogin_data";
-    private @Nullable String table = "player_data";
+    private final Map<UUID, String> data = new HashMap<>();
+    private String database = "userlogin_data";
+    private String table = "player_data";
     private Connection connection;
 
     public void connect() throws SQLException, ClassNotFoundException {
-        // Get credentials from config
-        String host = Utils.getConfig().getString("mysql.host");
-        String username = Utils.getConfig().getString("mysql.username");
-        String password = Utils.getConfig().getString("mysql.password");
-        int port = Utils.getConfig().getInt("mysql.port");
-
         // Get database and table from config
-        database = Utils.getConfig().getString("mysql.database");
-        table = Utils.getConfig().getString("mysql.table");
+        database = Utils.getConfig().getString("mysql.database", database);
+        table = Utils.getConfig().getString("mysql.table", table);
 
-        if (database == null) database = "userlogin_data";
-        if (table == null) table = "player_data";
+        if (getConnection() != null && !getConnection().isClosed())
+            return;
 
-        synchronized (this) {
-            if (getConnection() != null && !getConnection().isClosed())
-                return;
+        // Check driver and set connection
+        Class.forName("com.mysql.jdbc.Driver");
+        checkTable();
 
-            // Check driver and set connection
-            isConnected = false;
-            Class.forName("com.mysql.jdbc.Driver");
+        // Sync YAML data if possible
+        data.clear();
+        if (!query("SELECT * FROM `" + database + "`.`" + table + "`").next()) {
+            for (String key : UserLogin.getPlugin().getPlayerData().get().getKeys(false)) {
+                String playerPassword = UserLogin.getPlugin().getPlayerData().get().getString(key + ".password");
+                if (playerPassword == null) continue;
 
-            boolean useSSL = UserLogin.getPlugin().getConfig().getBoolean("mysql.useSSL", false);
-            setConnection(DriverManager.getConnection(
-                    String.format("jdbc:mysql://%s:%d?useSSL=%b", host, port, useSSL),
-                    username, password));
-
-            // Create database schema
-            if (!query("SHOW DATABASES LIKE '" + database + "'").next())
-                update("CREATE SCHEMA " + database);
-
-            // Connect to database
-            setConnection(DriverManager.getConnection(
-                    String.format("jdbc:mysql://%s:%d/%s?useSSL=%b", host, port, database, useSSL),
-                    username, password));
-
-            // Create table if it does not exist
-            if (!query("SHOW TABLES LIKE '" + table + "'").next())
-                update("CREATE TABLE `" + database + "`.`" + table + "` " +
-                        "( `UUID` VARCHAR(45) NOT NULL , `USERNAME` VARCHAR(45) NOT NULL , " +
-                        "`PASSWORD` VARCHAR(45) NOT NULL , PRIMARY KEY (`UUID`)) ENGINE = InnoDB;");
-
-            // Map the current data queried from the database
-            data.clear();
-            ResultSet rows = query("SELECT * FROM `" + database + "`.`" + table + "`");
-
-            while (rows.next()) {
-                data.put(
-                        UUID.fromString(rows.getString("UUID")),
-                        rows.getString("PASSWORD")
-                );
-            }
-
-            boolean encrypt = Utils.getConfig().getBoolean("password.encrypt");
-            for (UUID uuid : data.keySet()) {
-                String dataPassword = data.get(uuid);
-                if (dataPassword == null) continue;
-                if (encrypt && !dataPassword.startsWith("§"))
-                    dataPassword = Utils.encrypt(dataPassword);
-                else {
-                    if (dataPassword.startsWith("§"))
-                        dataPassword = Utils.decrypt(password);
+                try {
+                    data.put(UUID.fromString(key), playerPassword);
+                } catch (IllegalArgumentException e) {
+                    Utils.log(ChatColor.RED + "Invalid UUID on playerData.yml: " + key);
                 }
-
-                data.put(uuid, dataPassword);
             }
             saveData();
+            return;
+        }
 
-            this.isConnected = true;
+        // Map the current data queried from the database
+        ResultSet rows = query("SELECT * FROM `" + database + "`.`" + table + "`");
+
+        while (rows.next()) {
+            data.put(
+                    UUID.fromString(rows.getString("UUID")),
+                    rows.getString("PASSWORD")
+            );
+        }
+
+        // Encrypt/decrypt required passwords
+        for (UUID uuid : data.keySet()) {
+            String dataPassword = data.get(uuid);
+
+            if (Utils.getConfig().getBoolean("password.encrypt"))
+                dataPassword = Utils.encrypt(dataPassword);
+            else
+                dataPassword = Utils.decrypt(dataPassword);
+
+            data.put(uuid, dataPassword);
+        }
+        saveData();
+    }
+
+    private void checkTable() throws SQLException {
+        // Get credentials from config
+        String host = Utils.getConfig().getString("mysql.host", "localhost");
+        String username = Utils.getConfig().getString("mysql.username", "root");
+        String password = Utils.getConfig().getString("mysql.password", "");
+        int port = Utils.getConfig().getInt("mysql.port", 3306);
+
+        boolean useSSL = UserLogin.getPlugin().getConfig().getBoolean("mysql.useSSL", false);
+        setConnection(DriverManager.getConnection(
+                String.format("jdbc:mysql://%s:%d?useSSL=%b", host, port, useSSL),
+                username, password));
+
+        // Create database schema if it does not exists
+        if (!query("SHOW DATABASES LIKE '" + database + "'").next())
+            update("CREATE SCHEMA " + database);
+
+        // Connect to database
+        setConnection(DriverManager.getConnection(
+                String.format("jdbc:mysql://%s:%d/%s?useSSL=%b", host, port, database, useSSL),
+                username, password));
+
+        // Create table if it does not exist
+        if (!query("SHOW TABLES LIKE '" + table + "'").next()) {
+            update("CREATE TABLE `" + database + "`.`" + table + "` " +
+                    "( `UUID` VARCHAR(45) NOT NULL , `USERNAME` VARCHAR(45) NOT NULL , " +
+                    "`PASSWORD` VARCHAR(45) NOT NULL , PRIMARY KEY (`UUID`)) ENGINE = InnoDB;");
         }
     }
 
-    public synchronized void saveData() {
+    public void saveData() {
         try {
+            checkTable();
             for (UUID uuid : data.keySet()) {
-                // Get password and the associated player's username
+                // Get password and the player's username
                 String password = data.get(uuid);
                 String username = UserLogin.getPlugin().getServer().getOfflinePlayer(uuid).getName();
 
@@ -104,13 +113,31 @@ public class MySQL {
 
                     update("UPDATE " + database + "." + table + " SET PASSWORD='" + password + "' " +
                             "WHERE UUID='" + uuid.toString() + "'");
-                } else
-                    update("INSERT INTO " + table + " (UUID, USERNAME, PASSWORD) VALUES " +
-                            "('" + uuid.toString() + "', '" + username + "', '" + password + "')");
+                } else {
+                    insertRow(uuid, username, password);
+                }
             }
         } catch (SQLException e) {
-            Utils.log(Utils.color(UserLogin.messagesFile.get().getString(Path.SQL_SAVE_ERROR)));
+            Utils.log(UserLogin.getPlugin().getMessage(Path.SQL_SAVE_ERROR));
             e.printStackTrace();
+        }
+    }
+
+    private void insertRow(UUID uuid, String name, String password) throws SQLException {
+        update("INSERT INTO " + table + " (UUID, USERNAME, PASSWORD) VALUES " +
+                "('" + uuid.toString() + "', '" + name + "', '" + password + "')");
+    }
+
+    public Map<UUID, String> getData() {
+        return data;
+    }
+
+    public boolean isConnected() {
+        try {
+            return getConnection() != null && !getConnection().isClosed();
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
         }
     }
 

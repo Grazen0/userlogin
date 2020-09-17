@@ -1,46 +1,49 @@
 package com.elchologamer.userlogin.util;
 
 import com.elchologamer.userlogin.UserLogin;
-import org.bukkit.ChatColor;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 
-import java.awt.*;
 import java.io.*;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.Base64;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-public abstract class Utils {
+public class Utils {
 
     public static final Map<UUID, Boolean> loggedIn = new HashMap<>();
     public static final Map<UUID, Integer> timeouts = new HashMap<>();
+    public static final Map<UUID, Integer> repeatingMsg = new HashMap<>();
     public static final Map<UUID, String> playerIP = new HashMap<>();
 
-    public static void cancelTimeout(@NotNull Player player) {
-        Integer id = timeouts.get(player.getUniqueId());
+    private Utils() {
+    }
+
+    public static void cancelTimeout(Player player) {
+        UUID uuid = player.getUniqueId();
+        Integer id = timeouts.get(uuid);
+        if (id != null)
+            UserLogin.getPlugin().getServer().getScheduler().cancelTask(id);
+
+        id = repeatingMsg.get(uuid);
         if (id != null)
             UserLogin.getPlugin().getServer().getScheduler().cancelTask(id);
     }
 
-    public static void sendMessage(@NotNull String path, @NotNull CommandSender player) {
+    public static void sendMessage(String path, CommandSender player) {
         sendMessage(path, player, new String[0], new String[0]);
     }
 
-    public static void sendMessage(@NotNull String path, @NotNull CommandSender player, String @NotNull [] replace, String[] replacement) {
-        String msg = UserLogin.messagesFile.get().getString(path);
+    public static void sendMessage(String path, CommandSender player, String[] replace, String[] replacement) {
+        String msg = UserLogin.getPlugin().getMessage(path);
         if (msg == null || msg.equals("")) return;
-        msg = color(msg);
+        msg = com.elchologamer.pluginapi.Utils.color(msg);
 
         // Replace variables
         for (int i = 0; i < replace.length; i++) {
@@ -50,38 +53,12 @@ public abstract class Utils {
         player.sendMessage(msg);
     }
 
-    public static @NotNull String color(@NotNull String s) {
-        try {
-            net.md_5.bungee.api.ChatColor.class.getMethod("of", Color.class);
-            Pattern pattern = Pattern.compile("#[0-9a-fA-F]{6}");
-            Matcher match = pattern.matcher(s);
-            while (match.find()) {
-                String color = s.substring(match.start(), match.end());
-                s = s.replace(color, net.md_5.bungee.api.ChatColor.of(color) + "");
-                match = pattern.matcher(s);
-            }
-        } catch (NoSuchMethodException ignored) {
-        }
-        return ChatColor.translateAlternateColorCodes('&', s);
-    }
-
-    public static void updatePasswords(boolean encrypt) {
-        for (String key : UserLogin.dataFile.get().getKeys(false)) {
-            String password = UserLogin.dataFile.get().getString(key + ".password");
-            if (password == null) continue;
-            String newPassword;
-            if (encrypt)
-                newPassword = encrypt(password);
-            else
-                newPassword = decrypt(password);
-
-            UserLogin.dataFile.get().set(key + ".password", newPassword);
-        }
-        UserLogin.dataFile.save();
+    public static String color(String s) {
+        return com.elchologamer.pluginapi.Utils.color(s);
     }
 
     public static String encrypt(String password) {
-        if (password.startsWith("§")) return password;
+        if (password == null || password.startsWith("§")) return password;
         try {
             ByteArrayOutputStream io = new ByteArrayOutputStream();
             ObjectOutputStream os = new ObjectOutputStream(io);
@@ -91,41 +68,31 @@ public abstract class Utils {
 
             return "§" + Base64.getEncoder().encodeToString(io.toByteArray());
         } catch (IOException e) {
-            System.out.println("Error while trying to encrypt a password");
             return password;
         }
     }
 
-    public static  @NotNull String decrypt(@NotNull String password) {
-        if (!password.startsWith("§")) return password;
+    public static String decrypt(String password) {
+        if (password == null || !password.startsWith("§")) return password;
         try {
             ByteArrayInputStream in = new ByteArrayInputStream(Base64.getDecoder().decode(password.replaceFirst("§", "")));
             ObjectInputStream is = new ObjectInputStream(in);
             return (String) is.readObject();
-        } catch (@NotNull IOException | ClassNotFoundException e) {
-            System.out.println("Error while trying to decrypt a password");
-            e.printStackTrace();
+        } catch (IOException | ClassNotFoundException e) {
             return password;
         }
     }
 
-    public static boolean isRegistered(@NotNull Player player) {
-        UUID uuid = player.getUniqueId();
-        return (!sqlMode() && UserLogin.dataFile.get().getKeys(true).contains(uuid.toString() + ".password")) ||
-                (sqlMode() && UserLogin.sql.data.containsKey(uuid));
-    }
-
-    public static void updateName(@NotNull Player player) {
+    public static void updateName(Player player) {
         String uuid = player.getUniqueId().toString();
-        if (!UserLogin.dataFile.get().getKeys(false).contains(uuid)) return;
+        if (!UserLogin.getPlugin().getPlayerData().get().getKeys(false).contains(uuid)) return;
 
-        UserLogin.dataFile.get().set(uuid + ".name", player.getName());
-        UserLogin.dataFile.save();
+        UserLogin.getPlugin().getPlayerData().get().set(uuid + ".name", player.getName());
+        UserLogin.getPlugin().getPlayerData().save();
     }
 
-    public static @Nullable Location getLocation(@NotNull String location) {
-        // Get section
-        ConfigurationSection section = UserLogin.locationsFile.get().getConfigurationSection(location);
+    public static Location getLocation(String location) {
+        ConfigurationSection section = UserLogin.getPlugin().getLocations().get().getConfigurationSection(location);
         if (section == null) return null;
 
         // Get coordinates
@@ -150,16 +117,17 @@ public abstract class Utils {
                 (float) section.getDouble("pitch"));
     }
 
-    public static  @NotNull FileConfiguration getConfig() {
+    public static FileConfiguration getConfig() {
         return UserLogin.getPlugin().getConfig();
     }
 
     public static boolean normalMode() {
-        return !getConfig().getString("teleports.mode").toUpperCase().equals("SAVE-POSITION")
-                || !getConfig().getBoolean("teleports.mode");
+        return !(getConfig().getString("teleports.mode", "").toUpperCase().equals("SAVE-POSITION")
+                || getConfig().getBoolean("teleports.save-position")
+                || getConfig().getBoolean("teleports.savePosition"));
     }
 
-    public static void joinAnnounce(@NotNull Player player, @Nullable String msg) {
+    public static void joinAnnounce(Player player, String msg) {
         if (msg == null) return;
         for (Player onlinePlayer : UserLogin.getPlugin().getServer().getOnlinePlayers()) {
             if (player != onlinePlayer)
@@ -167,46 +135,50 @@ public abstract class Utils {
         }
     }
 
+    public static void debug(String s) {
+        if(getConfig().getBoolean("debug"))
+            log(s);
+    }
+
     public static boolean sqlMode() {
         return getConfig().getBoolean("mysql.enabled");
     }
 
-    public static void log(@NotNull String msg) {
-        UserLogin.getPlugin().getServer().getConsoleSender().sendMessage(msg);
+    public static void log(String msg) {
+        UserLogin.getPlugin().getServer().getConsoleSender().sendMessage(
+                "[UserLogin] " + Utils.color(msg));
     }
 
-    public static void sendToServer(@NotNull Player player, @NotNull String server) {
+    public static void sendPluginMessage(Player player, String channel, String... args) {
+        if (player == null)
+            throw new NullPointerException("Player cannot be null");
 
-        ByteArrayOutputStream bout = new ByteArrayOutputStream();
-        DataOutputStream out = new DataOutputStream(bout);
-        try {
-            out.writeUTF("Connect");
-            out.writeUTF(server);
+        if (channel == null)
+            throw new NullPointerException("Message channel cannot be null");
 
-            player.sendPluginMessage(UserLogin.getPlugin(), "BungeeCord", bout.toByteArray());
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        ByteArrayDataOutput out = ByteStreams.newDataOutput();
+        for (String arg : args)
+            out.writeUTF(arg);
+
+        player.sendPluginMessage(UserLogin.getPlugin(), channel, out.toByteArray());
     }
 
-    public static String fetch(String link) {
-        try {
-            URL url = new URL(link);
+    public static void sendToServer(Player player, String server) {
+        sendPluginMessage(player, "BungeeCord", "Connect", server);
+    }
 
-            HttpURLConnection con = (HttpURLConnection) url.openConnection();
-            con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
+    public static void changeLoggedIn(Player player, Boolean loggedIn) {
+        Utils.loggedIn.put(player.getUniqueId(), loggedIn);
+        sendPluginMessage(player, "BungeeCord", "UserLogin", Boolean.toString(loggedIn));
+    }
 
-            BufferedReader in = new BufferedReader(new InputStreamReader(con.getInputStream()));
-            String line;
-            StringBuilder result = new StringBuilder();
-            while ((line = in.readLine()) != null) {
-                result.append(line);
-            }
+    public static void setTimeout(Player player) {
+        if (!Utils.getConfig().getBoolean("timeout.enabled")) return;
 
-            return result.toString();
-        } catch (Exception e) {
-            return null;
-        }
+        timeouts.put(player.getUniqueId(),
+                UserLogin.getPlugin().getServer().getScheduler().scheduleSyncDelayedTask(
+                        UserLogin.getPlugin(),
+                        () -> player.kickPlayer(UserLogin.getPlugin().getMessage(Path.TIMEOUT)),
+                        UserLogin.getPlugin().getConfig().getLong("timeout.time") * 20));
     }
 }

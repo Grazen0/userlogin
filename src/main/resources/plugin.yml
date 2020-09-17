@@ -4,17 +4,3 @@ main: com.elchologamer.userlogin.UserLogin
 author: ElCholoGamer
 description: A login security system for your server
 website: https://www.spigotmc.org/resources/userlogin.80669/
-commands:
-  userlogin:
-    description: The main command for UserLogin
-    usage: '§cCorrect usage: /ul <sub> (Use /ul help for more)'
-    aliases: [ ul ]
-    permission: ul.userlogin
-  register:
-    description: Registers your user with the given password
-    usage: '§cCorrect usage: /register <password> <password>'
-    aliases: [ reg ]
-  login:
-    description: Logs in your user with the given password
-    usage: '§cCorrect usage: /login <password>'
-    aliases: [ log ]

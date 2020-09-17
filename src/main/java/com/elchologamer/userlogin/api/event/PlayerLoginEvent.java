@@ -1,31 +1,26 @@
 package com.elchologamer.userlogin.api.event;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.api.event.enums.DestinationType;
-import com.elchologamer.userlogin.api.event.enums.LoginType;
+import com.elchologamer.userlogin.api.enums.DestinationType;
+import com.elchologamer.userlogin.api.enums.LoginType;
+import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.util.lists.Location;
-import com.elchologamer.userlogin.util.lists.Path;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
-import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
-
-import java.util.Objects;
 
 @SuppressWarnings("unused")
 public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
 
     protected static final HandlerList HANDLERS_LIST = new HandlerList();
+    protected final LoginType loginType;
     protected String message;
     protected String announcement;
     protected boolean cancelled;
-    protected org.bukkit.@Nullable Location destinationLoc;
-    protected @Nullable String destinationServer;
+    protected org.bukkit.Location destinationLoc;
+    protected String destinationServer;
     protected DestinationType destinationType;
-    protected final LoginType loginType;
 
     /**
      * Event called whenever a player successfully
@@ -34,25 +29,24 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      * @param player    The logged-in player.
      * @param loginType The type of login, can be either LOGIN or REGISTER.
      */
-    public PlayerLoginEvent(@NotNull Player player, LoginType loginType) {
+    public PlayerLoginEvent(Player player, LoginType loginType) {
         super(player);
         this.loginType = loginType;
-        this.cancelled = false;
-        this.message = Utils.color(Objects.requireNonNull(UserLogin.messagesFile.get().
-                getString(this.loginType == LoginType.LOGIN ? Path.LOGGED_IN : Path.REGISTERED)));
+        cancelled = false;
+        message = Utils.color(UserLogin.getPlugin().getMessage(loginType == LoginType.LOGIN ? Path.LOGGED_IN : Path.REGISTERED));
 
-        this.announcement = Utils.color(Objects.requireNonNull(UserLogin.messagesFile.get().getString(
-                Path.LOGIN_ANNOUNCEMENT)).replace("{player}", this.player.getName()));
+        announcement = UserLogin.getPlugin().getMessage(Path.LOGIN_ANNOUNCEMENT)
+                .replace("{player}", player.getName());
 
-        this.destinationLoc = Utils.normalMode() ? Utils.getLocation(Location.SPAWN) :
+        destinationLoc = Utils.normalMode() ? Utils.getLocation("spawn") :
                 Utils.getLocation("playerLocations." + player.getUniqueId().toString());
         if (Utils.normalMode() && !Utils.getConfig().getBoolean("teleports.toSpawn"))
             this.destinationLoc = null;
 
-        this.destinationType = !Utils.getConfig().getBoolean("bungeeCord.enabled") ?
+        destinationType = !Utils.getConfig().getBoolean("bungeeCord.enabled") ?
                 DestinationType.NORMAL : DestinationType.BUNGEECORD;
 
-        this.destinationServer = Utils.getConfig().getString("bungeeCord.spawnServer");
+        destinationServer = Utils.getConfig().getString("bungeeCord.spawnServer");
     }
 
     /**
@@ -60,8 +54,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @return This event's handler list.
      */
-    @SuppressWarnings("unused")
-    public static @NotNull HandlerList getHandlerList() {
+    public static HandlerList getHandlerList() {
         return HANDLERS_LIST;
     }
 
@@ -71,7 +64,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      * @return This event's handler list.
      */
     @Override
-    public @NotNull HandlerList getHandlers() {
+    public HandlerList getHandlers() {
         return HANDLERS_LIST;
     }
 
@@ -138,7 +131,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @return Current destination location.
      */
-    public @Nullable org.bukkit.Location getDestinationLoc() {
+    public org.bukkit.Location getDestinationLoc() {
         return this.destinationLoc;
     }
 
@@ -147,7 +140,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @param destinationLoc New destination.
      */
-    public void setDestinationLoc(@Nullable org.bukkit.Location destinationLoc) {
+    public void setDestinationLoc(org.bukkit.Location destinationLoc) {
         this.destinationLoc = destinationLoc;
     }
 
@@ -156,7 +149,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      *
      * @return Current destination server.
      */
-    public @Nullable String getDestinationServer() {
+    public String getDestinationServer() {
         return this.destinationServer;
     }
 
@@ -166,7 +159,7 @@ public class PlayerLoginEvent extends PlayerEvent implements Cancellable {
      * @param destinationServer New destination server.
      */
     @SuppressWarnings("unused")
-    public void setDestinationServer(@NotNull String destinationServer) {
+    public void setDestinationServer(String destinationServer) {
         this.destinationServer = destinationServer;
     }
 
