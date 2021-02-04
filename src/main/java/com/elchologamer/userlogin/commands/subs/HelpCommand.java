@@ -1,7 +1,7 @@
 package com.elchologamer.userlogin.commands.subs;
 
-import com.elchologamer.pluginapi.util.command.SubCommand;
 import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.api.command.SubCommand;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.command.Command;
@@ -11,7 +11,7 @@ import org.bukkit.configuration.file.FileConfiguration;
 public class HelpCommand extends SubCommand {
 
     public HelpCommand() {
-        super("help", "/help");
+        super("help");
     }
 
     @Override

@@ -1,6 +1,14 @@
-name: UserLogin
-version: ${project.version}
-main: com.elchologamer.userlogin.UserLogin
-author: ElCholoGamer
-description: A login security system for your server
-website: https://www.spigotmc.org/resources/userlogin.80669/
+name: 'UserLogin'
+version: '${project.version}'
+main: 'com.elchologamer.userlogin.UserLogin'
+author: 'ElCholoGamer'
+description: 'A login security system for your server'
+website: 'https://www.spigotmc.org/resources/userlogin.80669/'
+commands:
+  login:
+    description: ''
+  register:
+    description: ''
+  userlogin:
+    aliases: [ 'ul' ]
+    permission: 'ul.userlogin'

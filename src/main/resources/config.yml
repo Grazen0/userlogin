@@ -1,8 +1,16 @@
-# +--------------------------------------------------+
-# | Configuration file for UserLogin.                |
-# | For any doubts, you can join my Discord server   |
-# | with this link: https://discord.gg/HdnP32P       |
-# +--------------------------------------------------+
+# +----------------------------------------------------+
+# |..._...._..............._................._.........|
+# |..| |..| |.............| |...............(_)........|
+# |..| |..| |___..___._.__| |.....___...__._._._.__....|
+# |..| |..| / __|/ _ \ '__| |..../ _ \./ _` | | '_ \...|
+# |..| |..| \__ \  __/ |..| |___| (_) | (_| | | |.| |..|
+# |...\____/|___/\___|_|..|______\___/.\__, |_|_|.|_|..|
+# |......................................_/ |..........|
+# |....................................|___/...........|
+# +----------------------------------------------------+
+# ascii art is pretty cool huh
+# Discord support server: https://discord.gg/gbjaEDzRXU
+
 
 # Enable update checking
 checkUpdates: true
@@ -10,7 +18,7 @@ checkUpdates: true
 # Language file to load
 lang: 'en_US'
 
-# Interval in seconds to repeat the login welcome message (-1 to disable)
+# Interval (seconds) for the pre-login welcome message (-1 to disable)
 repeatingWelcomeMsg: -1
 
 # Timeout-kicking settings
@@ -26,14 +34,14 @@ timeout:
 # Password options
 password:
 
-  # Encrypt passwords when saving them to playerData.yml/MySQL database
+  # Encrypt passwords when saving them to database. (RECOMMENDED)
   encrypt: false
 
   # Minimum characters that a password must have
   minCharacters: 4
 
 
-# Enable/disable restrictions for non-logged in players
+# Restrictions for non-logged in players
 restrictions:
 
   # Chat messages
@@ -44,8 +52,7 @@ restrictions:
 
   # Player movement
   movement: false
-  # Move warning frequency (-1 to disable move warnings)
-  move-warn-frequency: 20
+  moveWarnFrequency: 20 # Move warning frequency (-1 to disable)
 
   # Block breaking
   blockBreak: false
@@ -57,18 +64,21 @@ restrictions:
   itemPickup: false
 
 
-# Enable/disable certain teleports
+# Enable/disable speficic teleports
 teleports:
 
   # Save players' position on logout
   savePosition: false
   # The savePosition mode teleports the player
   # to their last position when they log in.
+  # Useful for survival servers and such.
 
   # Teleport players to login location on join
   toLogin: true
 
-  # Teleport players to spawn when logged in (Normal mode, non-BungeeCord only)
+  # Teleport players to spawn when logged in.
+  # Only takes effect when the BungeeCord and
+  # savePosition modes are disabled.
   toSpawn: true
 
 
@@ -79,16 +89,9 @@ ipRecords:
   # same IP address consecutively
   enabled: false
 
-  # Time (seconds) in which the player's IP
+  # Time (seconds) during which the player's IP
   # will be remembered
   delay: 30
-
-
-# Command aliases (Format: [ alias1, alias2, alias3... ])
-commandAliases:
-  login: [ ]
-  register: [ ]
-  userlogin: [ ul ]
 
 
 # BungeeCord options
@@ -101,36 +104,45 @@ bungeeCord:
   spawnServer: 'LOBBY'
 
 
-# Join title settings
-joinTitle:
+# Database options
+database:
 
-  # Send players a title message on join
-  enabled: false
+  # Database type.
+  # One of: 'yaml', 'mysql', 'postgresql', 'mariadb', 'sqlite', 'mongodb'
+  type: 'yaml'
 
-  # Fade duration (ticks)
-  fadeIn: 10
-  duration: 70
-  fadeOut: 20
+  yaml:
+    file: 'playerData.yml'
 
+  mysql:
+    useSSL: false
+    host: 'localhost'
+    port: 3306
+    username: 'root'
+    password: 'password'
+    database: 'userlogin_data'
+    table: 'player_data'
 
-# MySQL options
-mysql:
+  postgresql:
+    host: 'localhost'
+    port: 5432
+    username: 'root'
+    password: 'password'
+    database: 'userlogin_data'
+    table: 'player_data'
 
-  # Replace YAML storage with MySQL storage
-  enabled: false
+  mariadb:
+    host: 'localhost'
+    port: 3306
+    username: 'root'
+    password: 'password'
+    database: 'userlogin_data'
+    table: 'player_data'
 
-  # Interval (in seconds) between which local data will be saved to the database
-  saveInterval: 300
+  sqlite:
+    database: 'C:/sqlite/db/userlogin.db'
 
-  # Use SSL (Secure Sockets Layer) for database connection
-  useSSL: false
-
-  # Database and table to store the data in
-  database: 'userlogin_data'
-  table: 'player_data'
-
-  # Connection credentials and information
-  host: 'localhost'
-  username: 'root'
-  password: 'password'
-  port: 3306
+  mongodb:
+    uri: 'mongodb://localhost:27017'
+    database: 'userlogin'
+    collection: 'players'

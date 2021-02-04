@@ -1,7 +1,7 @@
 package com.elchologamer.userlogin.commands.subs;
 
-import com.elchologamer.pluginapi.util.CustomConfig;
-import com.elchologamer.pluginapi.util.command.SubCommand;
+import com.elchologamer.userlogin.api.CustomConfig;
+import com.elchologamer.userlogin.api.command.SubCommand;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.Location;
@@ -17,9 +17,9 @@ public class SetCommand extends SubCommand {
 
     private final CustomConfig file;
 
-    public SetCommand(CustomConfig file) {
+    public SetCommand(CustomConfig locationsConfig) {
         super("set");
-        this.file = file;
+        this.file = locationsConfig;
     }
 
     @Override

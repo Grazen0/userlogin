@@ -1,8 +1,8 @@
 package com.elchologamer.userlogin.commands.subs;
 
-import com.elchologamer.pluginapi.util.command.SubCommand;
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.UserLoginAPI;
+import com.elchologamer.userlogin.api.command.SubCommand;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.command.Command;
@@ -17,14 +17,13 @@ public class ReloadCommand extends SubCommand {
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (Utils.sqlMode())
-            UserLogin.getPlugin().getSQL().saveData();
+        UserLogin plugin = UserLogin.getPlugin();
+        plugin.load();
 
-        UserLogin.getPlugin().pluginSetup();
-
-        for (Player player : UserLogin.getPlugin().getServer().getOnlinePlayers()) {
-            if (!UserLoginAPI.isLoggedIn(player))
-                Utils.setTimeout(player);
+        for (Player player : plugin.getServer().getOnlinePlayers()) {
+            if (!UserLoginAPI.isLoggedIn(player)) {
+                plugin.getPlayerManager().get(player.getUniqueId()).activateTimeout();
+            }
         }
 
         Utils.sendMessage(Path.RELOAD, sender);
