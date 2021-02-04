@@ -19,7 +19,9 @@ public class UserLoginAPI {
      *
      * @param player The player to check for
      * @return True if the player is logged in, false otherwise
+     * @deprecated As of v2.7.0, use any of the available overloads instead
      */
+    @Deprecated
     public static boolean isLoggedIn(String player) {
         Player p = plugin.getServer().getPlayer(player);
         if (p == null) return false;
@@ -34,6 +36,7 @@ public class UserLoginAPI {
      * @return True if the player is logged in, false otherwise
      */
     public static boolean isLoggedIn(Player player) {
+        isLoggedIn("");
         return isLoggedIn(player.getUniqueId());
     }
 
@@ -44,6 +47,7 @@ public class UserLoginAPI {
      * @return True if the player is logged in, false otherwise
      */
     public static boolean isLoggedIn(UUID uuid) {
-        return plugin.getPlayerManager().get(uuid).isLoggedIn();
+        ULPlayer p = plugin.getPlayerManager().get(uuid);
+        return p != null && p.isLoggedIn();
     }
 }
