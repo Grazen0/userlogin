@@ -1,6 +1,7 @@
 package com.elchologamer.userlogin.api;
 
 import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.util.ULPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
@@ -36,7 +37,6 @@ public class UserLoginAPI {
      * @return True if the player is logged in, false otherwise
      */
     public static boolean isLoggedIn(Player player) {
-        isLoggedIn("");
         return isLoggedIn(player.getUniqueId());
     }
 
