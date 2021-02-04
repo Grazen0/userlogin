@@ -4,16 +4,17 @@ import com.elchologamer.userlogin.util.PasswordEncryptor;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.ULPlayer;
 import com.elchologamer.userlogin.util.database.Database;
-import org.bukkit.entity.Player;
 
 public class LoginCommand extends AuthCommand {
 
-    @Override
-    protected boolean authenticate(Player p, String[] args) {
-        Database db = getPlugin().getDB();
-        String password = db.getPassword(p.getUniqueId());
+    public LoginCommand() {
+        super("login");
+    }
 
-        ULPlayer ulPlayer = getPlugin().getPlayer(p);
+    @Override
+    protected boolean authenticate(ULPlayer ulPlayer, String[] args) {
+        Database db = getPlugin().getDB();
+        String password = db.getPassword(ulPlayer.getPlayer().getUniqueId());
 
         // Check if player is registered
         if (password == null) {

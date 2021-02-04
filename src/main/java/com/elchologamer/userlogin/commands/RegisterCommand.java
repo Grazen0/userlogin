@@ -4,22 +4,22 @@ import com.elchologamer.userlogin.api.QuickMap;
 import com.elchologamer.userlogin.util.PasswordEncryptor;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.ULPlayer;
-import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.database.Database;
-import org.bukkit.entity.Player;
 
 import java.util.UUID;
 
 public class RegisterCommand extends AuthCommand {
 
+    public RegisterCommand() {
+        super("register");
+    }
+
     @Override
-    protected boolean authenticate(Player p, String[] args) {
+    protected boolean authenticate(ULPlayer ulPlayer, String[] args) {
         Database db = getPlugin().getDB();
 
-        ULPlayer ulPlayer = getPlugin().getPlayer(p);
-
         // Check if player is not already registered
-        UUID uuid = p.getUniqueId();
+        UUID uuid = ulPlayer.getPlayer().getUniqueId();
         if (db.getPassword(uuid) != null) {
             ulPlayer.sendPathMessage(Path.ALREADY_REGISTERED);
             return true;
@@ -38,7 +38,7 @@ public class RegisterCommand extends AuthCommand {
 
         // Check that both passwords match
         if (!password.equals(args[1])) {
-            ulPlayer.sendMessage(Path.DIFFERENT_PASSWORDS);
+            ulPlayer.sendPathMessage(Path.DIFFERENT_PASSWORDS);
             return true;
         }
 
@@ -50,7 +50,7 @@ public class RegisterCommand extends AuthCommand {
             db.setPassword(uuid, password);
         } catch (Exception e) {
             e.printStackTrace();
-            p.sendMessage(Utils.color("&dError registering your account, try again"));
+            ulPlayer.sendPathMessage("commands.errors.register-failed");
             return false;
         }
 

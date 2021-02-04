@@ -1,32 +1,33 @@
-package com.elchologamer.userlogin.api.command;
+package com.elchologamer.userlogin.util.command;
 
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.Path;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class SubCommandHandler implements CommandExecutor, TabCompleter {
+public class SubCommandHandler extends BaseCommand {
 
     private final UserLogin plugin;
+    private final List<SubCommand> subCommands = new ArrayList<>();
 
-    public SubCommandHandler() {
+    public SubCommandHandler(String name) {
+        super(name);
         plugin = UserLogin.getPlugin();
     }
 
-    protected final List<SubCommand> subCommands = new ArrayList<>();
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean execute(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) return false;
 
         for (SubCommand subCommand : subCommands) {
             if (!subCommand.getName().equals(args[0])) continue;
 
+            // Check that player has permission
             if (!sender.hasPermission(subCommand.getPermission())) {
                 sender.sendMessage(plugin.getMessage(Path.NO_PERMISSION));
                 return true;
@@ -39,22 +40,21 @@ public class SubCommandHandler implements CommandExecutor, TabCompleter {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
         List<String> options = new ArrayList<>();
 
         if (args.length == 1) {
-            for (SubCommand subCommand : subCommands) {
-                options.add(subCommand.getName());
-            }
+            options = subCommands.stream().map(BaseCommand::getName).collect(Collectors.toList());
         } else {
             for (SubCommand subCommand : subCommands) {
                 if (subCommand.getName().equals(args[0])) {
-                    options = subCommand.onTabComplete(sender, command, alias, getSubArgs(args));
+                    options = subCommand.onTabComplete(sender, command, label, getSubArgs(args));
                     break;
                 }
             }
         }
 
+        // Filter out list
         if (options != null) options.removeIf(s -> !args[args.length - 1].startsWith(s));
 
         return options;
@@ -68,9 +68,5 @@ public class SubCommandHandler implements CommandExecutor, TabCompleter {
 
     public void add(SubCommand subCommand) {
         subCommands.add(subCommand);
-    }
-
-    public List<SubCommand> getSubCommands() {
-        return subCommands;
     }
 }

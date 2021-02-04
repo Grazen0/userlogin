@@ -4,6 +4,7 @@ commands:
     player-only: '&cThis is a player-only command'
     no-permission: '&cYou don''t have permission to use this command'
     player-not-found: '&cPlayer not found!'
+    register-failed: '&cRegistration failed, please try again.'
   set: '&eThe {type} location has been set at &bX: {x}, Y: {y}, Z: {z}, Y: {yaw}, P: {pitch}, &eat the world &b"{world}"'
   reload: '&ePlugin reloaded!'
   descriptions:

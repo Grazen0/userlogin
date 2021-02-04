@@ -1,6 +1,5 @@
 package com.elchologamer.userlogin;
 
-import com.elchologamer.userlogin.api.command.SubCommandHandler;
 import com.elchologamer.userlogin.commands.LoginCommand;
 import com.elchologamer.userlogin.commands.RegisterCommand;
 import com.elchologamer.userlogin.commands.subs.HelpCommand;
@@ -18,11 +17,12 @@ import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
 import com.elchologamer.userlogin.util.Metrics;
 import com.elchologamer.userlogin.util.ULPlayer;
 import com.elchologamer.userlogin.util.Utils;
+import com.elchologamer.userlogin.util.command.BaseCommand;
+import com.elchologamer.userlogin.util.command.SubCommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.manager.LangManager;
 import com.elchologamer.userlogin.util.manager.LocationsManager;
 import com.elchologamer.userlogin.util.manager.PlayerManager;
-import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -33,7 +33,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class UserLogin extends JavaPlugin {
 
     private static UserLogin plugin;
-    private final SubCommandHandler mainCommand = new SubCommandHandler();
+    private final SubCommandHandler mainCommand = new SubCommandHandler("userlogin");
 
     private final PlayerManager playerManager = new PlayerManager();
     private final LangManager langManager = new LangManager();
@@ -84,7 +84,7 @@ public final class UserLogin extends JavaPlugin {
         // bStats setup
         Metrics metrics = new Metrics(this, bStatsID);
         metrics.addCustomChart(new Metrics.SimplePie("data_type",
-                () -> getConfig().getString("database.type", "yaml")));
+                () -> getConfig().getString("database.type", "yaml").toLowerCase()));
         metrics.addCustomChart(new Metrics.SimplePie("lang",
                 () -> getConfig().getString("lang", "en_US")));
 
@@ -123,9 +123,9 @@ public final class UserLogin extends JavaPlugin {
         langManager.load();
 
         // Set usages for commands
-        registerCommand("userlogin", mainCommand);
-        registerCommand("login", new LoginCommand());
-        registerCommand("register", new RegisterCommand());
+        registerCommand(mainCommand);
+        registerCommand(new LoginCommand());
+        registerCommand(new RegisterCommand());
 
         // Cancel all plugin tasks
         getServer().getScheduler().cancelTasks(plugin);
@@ -154,7 +154,8 @@ public final class UserLogin extends JavaPlugin {
         }
     }
 
-    private void registerCommand(String name, CommandExecutor executor) {
+    private void registerCommand(BaseCommand baseCommand) {
+        String name = baseCommand.getName();
         PluginCommand command = getCommand(name);
         if (command == null) return;
 
@@ -164,7 +165,7 @@ public final class UserLogin extends JavaPlugin {
         String description = getMessage("commands.descriptions." + name);
         if (description != null) command.setDescription(description);
 
-        command.setExecutor(executor);
+        command.setExecutor(baseCommand);
     }
 
     private void registerEvent(Listener listener) {

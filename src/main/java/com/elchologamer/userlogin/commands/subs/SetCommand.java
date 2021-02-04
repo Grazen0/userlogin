@@ -3,9 +3,9 @@ package com.elchologamer.userlogin.commands.subs;
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.CustomConfig;
 import com.elchologamer.userlogin.api.QuickMap;
-import com.elchologamer.userlogin.api.command.SubCommand;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.ULPlayer;
+import com.elchologamer.userlogin.util.command.SubCommand;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,21 +20,19 @@ public class SetCommand extends SubCommand {
     private final UserLogin plugin;
 
     public SetCommand() {
-        super("set");
+        super("set", true);
         plugin = UserLogin.getPlugin();
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        if (!(sender instanceof Player)) {
-            sender.sendMessage("Player-only command");
-            return true;
-        }
-
+    public boolean execute(CommandSender sender, Command command, String[] args) {
         if (!"login".equals(args[0]) && !"spawn".equals(args[0])) return false;
 
+
+        ULPlayer ulPlayer = plugin.getPlayer((Player) sender);
+        Player player = ulPlayer.getPlayer();
+
         // Save location
-        Player player = (Player) sender;
         Location loc = player.getLocation();
         double x = loc.getX();
         double y = loc.getY();
@@ -55,7 +53,6 @@ public class SetCommand extends SubCommand {
         locationsConfig.save();
 
         // Send message
-        ULPlayer ulPlayer = plugin.getPlayer(player);
         ulPlayer.sendPathMessage(
                 Path.SET,
                 new QuickMap<>("type", (Object) args[0])

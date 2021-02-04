@@ -1,9 +1,9 @@
 package com.elchologamer.userlogin.commands.subs;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.api.command.SubCommand;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
+import com.elchologamer.userlogin.util.command.SubCommand;
 import com.elchologamer.userlogin.util.database.Database;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -27,7 +27,7 @@ public class UnregisterCommand extends SubCommand {
     }
 
     @Override
-    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public boolean execute(CommandSender sender, Command command, String[] args) {
         if (args.length != 1) return false;
 
         Database db = plugin.getDB();

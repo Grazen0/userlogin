@@ -4,11 +4,42 @@ main: 'com.elchologamer.userlogin.UserLogin'
 author: 'ElCholoGamer'
 description: 'A login security system for your server'
 website: 'https://www.spigotmc.org/resources/userlogin.80669/'
+
+permissions:
+  ul.*:
+    description: 'Permission to use all UserLogin commands'
+    default: 'op'
+    children:
+      ul.userlogin:
+        description: 'Permission to use the main UserLogin command'
+        default: 'op'
+        children:
+          ul.help:
+            description: 'Permission to use the help command'
+          ul.reload:
+            description: 'Permission to use the reload command'
+          ul.set:
+            description: 'Permission to use the set command'
+          ul.unregister:
+            description: 'Permission to use the unregister command'
+      ul.login:
+        description: 'Permission to use the login command'
+        default: true
+      ul.register:
+        description: 'Permission to use the register command'
+        default: true
+
 commands:
-  login:
-    description: ''
-  register:
-    description: ''
   userlogin:
+    description: 'The main command for UserLogin'
+    usage: '&cCorrect usage: /userlogin <command> (Use /ul help for more)'
     aliases: [ 'ul' ]
     permission: 'ul.userlogin'
+  login:
+    description: 'Logs in your user with the given password'
+    usage: '&cCorrect usage: /login <password>'
+    permission: 'ul.login'
+  register:
+    description: 'Registers your user with the given password'
+    usage: '&cCorrect usage: /register <password> <password>'
+    permission: 'ul.register'
