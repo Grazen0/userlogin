@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin.listeners.restrictions;
 
+import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Restriction;
 import com.elchologamer.userlogin.util.Utils;
@@ -15,10 +16,12 @@ import java.util.UUID;
 
 public class MovementRestriction extends Restriction<PlayerMoveEvent> {
 
+    private final UserLogin plugin;
     private final Map<UUID, Integer> warnCoolDown = new HashMap<>();
 
     public MovementRestriction() {
         super("movement");
+        plugin = UserLogin.getPlugin();
     }
 
     @Override
@@ -54,7 +57,7 @@ public class MovementRestriction extends Restriction<PlayerMoveEvent> {
         current++;
         if (current >= frequency) {
             // Send warning message and reset counter
-            Utils.sendMessage(Path.MOVE_WARNING, p);
+            plugin.getPlayer(p).sendPathMessage(Path.MOVE_WARNING);
             current = 0;
         }
 

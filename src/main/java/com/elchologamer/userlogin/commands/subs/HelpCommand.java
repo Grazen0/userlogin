@@ -10,15 +10,18 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class HelpCommand extends SubCommand {
 
+    private final UserLogin plugin;
+
     public HelpCommand() {
         super("help");
+        plugin = UserLogin.getPlugin();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length > 0) return false;
 
-        FileConfiguration messages = UserLogin.getPlugin().getMessages();
+        FileConfiguration messages = plugin.getMessages();
         if(messages == null) return true;
 
         for (String str : messages.getStringList(Path.HELP)) {

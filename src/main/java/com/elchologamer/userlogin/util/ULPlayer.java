@@ -1,13 +1,14 @@
-package com.elchologamer.userlogin.util.player;
+package com.elchologamer.userlogin.util;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Path;
-import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.util.Map;
+
 public class ULPlayer {
 
+    private final UserLogin plugin;
     private final Player player;
     private boolean loggedIn = false;
     private Integer timeout = null;
@@ -16,6 +17,7 @@ public class ULPlayer {
 
     public ULPlayer(Player player) {
         this.player = player;
+        plugin = UserLogin.getPlugin();
     }
 
     public void activateTimeout() {
@@ -24,7 +26,6 @@ public class ULPlayer {
 
         if (!Utils.getConfig().getBoolean("timeout.enabled")) return;
 
-        UserLogin plugin = UserLogin.getPlugin();
         timeout = scheduler.scheduleSyncDelayedTask(
                 plugin,
                 () -> player.kickPlayer(plugin.getMessage(Path.TIMEOUT)),
@@ -38,13 +39,12 @@ public class ULPlayer {
     }
 
     public void activateRepeatingMessage(String messagePath) {
-        UserLogin plugin = UserLogin.getPlugin();
         long interval = plugin.getConfig().getLong("repeatingWelcomeMsg", -1) * 20;
         if (interval <= 0) return;
 
         welcomeMessage = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
                 plugin,
-                () -> Utils.sendMessage(messagePath, player),
+                () -> sendPathMessage(messagePath),
                 interval, interval
         );
     }
@@ -52,6 +52,28 @@ public class ULPlayer {
     public void cancelRepeatingMessage() {
         if (welcomeMessage != null)
             player.getServer().getScheduler().cancelTask(welcomeMessage);
+    }
+
+    public void sendPathMessage(String path) {
+        sendPathMessage(path, null);
+    }
+
+    public void sendPathMessage(String path, Map<String, Object> replacements) {
+        sendMessage(plugin.getMessage(path), replacements);
+    }
+
+    public void sendMessage(String message) {
+        sendMessage(message, null);
+    }
+
+    public void sendMessage(String message, Map<String, Object> replacements) {
+        if (replacements != null) {
+            for (String k : replacements.keySet()) {
+                message = message.replace("{" + k + "}", replacements.get(k).toString());
+            }
+        }
+
+        player.sendMessage(Utils.color(message));
     }
 
     public void changeServer(String target) {

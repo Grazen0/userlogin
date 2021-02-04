@@ -1,17 +1,22 @@
 package com.elchologamer.userlogin.api.command;
 
+import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.Path;
-import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 public class SubCommandHandler implements CommandExecutor, TabCompleter {
+
+    private final UserLogin plugin;
+
+    public SubCommandHandler() {
+        plugin = UserLogin.getPlugin();
+    }
 
     protected final List<SubCommand> subCommands = new ArrayList<>();
 
@@ -23,7 +28,7 @@ public class SubCommandHandler implements CommandExecutor, TabCompleter {
             if (!subCommand.getName().equals(args[0])) continue;
 
             if (!sender.hasPermission(subCommand.getPermission())) {
-                Utils.sendMessage(Path.NO_PERMISSION, sender);
+                sender.sendMessage(plugin.getMessage(Path.NO_PERMISSION));
                 return true;
             }
 
@@ -61,9 +66,8 @@ public class SubCommandHandler implements CommandExecutor, TabCompleter {
         return subArgs;
     }
 
-    public SubCommandHandler addSubCommands(SubCommand... subCommands) {
-        this.subCommands.addAll(Arrays.asList(subCommands));
-        return this;
+    public void add(SubCommand subCommand) {
+        subCommands.add(subCommand);
     }
 
     public List<SubCommand> getSubCommands() {

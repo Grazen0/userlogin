@@ -11,9 +11,8 @@ import java.util.UUID;
 
 public interface Database {
 
-    static Database select() {
-        String type = UserLogin.getPlugin().getConfig()
-                .getString("database.type", "yaml");
+    static Database select(UserLogin plugin) {
+        String type = plugin.getConfig().getString("database.type", "yaml");
 
         switch (type.toLowerCase()) {
             case "mysql":
@@ -29,7 +28,7 @@ public interface Database {
             default:
                 Utils.log("&eInvalid database type selected, defaulting to \"yaml\"");
             case "yaml":
-                return new YamlDB();
+                return new YamlDB(plugin);
         }
     }
 

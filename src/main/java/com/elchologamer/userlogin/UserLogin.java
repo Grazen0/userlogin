@@ -1,6 +1,5 @@
 package com.elchologamer.userlogin;
 
-import com.elchologamer.userlogin.api.CustomConfig;
 import com.elchologamer.userlogin.api.command.SubCommandHandler;
 import com.elchologamer.userlogin.commands.LoginCommand;
 import com.elchologamer.userlogin.commands.RegisterCommand;
@@ -11,18 +10,22 @@ import com.elchologamer.userlogin.commands.subs.UnregisterCommand;
 import com.elchologamer.userlogin.listeners.OnPlayerJoin;
 import com.elchologamer.userlogin.listeners.OnPlayerQuit;
 import com.elchologamer.userlogin.listeners.restrictions.BlockBreakRestriction;
+import com.elchologamer.userlogin.listeners.restrictions.ChatRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.CommandRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemDropRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
-import com.elchologamer.userlogin.util.Lang;
 import com.elchologamer.userlogin.util.Metrics;
+import com.elchologamer.userlogin.util.ULPlayer;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.database.Database;
-import com.elchologamer.userlogin.util.player.PlayerManager;
+import com.elchologamer.userlogin.util.manager.LangManager;
+import com.elchologamer.userlogin.util.manager.LocationsManager;
+import com.elchologamer.userlogin.util.manager.PlayerManager;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -30,10 +33,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class UserLogin extends JavaPlugin {
 
     private static UserLogin plugin;
-    private final CustomConfig locationsConfig = new CustomConfig("locations.yml");
-    private final Lang lang = new Lang();
     private final SubCommandHandler mainCommand = new SubCommandHandler();
+
     private final PlayerManager playerManager = new PlayerManager();
+    private final LangManager langManager = new LangManager();
+    private final LocationsManager locationsManager = new LocationsManager();
 
     private final int pluginID = 80669;
     private final int bStatsID = 8586;
@@ -52,6 +56,7 @@ public final class UserLogin extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         // Register event listeners
+        registerEvent(new ChatRestriction());
         registerEvent(new MovementRestriction());
         registerEvent(new BlockBreakRestriction());
         registerEvent(new CommandRestriction());
@@ -69,12 +74,10 @@ public final class UserLogin extends JavaPlugin {
         }
 
         // Register sub-commands
-        mainCommand.addSubCommands(
-                new HelpCommand(),
-                new SetCommand(locationsConfig),
-                new ReloadCommand(),
-                new UnregisterCommand()
-        );
+        mainCommand.add(new HelpCommand());
+        mainCommand.add(new SetCommand());
+        mainCommand.add(new ReloadCommand());
+        mainCommand.add(new UnregisterCommand());
 
         load();
 
@@ -116,9 +119,8 @@ public final class UserLogin extends JavaPlugin {
         // Reload configurations
         saveDefaultConfig();
         reloadConfig();
-        lang.createDefault();
-        locationsConfig.saveDefault();
-        lang.load();
+        locationsManager.getConfig().saveDefault();
+        langManager.load();
 
         // Set usages for commands
         registerCommand("userlogin", mainCommand);
@@ -129,7 +131,7 @@ public final class UserLogin extends JavaPlugin {
         getServer().getScheduler().cancelTasks(plugin);
         playerManager.clear();
 
-        db = Database.select(); // Select database
+        db = Database.select(this); // Select database
 
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             try {
@@ -170,7 +172,7 @@ public final class UserLogin extends JavaPlugin {
     }
 
     public FileConfiguration getMessages() {
-        return lang.getMessages();
+        return langManager.getMessages();
     }
 
     public String getMessage(String path, String def) {
@@ -184,15 +186,20 @@ public final class UserLogin extends JavaPlugin {
         return getMessage(path, null);
     }
 
-    public CustomConfig getLocations() {
-        return locationsConfig;
+    public ULPlayer getPlayer(Player player) {
+        return playerManager.get(player);
     }
 
     public Database getDB() {
         return db;
     }
 
+    public LocationsManager getLocationsManager() {
+        return locationsManager;
+    }
+
     public PlayerManager getPlayerManager() {
         return playerManager;
     }
+
 }

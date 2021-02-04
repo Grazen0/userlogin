@@ -1,5 +1,6 @@
-package com.elchologamer.userlogin.util.player;
+package com.elchologamer.userlogin.util.manager;
 
+import com.elchologamer.userlogin.util.ULPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.HashMap;

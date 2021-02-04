@@ -24,16 +24,6 @@ public class Path {
     public static final String SET = COMMANDS + "set";
     public static final String RELOAD = COMMANDS + "reload";
     public static final String PLAYER_UNREGISTERED = COMMANDS + "player-unregistered";
-    public static final String SQL_STATE = COMMANDS + "sql-state";
-    public static final String SQL_DISABLED = SQL_STATES + "disabled";
-    public static final String SQL_CONNECTED = SQL_STATES + "connected";
-    public static final String SQL_DISCONNECTED = SQL_STATES + "disconnected";
-
-    // MySQL messages and errors
-    public static final String SQL_SAVE_ERROR = SQL_ERRORS + "save-failed";
-    public static final String SQL_CONNECTION_SUCCESS = SQL + "connected";
-    public static final String SQL_DATA_SAVED = SQL + "data-saved";
-    public static final String SQL_CONNECTION_ERROR = SQL_ERRORS + "connection-error";
 
     // Player messages
     public static final String NOT_REGISTERED = MESSAGES + "not-registered";
@@ -52,6 +42,4 @@ public class Path {
     // Welcome messages
     public static final String WELCOME_LOGIN = WELCOME + "registered";
     public static final String WELCOME_REGISTER = WELCOME + "unregistered";
-    public static final String JOIN_TITLE = PLAYER_JOIN_TITLE + "title";
-    public static final String JOIN_SUBTITLE = PLAYER_JOIN_TITLE + "subtitle";
 }

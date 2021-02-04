@@ -1,24 +1,34 @@
-package com.elchologamer.userlogin.util;
+package com.elchologamer.userlogin.util.manager;
 
 import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
-public class Lang {
+public class LangManager {
 
+    private final UserLogin plugin;
     private final Map<String, FileConfiguration> langs = new HashMap<>();
+
+    public LangManager() {
+        plugin = UserLogin.getPlugin();
+    }
 
     public void createDefault() {
         // Create lang folder
-        UserLogin plugin = UserLogin.getPlugin();
         File folder = new File(plugin.getDataFolder(), "lang");
-        if (!folder.mkdir()) return;
+        if (!folder.mkdir()) {
+            // Return folder already exists and files are inside
+            File[] files = folder.listFiles();
+            if (files != null && files.length > 0) return;
+        }
 
         String[] langs = {"en_US", "es_ES"};
 
@@ -27,7 +37,10 @@ public class Lang {
             File file = new File(folder, filename);
             FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
-            InputStreamReader reader = new InputStreamReader(plugin.getResource("lang/" + filename));
+            InputStream stream = plugin.getResource("lang/" + filename);
+            if (stream == null) continue;
+
+            InputStreamReader reader = new InputStreamReader(stream);
             FileConfiguration resourceConfig = YamlConfiguration.loadConfiguration(reader);
 
             // Add default values from resource
@@ -46,8 +59,8 @@ public class Lang {
     }
 
     public void load() {
-        File langFolder = new File(UserLogin.getPlugin().getDataFolder(), "lang");
-        langFolder.mkdir();
+        createDefault();
+        File langFolder = new File(plugin.getDataFolder(), "lang");
 
         langs.clear();
         File[] files = langFolder.listFiles();

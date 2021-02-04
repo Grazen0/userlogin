@@ -4,8 +4,7 @@ commands:
     player-only: '&cThis is a player-only command'
     no-permission: '&cYou don''t have permission to use this command'
     player-not-found: '&cPlayer not found!'
-  set: '&eThe {type} location has been set at &bX: {x}, Y: {y}, Z: {z}, Y: {yaw},
-    P: {pitch}, &eat the world &b"{world}"'
+  set: '&eThe {type} location has been set at &bX: {x}, Y: {y}, Z: {z}, Y: {yaw}, P: {pitch}, &eat the world &b"{world}"'
   reload: '&ePlugin reloaded!'
   descriptions:
     userlogin: 'The main command for UserLogin'
@@ -15,14 +14,8 @@ commands:
     userlogin: '&cCorrect usage: /userlogin <command> (Use /ul help for more)'
     login: '&cCorrect usage: /login <password>'
     register: '&cCorrect usage: /register <password> <password>'
-  sql-state: '&eCurrent MySQL status: &6{state}'
-  sql-states:
-    connected: 'Connected'
-    disconnected: 'Disconnected'
-    disabled: 'Disabled'
 messages:
-  not-registered: '&cYou are not registered! Use &a/register <password> <password>
-    &cto get registered!'
+  not-registered: '&cYou are not registered! Use &a/register <password> <password> &cto get registered!'
   already-registered: '&cYou are already registered!'
   incorrect-password: '&4Incorrect password!'
   short-password: '&cYour password must have a minimum of &4{chars} &ccharacters'
@@ -33,26 +26,14 @@ messages:
   welcome:
     registered: '&6Welcome! Use &3/login <password> &6to enter the server'
     unregistered: '&6Welcome! Use &3/register <password> <password> &6to register your account'
-    join-title:
-      title: '&6Welcome to the server!'
-      subtitle: '&9Have fun!'
   chat-disabled: '&cYou must first log in to use the chat!'
-  timeout: 'You have stayed for too much time without logging in'
+  timeout: 'You stayed for too much time without logging in'
   login-announcement: '&e{player} has joined the server!'
   move-warning: '&cYou have to login to move!'
   help:
     - '&a----------- | &2[UserLogin Help] &a| -----------'
     - '&2/ul help: &aShows this help list'
     - '&2/ul reload: &aReloads the configurations'
-    - '&2/ul set <login>|<spawn>: &aSets the specified location at your position'
-    - '&2/ul sql: &aShows the current status of the MySQL connection'
+    - '&2/ul set [login|spawn]: &aSets the specified location at your position'
     - '&2/ul unregister <player>: &aUnregisters the given player (Non-SQL mode only)'
     - '&a-----------------------------------------------------'
-other:
-  mysql:
-    connected: '&aMySQL connected successfully!'
-    errors:
-      connection-error: '&cAn error occurred while trying to connect to MySQL database,
-        read logs for more'
-      save-failed: '&cAn error occurred while saving local data to MySQL database,
-        beware.'

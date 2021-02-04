@@ -1,11 +1,11 @@
 package com.elchologamer.userlogin.listeners;
 
 import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.api.QuickMap;
 import com.elchologamer.userlogin.api.UserLoginAPI;
 import com.elchologamer.userlogin.commands.AuthCommand;
 import com.elchologamer.userlogin.util.Path;
-import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.util.player.ULPlayer;
+import com.elchologamer.userlogin.util.ULPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -16,20 +16,29 @@ import java.net.InetSocketAddress;
 
 public class OnPlayerJoin implements Listener {
 
+    private final UserLogin plugin;
+
+    public OnPlayerJoin() {
+        plugin = UserLogin.getPlugin();
+    }
+
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {
         e.setJoinMessage(null);
-        UserLogin plugin = UserLogin.getPlugin();
 
         Player p = e.getPlayer();
-        ULPlayer ulPlayer = plugin.getPlayerManager().get(p);
+        ULPlayer ulPlayer = plugin.getPlayer(p);
 
         ulPlayer.setLoggedIn(false);
 
         // Teleport to login position if enabled
         if (plugin.getConfig().getBoolean("teleports.toLogin")) {
-            Location loc = Utils.getLocation("login", p.getWorld().getSpawnLocation());
-            if (loc != null) p.teleport(loc);
+            Location loc = plugin.getLocationsManager().getLocation(
+                    "login",
+                    p.getWorld().getSpawnLocation()
+            );
+
+            p.teleport(loc);
         }
 
         // Bypass if IP is registered
@@ -42,7 +51,7 @@ public class OnPlayerJoin implements Listener {
 
                 if (address.getHostString().equals(storedIP)) {
                     ulPlayer.setIP(null);
-                    AuthCommand.login(ulPlayer);
+                    AuthCommand.login(ulPlayer, plugin);
                     return;
                 }
             }
@@ -52,7 +61,7 @@ public class OnPlayerJoin implements Listener {
 
         // Send respective welcome message
         String path = UserLoginAPI.isRegistered(p) ? Path.WELCOME_LOGIN : Path.WELCOME_REGISTER;
-        Utils.sendMessage(path, p, new String[]{"player"}, new String[]{p.getName()});
+        ulPlayer.sendPathMessage(path, new QuickMap<>("player", p.getName()));
 
         ulPlayer.activateRepeatingMessage(path);
     }

@@ -4,54 +4,36 @@ commands:
     player-only: '&cEste comando solo puede ser usado por jugadores'
     no-permission: '&cNo tienes permiso para usar este comando'
     player-not-found: '&cJugador no encontrado!'
-  set: '&eLas coordenadas de {type} han sido establecidas en &bX: {x}, Y: {y}, Z:
-    {z}, Y: {yaw}, P: {pitch}, &een el mundo &b"{world}"'
+  set: '&eLas coordenadas de {type} han sido establecidas en &bX: {x}, Y: {y}, Z: {z}, Y: {yaw}, P: {pitch}, &een el mundo &b"{world}"'
   reload: '&ePlugin recargado!'
   descriptions:
-    userlogin: Comando principal para UserLogin
-    login: "Te logea al servidor con la contraseña ingresada"
-    register: "Te registra con la contraseña ingresada"
+    userlogin: 'Comando principal de UserLogin'
+    login: 'Te logea al servidor con la contraseña ingresada'
+    register: 'Te registra con la contraseña ingresada'
   usages:
-    userlogin: "&cUso correcto: /userlogin <command> (Usa &4/ul help &para m\xe1s)"
+    userlogin: '&cUso correcto: /userlogin <command> (Usa &4/ul help &para m\xe1s)'
     login: '&cUso correcto: /login <password>'
     register: '&cUso correcto: /register <password> <password>'
-  sql-state: '&eEstado de MySQL actual: &6{state}'
-  sql-states:
-    connected: Conectado
-    disconnected: Desconectado
-    disabled: Desactivado
 messages:
-  not-registered: "&c¡No est\xe1s registrado! Use &a/register <password> <password>\
-    \ &cpara registrarte!"
-  already-registered: "&cYa est\xe1s registrado!"
-  incorrect-password: "&4Contraseña incorrecta!"
-  short-password: "&cTu contraseña debe tener un mínimo de &4{chars} &ccaracteres"
-  different-passwords: "&cLas contraseñas no concuerdan!"
-  already-logged-in: "&cYa estás logeado!"
+  not-registered: '&c¡No estás registrado! Use &a/register <password> <password> &cpara registrarte!'
+  already-registered: '&cYa est\xe1s registrado!'
+  incorrect-password: '&4Contraseña incorrecta!'
+  short-password: '&cTu contraseña debe tener un mínimo de &4{chars} &ccaracteres'
+  different-passwords: '&cLas contraseñas no concuerdan!'
+  already-logged-in: '&cYa estás logeado!'
   logged-in: '&9Has sido logeado!'
   registered: '&9Has sido registrado!'
   welcome:
     registered: '&6Bienvenido! Usa &3/login <password> &6para entrar al servidor'
     unregistered: '&6Bienvenido! Usa &3/register <password> <password> &6para registrarte'
-    join-title:
-      title: '&6Bienvenido al servidor!'
-      subtitle: "&9Diviértete!"
   chat-disabled: '&cDebes estar logeado para usar el chat!'
+  move-warning: '&cTienes que logearte para moverte!'
   timeout: 'Te has quedado mucho tiempo sin logearte'
   login-announcement: '&e{player} se ha unido al servidor!'
-  move-warning: '&cTienes que logearte para moverte!'
   help:
     - '&a--------- | &2[Ayuda de UserLogin] &a| ---------'
     - '&2/ul help: &aMuestra esta lista de ayuda'
     - '&2/ul reload: &aRecarga las configuraciones'
     - '&2/ul set <login>|<spawn>: &aEstablece la posición indicada en tus coordenadas'
-    - '&2/ul sql: &aMuestra el estado actual de la conexión MySQL'
     - '&2/ul unregister <player>: &aElimina el registro del jugador dado'
     - '&a-----------------------------------------------------'
-other:
-  mysql:
-    connected: '&aBase de datos MySQL conectada!'
-    errors:
-      connection-error: "&cError al conectar a la base de datos MySQL, leer el error\
-        \ para más información"
-      save-failed: '&cError al guardar los datos locales en la base de datos.'

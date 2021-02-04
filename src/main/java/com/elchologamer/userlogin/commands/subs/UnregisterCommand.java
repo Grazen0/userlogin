@@ -19,15 +19,18 @@ import java.util.UUID;
 
 public class UnregisterCommand extends SubCommand {
 
+    private final UserLogin plugin;
+
     public UnregisterCommand() {
         super("unregister");
+        plugin = UserLogin.getPlugin();
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (args.length != 1) return false;
 
-        Database db = UserLogin.getPlugin().getDB();
+        Database db = plugin.getDB();
 
         // Try getting player directly from server
         Player victim = sender.getServer().getPlayer(args[0]);
@@ -39,7 +42,7 @@ public class UnregisterCommand extends SubCommand {
         }
 
         if (uuid == null || db.getPassword(uuid) == null) {
-            Utils.sendMessage(Path.PLAYER_NOT_FOUND, sender);
+            sender.sendMessage(plugin.getMessage(Path.PLAYER_NOT_FOUND));
             return true;
         }
 
@@ -50,7 +53,8 @@ public class UnregisterCommand extends SubCommand {
             sender.sendMessage(Utils.color("&dError deleting password. Read console for more info"));
         }
 
-        Utils.sendMessage(Path.PLAYER_UNREGISTERED, sender, new String[]{"player"}, new String[]{args[0]});
+        String message = plugin.getMessage(Path.PLAYER_UNREGISTERED);
+        sender.sendMessage(message.replace("{player}", victim == null ? args[0] : victim.getName()));
         return true;
     }
 

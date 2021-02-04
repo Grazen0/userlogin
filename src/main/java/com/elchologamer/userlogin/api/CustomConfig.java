@@ -1,8 +1,8 @@
 package com.elchologamer.userlogin.api;
 
-import com.elchologamer.userlogin.UserLogin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,16 +11,19 @@ import java.nio.file.Files;
 
 public class CustomConfig {
 
-    protected String path;
-    protected File file;
-    protected FileConfiguration config;
+    private final JavaPlugin plugin;
+    private final String path;
+    private final File file;
+    private FileConfiguration config;
 
-    public CustomConfig(String path) {
-        this(path, true);
+    public CustomConfig(JavaPlugin plugin, String path) {
+        this(plugin, path, true);
     }
 
-    public CustomConfig(String path, boolean autoLoad) {
+    public CustomConfig(JavaPlugin plugin, String path, boolean autoLoad) {
+        this.plugin = plugin;
         this.path = path;
+        this.file = new File(plugin.getDataFolder(), path);
 
         if (autoLoad) {
             saveDefault();
@@ -29,10 +32,9 @@ public class CustomConfig {
     }
 
     public void saveDefault() {
-        checkFile();
         if (file.exists()) return;
 
-        try (InputStream in = UserLogin.getPlugin().getResource(path)) {
+        try (InputStream in = plugin.getResource(path)) {
             if (in != null) {
                 Files.copy(in, file.toPath());
             } else {
@@ -43,14 +45,7 @@ public class CustomConfig {
         }
     }
 
-    private void checkFile() {
-        if (file == null)
-            file = new File(UserLogin.getPlugin().getDataFolder(), path);
-    }
-
     public void reload() {
-        checkFile();
-
         try {
             config = YamlConfiguration.loadConfiguration(file);
         } catch (IllegalArgumentException e) {
@@ -65,13 +60,15 @@ public class CustomConfig {
     }
 
     public void save() {
-        checkFile();
-
         try {
             config.save(file);
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public JavaPlugin getPlugin() {
+        return plugin;
     }
 
     public File getFile() {
