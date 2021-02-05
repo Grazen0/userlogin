@@ -1,7 +1,7 @@
 package com.elchologamer.userlogin.util.manager;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.api.CustomConfig;
+import com.elchologamer.userlogin.util.CustomConfig;
 import org.bukkit.Location;
 import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;

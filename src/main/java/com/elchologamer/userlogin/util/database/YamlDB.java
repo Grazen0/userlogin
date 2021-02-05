@@ -1,18 +1,18 @@
 package com.elchologamer.userlogin.util.database;
 
-import com.elchologamer.userlogin.api.CustomConfig;
-import com.elchologamer.userlogin.util.Utils;
-import org.bukkit.plugin.java.JavaPlugin;
+import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.util.CustomConfig;
 
 import java.util.UUID;
 
-public class YamlDB implements Database {
+public class YamlDB extends Database {
 
     private final CustomConfig playerData;
 
-    public YamlDB(JavaPlugin plugin) {
-        String filePath = Utils.getConfig().getString("database.yaml.file", "playerData.yml");
-        playerData = new CustomConfig(plugin, filePath);
+    public YamlDB() {
+        String filePath = getPlugin().getConfig()
+                .getString("database.yaml.file", "playerData.yml");
+        playerData = new CustomConfig(UserLogin.getPlugin(), filePath);
     }
 
     @Override

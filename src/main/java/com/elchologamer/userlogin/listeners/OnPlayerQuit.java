@@ -1,9 +1,8 @@
 package com.elchologamer.userlogin.listeners;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.api.CustomConfig;
-import com.elchologamer.userlogin.util.ULPlayer;
-import com.elchologamer.userlogin.util.Utils;
+import com.elchologamer.userlogin.util.CustomConfig;
+import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -30,7 +29,7 @@ public class OnPlayerQuit implements Listener {
 
         if (!ulPlayer.isLoggedIn()) return;
 
-        if (Utils.getConfig().getBoolean("teleports.savePosition")) {
+        if (plugin.getConfig().getBoolean("teleports.savePosition")) {
             // Save the player's location
             UUID uuid = player.getUniqueId();
             Location loc = player.getLocation();
@@ -50,13 +49,16 @@ public class OnPlayerQuit implements Listener {
         }
 
         // Store IP address if enabled
+        ConfigurationSection section = plugin.getConfig().getConfigurationSection("ipRecords");
+        if (section == null) return;
+
         InetSocketAddress address = player.getAddress();
-        if (!Utils.getConfig().getBoolean("ipRecords.enabled") || address == null) return;
+        if (!section.getBoolean("enabled") || address == null) return;
 
         ulPlayer.setIP(address.getHostString());
 
         // Schedule IP deletion
-        long delay = Utils.getConfig().getLong("ipRecords.delay", 10);
+        long delay = section.getLong("delay", 10);
         plugin.getServer().getScheduler().scheduleSyncDelayedTask(
                 plugin,
                 () -> ulPlayer.setIP(null),

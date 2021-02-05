@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin.util;
 
+import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.UserLoginAPI;
 import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
@@ -11,15 +12,18 @@ import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.player.PlayerEvent;
 
 public abstract class Restriction<T extends Event> implements Listener {
+
+    private final UserLogin plugin;
     protected final String configKey;
 
     protected Restriction(String configKey) {
         this.configKey = configKey;
+        plugin = UserLogin.getPlugin();
     }
 
     @EventHandler
     public void onEvent(T e) {
-        boolean enabled = Utils.getConfig().getBoolean("restrictions." + configKey);
+        boolean enabled = plugin.getConfig().getBoolean("restrictions." + configKey);
 
         if (e instanceof PlayerEvent) {
             Player p = ((PlayerEvent) e).getPlayer();
@@ -40,4 +44,8 @@ public abstract class Restriction<T extends Event> implements Listener {
     }
 
     public abstract void handle(T event);
+
+    public UserLogin getPlugin() {
+        return plugin;
+    }
 }

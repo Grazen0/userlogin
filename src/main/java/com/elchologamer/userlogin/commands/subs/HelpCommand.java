@@ -13,7 +13,7 @@ public class HelpCommand extends SubCommand {
     private final UserLogin plugin;
 
     public HelpCommand() {
-        super("help");
+        super("help", "ul.help");
         plugin = UserLogin.getPlugin();
     }
 

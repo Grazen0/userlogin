@@ -1,10 +1,10 @@
 package com.elchologamer.userlogin.commands;
 
-import com.elchologamer.userlogin.api.QuickMap;
 import com.elchologamer.userlogin.util.PasswordEncryptor;
 import com.elchologamer.userlogin.util.Path;
-import com.elchologamer.userlogin.util.ULPlayer;
 import com.elchologamer.userlogin.util.database.Database;
+import com.elchologamer.userlogin.util.extensions.QuickMap;
+import com.elchologamer.userlogin.util.extensions.ULPlayer;
 
 import java.util.UUID;
 

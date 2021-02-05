@@ -1,4 +1,4 @@
-package com.elchologamer.userlogin.api;
+package com.elchologamer.userlogin.util.extensions;
 
 import java.util.HashMap;
 

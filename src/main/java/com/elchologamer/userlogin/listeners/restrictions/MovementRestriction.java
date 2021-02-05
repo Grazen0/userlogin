@@ -1,9 +1,7 @@
 package com.elchologamer.userlogin.listeners.restrictions;
 
-import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Restriction;
-import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
@@ -16,12 +14,10 @@ import java.util.UUID;
 
 public class MovementRestriction extends Restriction<PlayerMoveEvent> {
 
-    private final UserLogin plugin;
     private final Map<UUID, Integer> warnCoolDown = new HashMap<>();
 
     public MovementRestriction() {
         super("movement");
-        plugin = UserLogin.getPlugin();
     }
 
     @Override
@@ -41,7 +37,7 @@ public class MovementRestriction extends Restriction<PlayerMoveEvent> {
         p.setVelocity(speed);
 
         // Warn message system
-        ConfigurationSection sec = Utils.getConfig().getConfigurationSection("restrictions");
+        ConfigurationSection sec = getPlugin().getConfig().getConfigurationSection("restrictions");
         if (sec == null) return;
 
         int frequency = sec.getInt(
@@ -57,7 +53,7 @@ public class MovementRestriction extends Restriction<PlayerMoveEvent> {
         current++;
         if (current >= frequency) {
             // Send warning message and reset counter
-            plugin.getPlayer(p).sendPathMessage(Path.MOVE_WARNING);
+            getPlugin().getPlayer(p).sendPathMessage(Path.MOVE_WARNING);
             current = 0;
         }
 

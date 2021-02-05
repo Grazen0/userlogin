@@ -8,7 +8,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.UUID;
 
-public abstract class SQLDatabase implements Database {
+public abstract class SQLDatabase extends Database {
 
     protected Connection connection;
     protected final String driver;

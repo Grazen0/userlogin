@@ -22,7 +22,7 @@ public class UnregisterCommand extends SubCommand {
     private final UserLogin plugin;
 
     public UnregisterCommand() {
-        super("unregister");
+        super("unregister", "ul.unregister");
         plugin = UserLogin.getPlugin();
     }
 

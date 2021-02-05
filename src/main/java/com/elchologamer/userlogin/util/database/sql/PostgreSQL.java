@@ -1,6 +1,5 @@
 package com.elchologamer.userlogin.util.database.sql;
 
-import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.sql.Connection;
@@ -16,7 +15,7 @@ public class PostgreSQL extends SQLDatabase {
 
     @Override
     protected Connection getConnection() throws SQLException {
-        ConfigurationSection section = Utils.getConfig()
+        ConfigurationSection section = getPlugin().getConfig()
                 .getConfigurationSection("database.postgresql");
         assert section != null;
 

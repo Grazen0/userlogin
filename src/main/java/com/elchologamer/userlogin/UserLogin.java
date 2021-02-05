@@ -15,11 +15,11 @@ import com.elchologamer.userlogin.listeners.restrictions.ItemDropRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
 import com.elchologamer.userlogin.util.Metrics;
-import com.elchologamer.userlogin.util.ULPlayer;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.BaseCommand;
 import com.elchologamer.userlogin.util.command.SubCommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
+import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import com.elchologamer.userlogin.util.manager.LangManager;
 import com.elchologamer.userlogin.util.manager.LocationsManager;
 import com.elchologamer.userlogin.util.manager.PlayerManager;
@@ -131,7 +131,7 @@ public final class UserLogin extends JavaPlugin {
         getServer().getScheduler().cancelTasks(plugin);
         playerManager.clear();
 
-        db = Database.select(this); // Select database
+        db = Database.select(); // Select database
 
         getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
             try {

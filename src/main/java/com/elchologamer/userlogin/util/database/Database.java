@@ -9,9 +9,11 @@ import com.elchologamer.userlogin.util.database.sql.SQLite;
 
 import java.util.UUID;
 
-public interface Database {
+public abstract class Database {
 
-    static Database select(UserLogin plugin) {
+    private static final UserLogin plugin = UserLogin.getPlugin();
+
+    public static Database select() {
         String type = plugin.getConfig().getString("database.type", "yaml");
 
         switch (type.toLowerCase()) {
@@ -28,17 +30,21 @@ public interface Database {
             default:
                 Utils.log("&eInvalid database type selected, defaulting to \"yaml\"");
             case "yaml":
-                return new YamlDB(plugin);
+                return new YamlDB();
         }
     }
 
-    void connect() throws Exception;
+    public abstract void connect() throws Exception;
 
-    void disconnect() throws Exception;
+    public abstract void disconnect() throws Exception;
 
-    String getPassword(UUID uuid);
+    public abstract String getPassword(UUID uuid);
 
-    void setPassword(UUID uuid, String password) throws Exception;
+    public abstract void setPassword(UUID uuid, String password) throws Exception;
 
-    void deletePassword(UUID uuid) throws Exception;
+    public abstract void deletePassword(UUID uuid) throws Exception;
+
+    public UserLogin getPlugin() {
+        return plugin;
+    }
 }

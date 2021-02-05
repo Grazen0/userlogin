@@ -1,11 +1,11 @@
 package com.elchologamer.userlogin.listeners;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.api.QuickMap;
 import com.elchologamer.userlogin.api.UserLoginAPI;
 import com.elchologamer.userlogin.commands.AuthCommand;
 import com.elchologamer.userlogin.util.Path;
-import com.elchologamer.userlogin.util.ULPlayer;
+import com.elchologamer.userlogin.util.extensions.QuickMap;
+import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;

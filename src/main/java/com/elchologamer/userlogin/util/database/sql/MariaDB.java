@@ -1,6 +1,5 @@
 package com.elchologamer.userlogin.util.database.sql;
 
-import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.configuration.ConfigurationSection;
 
 import java.sql.Connection;
@@ -15,7 +14,8 @@ public class MariaDB extends SQLDatabase {
 
     @Override
     protected Connection getConnection() throws SQLException {
-        ConfigurationSection section = Utils.getConfig().getConfigurationSection("database.mariadb");
+        ConfigurationSection section = getPlugin().getConfig()
+                .getConfigurationSection("database.mariadb");
         assert section != null;
 
         database = section.getString("database", "userlogin_data");

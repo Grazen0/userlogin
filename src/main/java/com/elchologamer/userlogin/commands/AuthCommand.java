@@ -1,11 +1,10 @@
 package com.elchologamer.userlogin.commands;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.api.QuickMap;
 import com.elchologamer.userlogin.util.Path;
-import com.elchologamer.userlogin.util.ULPlayer;
-import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.BaseCommand;
+import com.elchologamer.userlogin.util.extensions.QuickMap;
+import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -57,7 +56,7 @@ public abstract class AuthCommand extends BaseCommand {
         ulPlayer.sendPathMessage(Path.LOGGED_IN);
 
         // Teleport player
-        FileConfiguration config = Utils.getConfig();
+        FileConfiguration config = plugin.getConfig();
         ConfigurationSection teleports = config.getConfigurationSection("teleports");
         assert teleports != null;
 

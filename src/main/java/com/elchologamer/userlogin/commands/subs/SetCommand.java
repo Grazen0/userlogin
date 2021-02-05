@@ -1,11 +1,11 @@
 package com.elchologamer.userlogin.commands.subs;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.api.CustomConfig;
-import com.elchologamer.userlogin.api.QuickMap;
+import com.elchologamer.userlogin.util.CustomConfig;
 import com.elchologamer.userlogin.util.Path;
-import com.elchologamer.userlogin.util.ULPlayer;
 import com.elchologamer.userlogin.util.command.SubCommand;
+import com.elchologamer.userlogin.util.extensions.QuickMap;
+import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
@@ -20,7 +20,7 @@ public class SetCommand extends SubCommand {
     private final UserLogin plugin;
 
     public SetCommand() {
-        super("set", true);
+        super("set", true, "ul.set");
         plugin = UserLogin.getPlugin();
     }
 

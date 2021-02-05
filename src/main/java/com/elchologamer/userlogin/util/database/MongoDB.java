@@ -1,6 +1,6 @@
 package com.elchologamer.userlogin.util.database;
 
-import com.elchologamer.userlogin.util.Utils;
+import com.elchologamer.userlogin.UserLogin;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
@@ -10,20 +10,21 @@ import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.plugin.java.JavaPlugin;
 
-import java.net.UnknownHostException;
 import java.util.UUID;
 
-public class MongoDB implements Database {
+public class MongoDB extends Database {
 
+    private final JavaPlugin plugin = UserLogin.getPlugin();
     private MongoClient client;
     private MongoDatabase db;
     private MongoCollection<Document> collection;
 
     @Override
-    public void connect() throws UnknownHostException {
+    public void connect() {
         // Get config options
-        ConfigurationSection section = Utils.getConfig().getConfigurationSection("database.mongodb");
+        ConfigurationSection section = plugin.getConfig().getConfigurationSection("database.mongodb");
         assert section != null;
 
         String uri = section.getString("uri");

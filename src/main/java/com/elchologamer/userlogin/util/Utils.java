@@ -4,7 +4,6 @@ import com.elchologamer.userlogin.UserLogin;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.ChatColor;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.io.BufferedReader;
@@ -38,25 +37,8 @@ public abstract class Utils {
         return ChatColor.translateAlternateColorCodes('&', s);
     }
 
-    public static FileConfiguration getConfig() {
-        return plugin.getConfig();
-    }
-
-    public static boolean normalMode() {
-        // Backwards compatibility sucks lmao
-        boolean oldCondition = getConfig()
-                .getString("teleports.mode", "")
-                .equalsIgnoreCase("SAVE-POSITION");
-        boolean newCondition = getConfig().getBoolean(
-                "teleports.savePosition",
-                getConfig().getBoolean("teleports.save-position")
-        );
-
-        return !oldCondition && !newCondition;
-    }
-
     public static void debug(Object s) {
-        if (getConfig().getBoolean("debug")) log(s);
+        if (plugin.getConfig().getBoolean("debug")) log(s);
     }
 
     public static void log(Object msg) {

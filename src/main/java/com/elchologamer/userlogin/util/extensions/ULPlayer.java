@@ -1,6 +1,8 @@
-package com.elchologamer.userlogin.util;
+package com.elchologamer.userlogin.util.extensions;
 
 import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.util.Path;
+import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitScheduler;
 
@@ -24,7 +26,7 @@ public class ULPlayer {
         BukkitScheduler scheduler = player.getServer().getScheduler();
         if (timeout != null) scheduler.cancelTask(timeout);
 
-        if (!Utils.getConfig().getBoolean("timeout.enabled")) return;
+        if (!plugin.getConfig().getBoolean("timeout.enabled")) return;
 
         timeout = scheduler.scheduleSyncDelayedTask(
                 plugin,

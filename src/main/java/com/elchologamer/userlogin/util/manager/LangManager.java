@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.util.manager;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -76,7 +75,7 @@ public class LangManager {
     }
 
     public FileConfiguration getMessages() {
-        String langName = Utils.getConfig().getString("lang", "en_US");
+        String langName = plugin.getConfig().getString("lang", "en_US");
         return langs.get(langName);
     }
 
