@@ -44,6 +44,17 @@
                         </configuration>
                     </execution>
                 </executions>
+
+                <configuration>
+                    <filters>
+                        <filter>
+                            <artifact>com.elchologamer:*</artifact>
+                            <excludes>
+                                <exclude>META-INF/*.MF</exclude>
+                            </excludes>
+                        </filter>
+                    </filters>
+                </configuration>
             </plugin>
         </plugins>
         <resources>
