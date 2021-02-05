@@ -11,11 +11,10 @@ import java.util.UUID;
 
 public class LocationsManager {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
     private final CustomConfig locationsConfig;
 
     public LocationsManager() {
-        plugin = UserLogin.getPlugin();
         locationsConfig = new CustomConfig(plugin, "locations.yml");
     }
 

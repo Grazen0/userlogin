@@ -7,11 +7,10 @@ import org.bukkit.event.player.AsyncPlayerChatEvent;
 
 public class ChatRestriction extends Restriction<AsyncPlayerChatEvent> {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
 
     public ChatRestriction() {
         super("chat");
-        plugin = UserLogin.getPlugin();
     }
 
     public void handle(AsyncPlayerChatEvent e) {

@@ -10,11 +10,10 @@ import org.bukkit.configuration.file.FileConfiguration;
 
 public class HelpCommand extends SubCommand {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
 
     public HelpCommand() {
         super("help", "ul.help");
-        plugin = UserLogin.getPlugin();
     }
 
     @Override

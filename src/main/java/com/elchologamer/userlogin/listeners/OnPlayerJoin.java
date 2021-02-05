@@ -16,11 +16,7 @@ import java.net.InetSocketAddress;
 
 public class OnPlayerJoin implements Listener {
 
-    private final UserLogin plugin;
-
-    public OnPlayerJoin() {
-        plugin = UserLogin.getPlugin();
-    }
+    private final UserLogin plugin = UserLogin.getPlugin();
 
     @EventHandler
     public void onPlayerJoin(PlayerJoinEvent e) {

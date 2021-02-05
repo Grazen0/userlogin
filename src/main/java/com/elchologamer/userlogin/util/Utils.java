@@ -18,7 +18,7 @@ import java.util.regex.Pattern;
 
 public abstract class Utils {
 
-    private final static UserLogin plugin = UserLogin.getPlugin();
+    private static final UserLogin plugin = UserLogin.getPlugin();
 
     public static String color(String s) {
         try {

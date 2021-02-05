@@ -13,7 +13,7 @@ import java.util.List;
 
 public abstract class BaseCommand implements CommandExecutor, TabCompleter {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
     private final String name;
     private final boolean playerOnly;
 
@@ -24,7 +24,6 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     public BaseCommand(String name, boolean playerOnly) {
         this.name = name;
         this.playerOnly = playerOnly;
-        plugin = UserLogin.getPlugin();
     }
 
     @Override

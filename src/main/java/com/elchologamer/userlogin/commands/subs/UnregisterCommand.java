@@ -19,11 +19,10 @@ import java.util.UUID;
 
 public class UnregisterCommand extends SubCommand {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
 
     public UnregisterCommand() {
         super("unregister", "ul.unregister");
-        plugin = UserLogin.getPlugin();
     }
 
     @Override

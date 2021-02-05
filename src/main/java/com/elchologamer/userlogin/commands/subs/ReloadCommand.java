@@ -10,11 +10,10 @@ import org.bukkit.entity.Player;
 
 public class ReloadCommand extends SubCommand {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
 
     public ReloadCommand() {
         super("reload", "ul.reload");
-        plugin = UserLogin.getPlugin();
     }
 
     @Override

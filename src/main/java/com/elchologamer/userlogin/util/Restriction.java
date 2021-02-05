@@ -13,12 +13,11 @@ import org.bukkit.event.player.PlayerEvent;
 
 public abstract class Restriction<T extends Event> implements Listener {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
     protected final String configKey;
 
     protected Restriction(String configKey) {
         this.configKey = configKey;
-        plugin = UserLogin.getPlugin();
     }
 
     @EventHandler

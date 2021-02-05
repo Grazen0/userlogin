@@ -17,11 +17,10 @@ import java.util.List;
 
 public abstract class AuthCommand extends BaseCommand {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
 
     public AuthCommand(String name) {
         super(name, true);
-        plugin = UserLogin.getPlugin();
     }
 
     protected abstract boolean authenticate(ULPlayer player, String[] args);

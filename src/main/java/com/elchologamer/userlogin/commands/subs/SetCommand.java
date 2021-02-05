@@ -17,11 +17,10 @@ import java.util.List;
 
 public class SetCommand extends SubCommand {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
 
     public SetCommand() {
         super("set", true, "ul.set");
-        plugin = UserLogin.getPlugin();
     }
 
     @Override

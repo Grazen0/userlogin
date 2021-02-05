@@ -10,7 +10,7 @@ import java.util.Map;
 
 public class ULPlayer {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
     private final Player player;
     private boolean loggedIn = false;
     private Integer timeout = null;
@@ -19,7 +19,6 @@ public class ULPlayer {
 
     public ULPlayer(Player player) {
         this.player = player;
-        plugin = UserLogin.getPlugin();
     }
 
     public void activateTimeout() {

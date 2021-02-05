@@ -11,12 +11,11 @@ import java.util.stream.Collectors;
 
 public class SubCommandHandler extends BaseCommand {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
     private final List<SubCommand> subCommands = new ArrayList<>();
 
     public SubCommandHandler(String name) {
         super(name);
-        plugin = UserLogin.getPlugin();
     }
 
 

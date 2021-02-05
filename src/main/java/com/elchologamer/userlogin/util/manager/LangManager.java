@@ -13,12 +13,8 @@ import java.util.Map;
 
 public class LangManager {
 
-    private final UserLogin plugin;
+    private final UserLogin plugin = UserLogin.getPlugin();
     private final Map<String, FileConfiguration> langs = new HashMap<>();
-
-    public LangManager() {
-        plugin = UserLogin.getPlugin();
-    }
 
     public void createDefault() {
         // Create lang folder

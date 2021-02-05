@@ -8,7 +8,7 @@ import java.util.UUID;
 
 public class UserLoginAPI {
 
-    private final static UserLogin plugin = UserLogin.getPlugin();
+    private static final UserLogin plugin = UserLogin.getPlugin();
 
     public static boolean isRegistered(Player player) {
         UUID uuid = player.getUniqueId();

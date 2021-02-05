@@ -15,11 +15,7 @@ import java.util.UUID;
 
 public class OnPlayerQuit implements Listener {
 
-    private final UserLogin plugin;
-
-    public OnPlayerQuit() {
-        plugin = UserLogin.getPlugin();
-    }
+    private final UserLogin plugin = UserLogin.getPlugin();
 
     @EventHandler
     public void onPlayerQuit(PlayerQuitEvent e) throws NullPointerException {
