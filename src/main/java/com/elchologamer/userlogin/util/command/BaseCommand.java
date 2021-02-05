@@ -5,6 +5,7 @@ import com.elchologamer.userlogin.util.Path;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
@@ -34,6 +35,19 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
         }
 
         return execute(sender, command, label, args);
+    }
+
+    public void register() {
+        PluginCommand command = plugin.getCommand(name);
+        if (command == null) return;
+
+        String usage = plugin.getMessage("commands.usages." + name);
+        if (usage != null) command.setUsage(usage);
+
+        String description = plugin.getMessage("commands.descriptions." + name);
+        if (description != null) command.setDescription(description);
+
+        command.setExecutor(this);
     }
 
     public abstract boolean execute(CommandSender sender, Command command, String label, String[] args);

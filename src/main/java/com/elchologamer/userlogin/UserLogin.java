@@ -16,14 +16,12 @@ import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
 import com.elchologamer.userlogin.util.Metrics;
 import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.util.command.BaseCommand;
 import com.elchologamer.userlogin.util.command.SubCommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import com.elchologamer.userlogin.util.manager.LangManager;
 import com.elchologamer.userlogin.util.manager.LocationsManager;
 import com.elchologamer.userlogin.util.manager.PlayerManager;
-import org.bukkit.command.PluginCommand;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -79,6 +77,11 @@ public final class UserLogin extends JavaPlugin {
         mainCommand.add(new ReloadCommand());
         mainCommand.add(new UnregisterCommand());
 
+        // Register commands
+        mainCommand.register();
+        new LoginCommand().register();
+        new RegisterCommand().register();
+
         load();
 
         // bStats setup
@@ -116,16 +119,11 @@ public final class UserLogin extends JavaPlugin {
     }
 
     public void load() {
-        // Reload configurations
+        // Load configurations
         saveDefaultConfig();
         reloadConfig();
         locationsManager.getConfig().saveDefault();
         langManager.load();
-
-        // Set usages for commands
-        registerCommand(mainCommand);
-        registerCommand(new LoginCommand());
-        registerCommand(new RegisterCommand());
 
         // Cancel all plugin tasks
         getServer().getScheduler().cancelTasks(plugin);
@@ -152,20 +150,6 @@ public final class UserLogin extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void registerCommand(BaseCommand baseCommand) {
-        String name = baseCommand.getName();
-        PluginCommand command = getCommand(name);
-        if (command == null) return;
-
-        String usage = getMessage("commands.usages." + name);
-        if (usage != null) command.setUsage(usage);
-
-        String description = getMessage("commands.descriptions." + name);
-        if (description != null) command.setDescription(description);
-
-        command.setExecutor(baseCommand);
     }
 
     private void registerEvent(Listener listener) {
