@@ -10,16 +10,31 @@ public class UserLoginAPI {
 
     private static final UserLogin plugin = UserLogin.getPlugin();
 
+    /**
+     * Checks if a player is registered.
+     *
+     * @param player the player to check
+     * @return true if the player is registered, false otherwise
+     */
     public static boolean isRegistered(Player player) {
-        UUID uuid = player.getUniqueId();
+        return isRegistered(player.getUniqueId());
+    }
+
+    /**
+     * Checks if the given UUID is registered.
+     *
+     * @param uuid the UUID of the player to check
+     * @return true if the player is registered, false otherwise
+     */
+    public static boolean isRegistered(UUID uuid) {
         return plugin.getDB().getPassword(uuid) != null;
     }
 
     /**
-     * Checks if a player is logged onto the server
+     * Checks if a player is logged onto the server.
      *
      * @param player The player to check for
-     * @return True if the player is logged in, false otherwise
+     * @return true if the player is logged in, false otherwise
      * @deprecated As of v2.7.0, use any of the available overloads instead
      */
     @Deprecated
@@ -31,20 +46,20 @@ public class UserLoginAPI {
     }
 
     /**
-     * Checks if a player is logged onto the server
+     * Checks if a player is logged onto the server.
      *
-     * @param player The player to check for
-     * @return True if the player is logged in, false otherwise
+     * @param player the player to check for
+     * @return true if the player is logged in, false otherwise
      */
     public static boolean isLoggedIn(Player player) {
         return isLoggedIn(player.getUniqueId());
     }
 
     /**
-     * Checks if a player with a UUID is logged onto the server
+     * Checks if a player with a UUID is logged onto the server.
      *
-     * @param uuid The UUID of the player to check for
-     * @return True if the player is logged in, false otherwise
+     * @param uuid the UUID of the player to check for
+     * @return true if the player is logged in, false otherwise
      */
     public static boolean isLoggedIn(UUID uuid) {
         ULPlayer p = plugin.getPlayerManager().get(uuid);
