@@ -1,19 +1,19 @@
 package com.elchologamer.userlogin.commands;
 
 import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.api.UserLoginAPI;
+import com.elchologamer.userlogin.api.event.AuthenticationEvent;
+import com.elchologamer.userlogin.api.types.AuthType;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.command.BaseCommand;
-import com.elchologamer.userlogin.util.extensions.QuickMap;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
+import com.elchologamer.userlogin.util.manager.LocationsManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class AuthCommand extends BaseCommand {
 
@@ -23,14 +23,14 @@ public abstract class AuthCommand extends BaseCommand {
         super(name, true);
     }
 
-    protected abstract boolean authenticate(ULPlayer player, String[] args);
+    protected abstract AuthType authenticate(ULPlayer player, String[] args);
 
     public UserLogin getPlugin() {
         return plugin;
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command command, String label, String[] args) {
+    public final boolean execute(CommandSender sender, Command command, String label, String[] args) {
         ULPlayer ulPlayer = plugin.getPlayer((Player) sender);
 
         // Check if player is already logged in
@@ -40,58 +40,71 @@ public abstract class AuthCommand extends BaseCommand {
         }
 
         // Authenticate player
-        if (authenticate(ulPlayer, args)) login(ulPlayer, plugin);
+        AuthType type = authenticate(ulPlayer, args);
+        if (type != null) login(ulPlayer, type);
+
         return true;
     }
 
-    public static void login(ULPlayer ulPlayer, UserLogin plugin) {
+    public static void login(ULPlayer ulPlayer, AuthType type) {
+        UserLogin plugin = UserLogin.getPlugin();
         Player p = ulPlayer.getPlayer();
-
-        ulPlayer.setLoggedIn(true);
-        ulPlayer.cancelTimeout();
-        ulPlayer.cancelRepeatingMessage();
-
-        // Send join message to player
-        ulPlayer.sendPathMessage(Path.LOGGED_IN);
 
         // Teleport player
         FileConfiguration config = plugin.getConfig();
         ConfigurationSection teleports = config.getConfigurationSection("teleports");
         assert teleports != null;
 
-        Location spawn = plugin.getLocationsManager().getLocation("spawn");
+        // Call event
+        AuthenticationEvent event;
+        boolean bungeeEnabled = config.getBoolean("bungeeCord.enabled");
 
-        // Send to spawn server if enabled
-        if (config.getBoolean("bungeeCord.enabled")) {
+        if (bungeeEnabled) {
             String target = config.getString("bungeeCord.spawnServer");
-            ulPlayer.changeServer(target);
-            return;
+            event = new AuthenticationEvent(p, type, target);
+        } else {
+            Location target = null;
+            LocationsManager manager = plugin.getLocationsManager();
+
+            if (teleports.getBoolean("savePosition")) {
+                target = manager.getPlayerLocation(p);
+            } else if (teleports.getBoolean("toSpawn", true)) {
+                target = manager.getLocation("spawn");
+            }
+
+            event = new AuthenticationEvent(p, type, target);
         }
 
-        // Join announcement
-        for (Player player : p.getServer().getOnlinePlayers()) {
-            if (player.equals(p)) continue;
+        plugin.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
 
-            ULPlayer ul = plugin.getPlayer(player);
-            if (ul.isLoggedIn()) {
-                ul.sendPathMessage(
-                        Path.LOGIN_ANNOUNCEMENT,
-                        new QuickMap<>("player", p.getName())
-                );
+        ulPlayer.cancelTimeout();
+        ulPlayer.cancelRepeatingMessage();
+
+        // Send message
+        String message = event.getMessage();
+        if (message != null) p.sendMessage(message);
+
+        // Join announcement
+        String announcement = event.getAnnouncement();
+        if (announcement != null) {
+            for (Player player : p.getServer().getOnlinePlayers()) {
+                if (UserLoginAPI.isLoggedIn(player)) {
+                    player.sendMessage(announcement);
+                }
             }
         }
 
-        if (teleports.getBoolean("savePosition")) {
-            Location loc = plugin.getLocationsManager().getPlayerLocation(p);
-            p.teleport(loc);
-        } else if (teleports.getBoolean("toSpawn", true)) {
-            // Teleport to spawn
-            p.teleport(spawn);
-        }
-    }
+        ulPlayer.setLoggedIn(true);
 
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return new ArrayList<>();
+        // Teleport to destination
+        Location targetLoc = event.getDestination();
+        String targetServer = event.getTargetServer();
+
+        if (bungeeEnabled && targetServer != null) {
+            ulPlayer.changeServer(targetServer);
+        } else if (targetLoc != null) {
+            p.teleport(targetLoc);
+        }
     }
 }

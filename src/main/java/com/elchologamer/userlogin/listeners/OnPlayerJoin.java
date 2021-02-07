@@ -2,6 +2,7 @@ package com.elchologamer.userlogin.listeners;
 
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.UserLoginAPI;
+import com.elchologamer.userlogin.api.types.AuthType;
 import com.elchologamer.userlogin.commands.AuthCommand;
 import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.extensions.QuickMap;
@@ -47,7 +48,7 @@ public class OnPlayerJoin implements Listener {
 
                 if (address.getHostString().equals(storedIP)) {
                     ulPlayer.setIP(null);
-                    AuthCommand.login(ulPlayer, plugin);
+                    AuthCommand.login(ulPlayer, AuthType.LOGIN);
                     return;
                 }
             }

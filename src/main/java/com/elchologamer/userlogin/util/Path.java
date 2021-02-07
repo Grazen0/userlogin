@@ -8,13 +8,8 @@ public class Path {
     private static final String COMMAND_ERRORS = COMMANDS + "errors.";
     private static final String MESSAGES = "messages.";
     private static final String WELCOME = MESSAGES + "welcome.";
-    //private static final String USAGES = COMMANDS + "usages.";
     public static final String NO_PERMISSION = COMMAND_ERRORS + "no-permission";
     public static final String MOVE_WARNING = MESSAGES + "move-warning";
-    private static final String PLAYER_JOIN_TITLE = WELCOME + "join-title.";
-    private static final String SQL = OTHER + "mysql.";
-    private static final String SQL_ERRORS = SQL + "errors.";
-    private static final String SQL_STATES = COMMANDS + "sql-states.";
 
     // Command errors
     public static final String PLAYER_ONLY = COMMAND_ERRORS + "player-only";
