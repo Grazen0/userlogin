@@ -65,7 +65,15 @@ public class UnregisterCommand extends SubCommand {
         JsonObject data = new JsonParser().parse(res).getAsJsonObject();
         if (!data.has("id")) return null;
 
-        return UUID.fromString(data.get("id").getAsString());
+        // Found this solution here:
+        // https://stackoverflow.com/questions/18986712/creating-a-uuid-from-a-string-with-no-dashes
+        String uuidString = data.get("id").getAsString()
+                .replaceFirst(
+                        "(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)",
+                        "$1-$2-$3-$4-$5"
+                );
+
+        return UUID.fromString(uuidString);
     }
 
     @Override
