@@ -4,19 +4,19 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.elchologamer</groupId>
+    <groupId>me.elcholostudios</groupId>
     <artifactId>UserLogin</artifactId>
-    <version>2.7.0</version>
+    <version>1.4.0</version>
     <packaging>jar</packaging>
 
     <name>UserLogin</name>
 
-    <description>A simple-to-use authentication system.</description>
+    <description>A very simple to use login system for your server!</description>
     <properties>
         <java.version>1.8</java.version>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
-    <url>https://www.spigotmc.org/resources/userlogin.80669/</url>
+    <url>www.spigotmc.org</url>
 
     <build>
         <plugins>
@@ -32,7 +32,7 @@
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-shade-plugin</artifactId>
-                <version>3.2.4</version>
+                <version>3.2.2</version>
                 <executions>
                     <execution>
                         <phase>package</phase>
@@ -44,17 +44,6 @@
                         </configuration>
                     </execution>
                 </executions>
-
-                <configuration>
-                    <filters>
-                        <filter>
-                            <artifact>com.elchologamer:*</artifact>
-                            <excludes>
-                                <exclude>META-INF/*.MF</exclude>
-                            </excludes>
-                        </filter>
-                    </filters>
-                </configuration>
             </plugin>
         </plugins>
         <resources>
@@ -80,13 +69,14 @@
         <dependency>
             <groupId>org.spigotmc</groupId>
             <artifactId>spigot-api</artifactId>
-            <version>1.16.3-R0.1-SNAPSHOT</version>
+            <version>1.16.1-R0.1-SNAPSHOT</version>
             <scope>provided</scope>
         </dependency>
         <dependency>
-            <groupId>org.mongodb</groupId>
-            <artifactId>mongo-java-driver</artifactId>
-            <version>3.12.0</version>
+            <groupId>org.jetbrains</groupId>
+            <artifactId>annotations</artifactId>
+            <version>18.0.0</version>
+            <scope>compile</scope>
         </dependency>
     </dependencies>
 </project>

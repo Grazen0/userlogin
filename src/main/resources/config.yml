@@ -1,148 +1,39 @@
-# +----------------------------------------------------+
-# |..._...._..............._................._.........|
-# |..| |..| |.............| |...............(_)........|
-# |..| |..| |___..___._.__| |.....___...__._._._.__....|
-# |..| |..| / __|/ _ \ '__| |..../ _ \./ _` | | '_ \...|
-# |..| |..| \__ \  __/ |..| |___| (_) | (_| | | |.| |..|
-# |...\____/|___/\___|_|..|______\___/.\__, |_|_|.|_|..|
-# |......................................_/ |..........|
-# |....................................|___/...........|
-# +----------------------------------------------------+
-# ascii art is pretty cool huh
-# Discord support server: https://discord.gg/gbjaEDzRXU
-
-
-# Enable update checking
-checkUpdates: true
-
-# Language file to load
-lang: 'en_US'
-
-# Interval (seconds) for the pre-login welcome message (-1 to disable)
-repeatingWelcomeMsg: -1
-
-# Timeout-kicking settings
-timeout:
-
-  # Enable/disable timeout kicking
-  enabled: true
-
-  # Timeout delay in seconds
-  time: 60
-
-
-# Password options
-password:
-
-  # Encrypt passwords when saving them to database. (RECOMMENDED)
-  encrypt: false
-
-  # Minimum characters that a password must have
-  minCharacters: 4
-
-
-# Restrictions for non-logged in players
+#-------------------------------------------------
+#Configuration file for UserLogin plugin
+#For any doubts, feel free to send me a message
+#on my Discord (ElCholoGamer#3291)
+#-------------------------------------------------
+loginSpawn:
+  world: default
+  x: 0
+  y: 70
+  z: 0
+  yaw: 0
+  pitch: 0
+lobbySpawn:
+  world: default
+  x: 0
+  y: 70
+  z: 0
+  yaw: 0
+  pitch: 0
+timeOut:
+  timeOutEnabled: true
+  timeOutSeconds: 60
+passwords:
+  encryptPasswords: false
+  minimumCharacters: 4
 restrictions:
-
-  # Chat messages
-  chat: false
-
-  # Command execution
-  commands: false
-
-  # Player movement
-  movement: false
-  moveWarnFrequency: 20 # Move warning frequency (-1 to disable)
-
-  # Block breaking
-  blockBreak: false
-
-  # Drop items
-  itemDrop: false
-
-  # Pick up items (1.12+ only)
-  itemPickup: false
-
-
-# Enable/disable speficic teleports
-teleports:
-
-  # Save players' position on logout
-  savePosition: false
-  # The savePosition mode teleports the player
-  # to their last position when they log in.
-  # Useful for survival servers and such.
-
-  # Teleport players to login location on join
-  toLogin: true
-
-  # Teleport players to spawn when logged in.
-  # Only takes effect when the BungeeCord and
-  # savePosition modes are disabled.
-  toSpawn: true
-
-
-# Player IP record options
-ipRecords:
-
-  # Allow players to bypass login if they enter with the
-  # same IP address consecutively
-  enabled: false
-
-  # Time (seconds) during which the player's IP
-  # will be remembered
-  delay: 30
-
-
-# BungeeCord options
-bungeeCord:
-
-  # Enable BungeeCord functionalities
-  enabled: false
-
-  # Server to send the player when logged in
-  spawnServer: 'LOBBY'
-
-
-# Database options
-database:
-
-  # Database type.
-  # One of: 'yaml', 'mysql', 'postgresql', 'mariadb', 'sqlite', 'mongodb'
-  type: 'yaml'
-
-  yaml:
-    file: 'playerData.yml'
-
-  mysql:
-    useSSL: false
-    host: 'localhost'
-    port: 3306
-    username: 'root'
-    password: 'password'
-    database: 'userlogin_data'
-    table: 'player_data'
-
-  postgresql:
-    host: 'localhost'
-    port: 5432
-    username: 'root'
-    password: 'password'
-    database: 'userlogin_data'
-    table: 'player_data'
-
-  mariadb:
-    host: 'localhost'
-    port: 3306
-    username: 'root'
-    password: 'password'
-    database: 'userlogin_data'
-    table: 'player_data'
-
-  sqlite:
-    database: 'C:/sqlite/db/userlogin.db'
-
-  mongodb:
-    uri: 'mongodb://localhost:27017'
-    database: 'userlogin'
-    collection: 'players'
+  disableChatBeforeLogin: true
+  disableOpWhenQuit: true
+  disableMovement: false
+  loginDisabledCommands:
+    - tell
+    - help
+    - trigger
+    - tm
+    - seed
+    - msg
+teleport:
+  lobbyTeleportOnLogin: true
+  loginTeleportOnJoin: true

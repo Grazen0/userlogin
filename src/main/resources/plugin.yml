@@ -1,45 +1,23 @@
-name: 'UserLogin'
-version: '${project.version}'
-main: 'com.elchologamer.userlogin.UserLogin'
-author: 'ElCholoGamer'
-description: 'A login security system for your server'
-website: 'https://www.spigotmc.org/resources/userlogin.80669/'
-
-permissions:
-  ul.*:
-    description: 'Permission to use all UserLogin commands'
-    default: 'op'
-    children:
-      ul.userlogin:
-        description: 'Permission to use the main UserLogin command'
-        default: 'op'
-        children:
-          ul.help:
-            description: 'Permission to use the help command'
-          ul.reload:
-            description: 'Permission to use the reload command'
-          ul.set:
-            description: 'Permission to use the set command'
-          ul.unregister:
-            description: 'Permission to use the unregister command'
-      ul.login:
-        description: 'Permission to use the login command'
-        default: true
-      ul.register:
-        description: 'Permission to use the register command'
-        default: true
-
+name: UserLogin
+version: ${project.version}
+main: me.elcholostudios.userlogin.UserLogin
+api-version: 1.16
+authors: [ElCholoGamer]
+description: A simple to use login system for your server!
+website: www.spigotmc.org
 commands:
-  userlogin:
-    description: 'The main command for UserLogin'
-    usage: '&cCorrect usage: /userlogin <command> (Use /ul help for more)'
-    aliases: [ 'ul' ]
-    permission: 'ul.userlogin'
-  login:
-    description: 'Logs in your user with the given password'
-    usage: '&cCorrect usage: /login <password>'
-    permission: 'ul.login'
+  setlogin:
+    description: Set the login spawn
+    usage: /setlogin
+  setlobby:
+    description: Set destination lobby after login
+    uasge: /setlobby
   register:
-    description: 'Registers your user with the given password'
-    usage: '&cCorrect usage: /register <password> <password>'
-    permission: 'ul.register'
+    description: Register your account on the server
+    usage: /register <password> <password>
+  login:
+    description: Log in to the server with your password
+    usage: /command <password>
+  reloadlogin:
+    description: Reload configuration files for UserLogin plugin
+    usage: /command
