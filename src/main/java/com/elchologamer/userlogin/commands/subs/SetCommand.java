@@ -2,7 +2,6 @@ package com.elchologamer.userlogin.commands.subs;
 
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.CustomConfig;
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.command.SubCommand;
 import com.elchologamer.userlogin.util.extensions.QuickMap;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
@@ -53,7 +52,7 @@ public class SetCommand extends SubCommand {
 
         // Send message
         ulPlayer.sendPathMessage(
-                Path.SET,
+                "commands.set",
                 new QuickMap<>("type", (Object) args[0])
                         .set("x", x)
                         .set("y", y)

@@ -4,7 +4,6 @@ import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.UserLoginAPI;
 import com.elchologamer.userlogin.api.types.AuthType;
 import com.elchologamer.userlogin.commands.AuthCommand;
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.extensions.QuickMap;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.Location;
@@ -57,7 +56,7 @@ public class OnPlayerJoin implements Listener {
         ulPlayer.activateTimeout();
 
         // Send respective welcome message
-        String path = UserLoginAPI.isRegistered(p) ? Path.WELCOME_LOGIN : Path.WELCOME_REGISTER;
+        String path = "messages.welcome." + (UserLoginAPI.isRegistered(p) ? "registered" : "unregistered");
         ulPlayer.sendPathMessage(path, new QuickMap<>("player", p.getName()));
 
         ulPlayer.activateRepeatingMessage(path);

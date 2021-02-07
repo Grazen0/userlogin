@@ -87,9 +87,11 @@ public final class UserLogin extends JavaPlugin {
         // bStats setup
         Metrics metrics = new Metrics(this, bStatsID);
         metrics.addCustomChart(new Metrics.SimplePie("data_type",
-                () -> getConfig().getString("database.type", "yaml").toLowerCase()));
+                () -> getConfig().getString("database.type", "yaml").toLowerCase())
+        );
         metrics.addCustomChart(new Metrics.SimplePie("lang",
-                () -> getConfig().getString("lang", "en_US")));
+                () -> getConfig().getString("lang", "en_US"))
+        );
 
 
         // Check for new versions

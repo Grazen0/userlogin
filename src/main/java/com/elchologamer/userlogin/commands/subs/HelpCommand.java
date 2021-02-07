@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.commands.subs;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.SubCommand;
 import org.bukkit.command.Command;
@@ -23,7 +22,7 @@ public class HelpCommand extends SubCommand {
         FileConfiguration messages = plugin.getMessages();
         if (messages == null) return true;
 
-        for (String str : messages.getStringList(Path.HELP)) {
+        for (String str : messages.getStringList("messages.help")) {
             sender.sendMessage(Utils.color(str));
         }
         return true;

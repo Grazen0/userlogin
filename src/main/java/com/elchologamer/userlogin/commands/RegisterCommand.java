@@ -2,7 +2,6 @@ package com.elchologamer.userlogin.commands;
 
 import com.elchologamer.userlogin.api.types.AuthType;
 import com.elchologamer.userlogin.util.PasswordEncryptor;
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.extensions.QuickMap;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
@@ -22,7 +21,7 @@ public class RegisterCommand extends AuthCommand {
         // Check if player is not already registered
         UUID uuid = ulPlayer.getPlayer().getUniqueId();
         if (db.getPassword(uuid) != null) {
-            ulPlayer.sendPathMessage(Path.ALREADY_REGISTERED);
+            ulPlayer.sendPathMessage("messages.already-registered");
             return null;
         }
 
@@ -33,13 +32,16 @@ public class RegisterCommand extends AuthCommand {
         String password = args[0];
         int minChars = getPlugin().getConfig().getInt("password.minCharacters", 0);
         if (password.length() < minChars) {
-            ulPlayer.sendPathMessage(Path.SHORT_PASSWORD, new QuickMap<>("chars", minChars));
+            ulPlayer.sendPathMessage(
+                    "messages.short-password",
+                    new QuickMap<>("chars", minChars)
+            );
             return null;
         }
 
         // Check that both passwords match
         if (!password.equals(args[1])) {
-            ulPlayer.sendPathMessage(Path.DIFFERENT_PASSWORDS);
+            ulPlayer.sendPathMessage("messages.different-passwords");
             return null;
         }
 

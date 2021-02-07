@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.util.command;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Path;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
@@ -28,7 +27,7 @@ public class SubCommandHandler extends BaseCommand {
 
             // Check that player has permission
             if (!sender.hasPermission(subCommand.getPermission())) {
-                sender.sendMessage(plugin.getMessage(Path.NO_PERMISSION));
+                sender.sendMessage(plugin.getMessage("commands.errors.no-permission"));
                 return true;
             }
 

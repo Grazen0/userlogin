@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.commands.subs;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.command.SubCommand;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.command.Command;
@@ -25,7 +24,7 @@ public class ReloadCommand extends SubCommand {
             if (!ulPlayer.isLoggedIn()) ulPlayer.activateTimeout();
         }
 
-        sender.sendMessage(plugin.getMessage(Path.RELOAD));
+        sender.sendMessage(plugin.getMessage("commands.reload"));
         return true;
     }
 }

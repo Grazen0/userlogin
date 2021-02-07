@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.util.command;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Path;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -30,7 +29,7 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     @Override
     public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (playerOnly && !(sender instanceof Player)) {
-            sender.sendMessage(plugin.getMessage(Path.PLAYER_ONLY));
+            sender.sendMessage(plugin.getMessage("commands.errors.player-only"));
             return true;
         }
 

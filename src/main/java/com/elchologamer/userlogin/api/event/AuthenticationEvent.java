@@ -2,7 +2,6 @@ package com.elchologamer.userlogin.api.event;
 
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.types.AuthType;
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -25,10 +24,10 @@ public class AuthenticationEvent extends PlayerEvent implements Cancellable {
         super(player);
         this.type = type;
 
-        String path = type == AuthType.LOGIN ? Path.LOGGED_IN : Path.REGISTERED;
+        String path = "messages." + (type == AuthType.LOGIN ? "logged-in" : "registered");
         message = Utils.color(path);
 
-        String originalMsg = UserLogin.getPlugin().getMessage(Path.LOGIN_ANNOUNCEMENT);
+        String originalMsg = UserLogin.getPlugin().getMessage("messages.login-announcement");
         announcement = Utils.color(originalMsg.replace("{player}", player.getName()));
     }
 

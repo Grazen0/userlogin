@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.commands.subs;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.SubCommand;
 import com.elchologamer.userlogin.util.database.Database;
@@ -41,7 +40,7 @@ public class UnregisterCommand extends SubCommand {
         }
 
         if (uuid == null || db.getPassword(uuid) == null) {
-            sender.sendMessage(plugin.getMessage(Path.PLAYER_NOT_FOUND));
+            sender.sendMessage(plugin.getMessage("commands.errors.player-not-found"));
             return true;
         }
 
@@ -52,7 +51,7 @@ public class UnregisterCommand extends SubCommand {
             sender.sendMessage(Utils.color("&dError deleting password. Read console for more info"));
         }
 
-        String message = plugin.getMessage(Path.PLAYER_UNREGISTERED);
+        String message = plugin.getMessage("commands.player-unregistered");
         sender.sendMessage(message.replace("{player}", victim == null ? args[0] : victim.getName()));
         return true;
     }

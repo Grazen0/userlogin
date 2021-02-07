@@ -1,6 +1,5 @@
 package com.elchologamer.userlogin.listeners.restrictions;
 
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.Restriction;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
@@ -53,7 +52,7 @@ public class MovementRestriction extends Restriction<PlayerMoveEvent> {
         current++;
         if (current >= frequency) {
             // Send warning message and reset counter
-            getPlugin().getPlayer(p).sendPathMessage(Path.MOVE_WARNING);
+            getPlugin().getPlayer(p).sendPathMessage("messages.move-warning");
             current = 0;
         }
 

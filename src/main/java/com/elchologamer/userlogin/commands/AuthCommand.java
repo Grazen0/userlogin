@@ -4,7 +4,6 @@ import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.UserLoginAPI;
 import com.elchologamer.userlogin.api.event.AuthenticationEvent;
 import com.elchologamer.userlogin.api.types.AuthType;
-import com.elchologamer.userlogin.util.Path;
 import com.elchologamer.userlogin.util.command.BaseCommand;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import com.elchologamer.userlogin.util.manager.LocationsManager;
@@ -35,7 +34,7 @@ public abstract class AuthCommand extends BaseCommand {
 
         // Check if player is already logged in
         if (ulPlayer.isLoggedIn()) {
-            ulPlayer.sendPathMessage(Path.ALREADY_LOGGED_IN);
+            ulPlayer.sendPathMessage("messages.already-logged-in");
             return true;
         }
 
