@@ -1,4 +1,4 @@
-name: Build
+name: CI
 
 on: [ push, pull_request ]
 
@@ -12,4 +12,4 @@ jobs:
         with:
           java-version: 15
       - name: Build with Maven
-        run: mvn --batch-mode --no-transfer-progress clean package
+        run: mvn -B --no-transfer-progress package
