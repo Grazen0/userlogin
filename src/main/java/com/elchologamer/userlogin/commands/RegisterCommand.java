@@ -20,7 +20,7 @@ public class RegisterCommand extends AuthCommand {
 
         // Check if player is not already registered
         UUID uuid = ulPlayer.getPlayer().getUniqueId();
-        if (db.getPassword(uuid) != null) {
+        if (db.isRegistered(uuid)) {
             ulPlayer.sendPathMessage("messages.already-registered");
             return null;
         }
@@ -50,13 +50,12 @@ public class RegisterCommand extends AuthCommand {
             password = PasswordEncryptor.encodeBase64(password);
 
         try {
-            db.setPassword(uuid, password);
+            db.createPassword(uuid, password);
+            return AuthType.REGISTER;
         } catch (Exception e) {
             e.printStackTrace();
-            ulPlayer.sendPathMessage("commands.errors.register-failed");
+            ulPlayer.sendPathMessage("messages.register-failed");
             return null;
         }
-
-        return AuthType.REGISTER;
     }
 }

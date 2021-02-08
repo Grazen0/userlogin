@@ -5,11 +5,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class MariaDB extends SQLDatabase {
 
     public MariaDB() {
-        super("org.mariadb.jdbc.Driver");
+        super("mariadb", "org.mariadb.jdbc.Driver");
     }
 
     @Override
@@ -18,19 +19,20 @@ public class MariaDB extends SQLDatabase {
                 .getConfigurationSection("database.mariadb");
         assert section != null;
 
-        database = section.getString("database", "userlogin_data");
-        table = section.getString("table", "player_data");
         String host = section.getString("host", "localhost");
         int port = section.getInt("port", 3306);
+        boolean ssl = section.getBoolean("ssl");
 
         String username = section.getString("username", "root");
-        String password = section.getString("password", "");
+        String password = section.getString("password", null);
 
-        // Create connection
-        return DriverManager.getConnection(
-                "jdbc:mariadb://" + host + ":" + port + "/" + database,
-                username,
-                password
-        );
+        Properties props = new Properties();
+
+        props.setProperty("user", username);
+        if (password != null) props.setProperty("password", password);
+        props.setProperty("useSSL", Boolean.toString(ssl));
+
+        String url = "jdbc:mariadb://" + host + ":" + port + "/" + getDatabase();
+        return DriverManager.getConnection(url, props);
     }
 }

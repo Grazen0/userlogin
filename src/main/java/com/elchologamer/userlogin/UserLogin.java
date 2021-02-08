@@ -18,6 +18,7 @@ import com.elchologamer.userlogin.util.Metrics;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.SubCommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
+import com.elchologamer.userlogin.util.database.YamlDB;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import com.elchologamer.userlogin.util.managers.LangManager;
 import com.elchologamer.userlogin.util.managers.LocationsManager;
@@ -101,11 +102,11 @@ public final class UserLogin extends JavaPlugin {
         );
 
 
-        // Check for new versions
         PluginDescriptionFile desc = getDescription();
         String version = desc.getVersion();
         String name = desc.getName();
 
+        // Check for new versions
         if (getConfig().getBoolean("checkUpdates", true)) {
             getServer().getScheduler().runTaskAsynchronously(this, () -> {
                 String url = "https://api.spigotmc.org/legacy/update.php?resource=" + pluginID;
@@ -140,14 +141,20 @@ public final class UserLogin extends JavaPlugin {
 
         db = Database.select(); // Select database
 
-        getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+        getServer().getScheduler().runTaskAsynchronously(this, () -> {
             try {
                 db.disconnect();
                 db.connect();
-            } catch (ClassNotFoundException e) {
-                Utils.log("&dJDBC Driver database not found: " + e.getCause());
+                if (!(db instanceof YamlDB)) {
+                    Utils.log(getMessage("other.database-connected"));
+                }
             } catch (Exception e) {
-                e.printStackTrace();
+                if (e instanceof ClassNotFoundException) {
+                    Utils.log(getMessage("other.driver-missing").replace("{driver}", e.getMessage()));
+                } else {
+                    Utils.log(getMessage("other.database-error"));
+                    e.printStackTrace();
+                }
             }
         });
     }

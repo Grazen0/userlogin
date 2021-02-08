@@ -114,8 +114,12 @@ database:
   yaml:
     file: 'playerData.yml'
 
+
+  # To use SQL, the specified database must already exist,
+  # the plugin will NOT create it.
+
   mysql:
-    useSSL: false
+    ssl: false
     host: 'localhost'
     port: 3306
     username: 'root'
@@ -124,14 +128,16 @@ database:
     table: 'player_data'
 
   postgresql:
+    ssl: false
     host: 'localhost'
     port: 5432
     username: 'root'
     password: 'password'
-    database: 'userlogin_data'
+    database: 'userlogin_data' # Database must be created manually
     table: 'player_data'
 
   mariadb:
+    ssl: false
     host: 'localhost'
     port: 3306
     username: 'root'
@@ -141,6 +147,7 @@ database:
 
   sqlite:
     database: 'C:/sqlite/db/userlogin.db'
+    table: 'player_data'
 
   mongodb:
     uri: 'mongodb://localhost:27017'

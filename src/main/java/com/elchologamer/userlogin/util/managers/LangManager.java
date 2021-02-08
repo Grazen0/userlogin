@@ -19,24 +19,39 @@ public class LangManager {
     public void createDefault() {
         // Create lang folder
         File folder = new File(plugin.getDataFolder(), "lang");
-        if (!folder.mkdir()) {
-            // Return folder already exists and files are inside
-            File[] files = folder.listFiles();
-            if (files != null && files.length > 0) return;
-        }
+        folder.mkdirs();
 
         String[] langs = {"en_US", "es_ES"};
 
         for (String lang : langs) {
             String filename = lang + ".yml";
             File file = new File(folder, filename);
-            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
             InputStream stream = plugin.getResource("lang/" + filename);
             if (stream == null) continue;
 
             InputStreamReader reader = new InputStreamReader(stream);
             FileConfiguration resourceConfig = YamlConfiguration.loadConfiguration(reader);
+
+            // Add missing keys to existing files
+            if (file.exists()) {
+                FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+
+                for (String key : resourceConfig.getKeys(true)) {
+                    if (config.get(key) == null) {
+                        config.set(key, resourceConfig.get(key));
+                    }
+                }
+
+                try {
+                    config.save(file);
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
+
 
             // Add default values from resource
             for (String key : resourceConfig.getKeys(true)) {

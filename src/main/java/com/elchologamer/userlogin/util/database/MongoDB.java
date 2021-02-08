@@ -6,7 +6,6 @@ import com.mongodb.MongoClientURI;
 import com.mongodb.client.MongoCollection;
 import com.mongodb.client.MongoDatabase;
 import com.mongodb.client.model.Filters;
-import com.mongodb.client.model.UpdateOptions;
 import org.bson.Document;
 import org.bson.conversions.Bson;
 import org.bukkit.configuration.ConfigurationSection;
@@ -49,12 +48,17 @@ public class MongoDB extends Database {
     }
 
     @Override
-    public void setPassword(UUID uuid, String password) {
+    public void createPassword(UUID uuid, String password) {
+        Document doc = new Document("_id", uuid.toString()).append("password", password);
+        collection.insertOne(doc);
+    }
+
+    @Override
+    public void updatePassword(UUID uuid, String password) {
         Bson filter = Filters.eq("_id", uuid.toString());
         Bson update = new Document("$set", new Document("password", password));
-        UpdateOptions options = new UpdateOptions().upsert(true);
 
-        collection.updateOne(filter, update, options);
+        collection.updateOne(filter, update);
     }
 
     @Override

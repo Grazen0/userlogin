@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin.util.database.sql;
 
+import java.io.File;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -7,15 +8,19 @@ import java.sql.SQLException;
 public class SQLite extends SQLDatabase {
 
     public SQLite() {
-        super("org.sqlite.JDBC");
+        super("sqlite", "org.sqlite.JDBC");
     }
 
     @Override
     protected Connection getConnection() throws SQLException {
-        String url = getPlugin().getConfig().getString(
+        String path = getPlugin().getConfig().getString(
                 "database.sqlite.database",
                 "C:/sqlite/db/userlogin.db"
         );
-        return DriverManager.getConnection("jdbc:sqlite:" + url);
+
+        File folder = new File(path).getParentFile();
+        folder.mkdirs();
+
+        return DriverManager.getConnection("jdbc:sqlite:" + path);
     }
 }

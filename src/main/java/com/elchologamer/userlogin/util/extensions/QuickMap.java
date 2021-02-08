@@ -4,6 +4,9 @@ import java.util.HashMap;
 
 public class QuickMap<K, V> extends HashMap<K, V> {
 
+    public QuickMap() {
+    }
+
     public QuickMap(K firstKey, V firstValue) {
         this.put(firstKey, firstValue);
     }

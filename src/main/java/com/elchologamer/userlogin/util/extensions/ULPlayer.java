@@ -10,7 +10,7 @@ import java.util.Map;
 public class ULPlayer {
 
     private final UserLogin plugin = UserLogin.getPlugin();
-    private final Player player;
+    private Player player;
     private boolean loggedIn = false;
     private Integer timeout = null;
     private Integer welcomeMessage = null;
@@ -59,7 +59,10 @@ public class ULPlayer {
     }
 
     public void sendPathMessage(String path, Map<String, Object> replacements) {
-        sendMessage(plugin.getMessage(path), replacements);
+        String message = plugin.getMessage(path);
+
+        if (message != null && !message.equals(""))
+            sendMessage(message, replacements);
     }
 
     public void sendMessage(String message) {
@@ -98,5 +101,9 @@ public class ULPlayer {
 
     public Player getPlayer() {
         return player;
+    }
+
+    public void setPlayer(Player player) {
+        this.player = player;
     }
 }

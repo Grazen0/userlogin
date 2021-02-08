@@ -20,18 +20,26 @@ public abstract class Database {
             case "mysql":
                 return new MySQL();
             case "postgresql":
+            case "postgres":
                 return new PostgreSQL();
             case "mariadb":
+            case "maria":
                 return new MariaDB();
             case "sqlite":
                 return new SQLite();
             case "mongodb":
+            case "mongo":
                 return new MongoDB();
             default:
                 Utils.log("&eInvalid database type selected, defaulting to \"yaml\"");
             case "yaml":
+            case "yml":
                 return new YamlDB();
         }
+    }
+
+    public boolean isRegistered(UUID uuid) {
+        return getPassword(uuid) != null;
     }
 
     public abstract void connect() throws Exception;
@@ -40,7 +48,9 @@ public abstract class Database {
 
     public abstract String getPassword(UUID uuid);
 
-    public abstract void setPassword(UUID uuid, String password) throws Exception;
+    public abstract void updatePassword(UUID uuid, String password) throws Exception;
+
+    public abstract void createPassword(UUID uuid, String password) throws Exception;
 
     public abstract void deletePassword(UUID uuid) throws Exception;
 

@@ -4,6 +4,7 @@ import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.SubCommand;
 import com.elchologamer.userlogin.util.database.Database;
+import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import org.bukkit.command.Command;
@@ -46,13 +47,14 @@ public class UnregisterCommand extends SubCommand {
 
         try {
             db.deletePassword(uuid);
+
+            String message = plugin.getMessage("commands.player-unregistered");
+            sender.sendMessage(message.replace("{player}", victim == null ? args[0] : victim.getName()));
         } catch (Exception e) {
             e.printStackTrace();
-            sender.sendMessage(Utils.color("&dError deleting password. Read console for more info"));
+            sender.sendMessage(plugin.getMessage("commands.errors.unregister-failed"));
         }
 
-        String message = plugin.getMessage("commands.player-unregistered");
-        sender.sendMessage(message.replace("{player}", victim == null ? args[0] : victim.getName()));
         return true;
     }
 
@@ -61,7 +63,10 @@ public class UnregisterCommand extends SubCommand {
         String res = Utils.fetch(url);
         if (res == null) return null;
 
-        JsonObject data = new JsonParser().parse(res).getAsJsonObject();
+        JsonElement base = new JsonParser().parse(res);
+        if (base == null || base.isJsonNull()) return null;
+
+        JsonObject data = base.getAsJsonObject();
         if (!data.has("id")) return null;
 
         // Found this solution here:

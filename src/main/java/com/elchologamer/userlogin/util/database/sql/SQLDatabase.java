@@ -1,6 +1,7 @@
 package com.elchologamer.userlogin.util.database.sql;
 
 import com.elchologamer.userlogin.util.database.Database;
+import org.bukkit.configuration.ConfigurationSection;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -10,13 +11,22 @@ import java.util.UUID;
 
 public abstract class SQLDatabase extends Database {
 
+    private final String name;
     protected Connection connection;
-    protected final String driver;
-    protected String table;
-    protected String database;
+    private final String driver;
+    private final String table;
+    private final String database;
 
-    protected SQLDatabase(String driver) {
+    protected SQLDatabase(String name, String driver) {
+        this.name = name;
         this.driver = driver;
+
+        ConfigurationSection section = getPlugin().getConfig()
+                .getConfigurationSection("database." + name);
+        assert section != null;
+
+        table = section.getString("table", "player_data").replace("`", "");
+        database = section.getString("database");
     }
 
     @Override
@@ -25,7 +35,7 @@ public abstract class SQLDatabase extends Database {
         connection = getConnection();
 
         // Create table
-        update("CREATE TABLE IF NOT EXISTS `" + escapeTable(table) + "` (" +
+        update("CREATE TABLE IF NOT EXISTS " + table + " (" +
                 "uuid VARCHAR(45) NOT NULL, " +
                 "password VARCHAR(45) NOT NULL, " +
                 "PRIMARY KEY (uuid)" +
@@ -39,7 +49,7 @@ public abstract class SQLDatabase extends Database {
     public String getPassword(UUID uuid) {
         try {
             ResultSet set = query(
-                    "SELECT password FROM `" + escapeTable(table) + "` WHERE uuid=?",
+                    "SELECT password FROM " + table + " WHERE uuid=?",
                     uuid
             );
 
@@ -52,20 +62,24 @@ public abstract class SQLDatabase extends Database {
     }
 
     @Override
-    public void setPassword(UUID uuid, String password) throws SQLException {
+    public void createPassword(UUID uuid, String password) throws SQLException {
         update(
-                "INSERT INTO `" + escapeTable(table) + "` (uuid,password) VALUES (?,?) " +
-                        "ON DUPLICATE KEY UPDATE password=VALUES(password)",
+                "INSERT INTO " + table + " (uuid,password) VALUES (?,?)",
                 uuid, password
         );
     }
 
     @Override
-    public void deletePassword(UUID uuid) throws SQLException {
+    public void updatePassword(UUID uuid, String password) throws SQLException {
         update(
-                "DELETE FROM `" + escapeTable(table) + "` WHERE uuid=?",
-                table, uuid
+                "UPDATE " + table + " SET password=? WHERE uuid=?",
+                password, uuid
         );
+    }
+
+    @Override
+    public void deletePassword(UUID uuid) throws SQLException {
+        update("DELETE FROM " + table + " WHERE uuid=?", uuid);
     }
 
     @Override
@@ -79,14 +93,10 @@ public abstract class SQLDatabase extends Database {
         PreparedStatement statement = connection.prepareStatement(sql);
 
         for (int i = 0; i < params.length; i++) {
-            statement.setString(i, params[i].toString());
+            statement.setString(i + 1, params[i].toString());
         }
 
         return statement;
-    }
-
-    protected String escapeTable(String table) {
-        return table.replace("`", "\\`");
     }
 
     protected ResultSet query(String sql, Object... params) throws SQLException {
@@ -95,5 +105,17 @@ public abstract class SQLDatabase extends Database {
 
     protected void update(String sql, Object... params) throws SQLException {
         prepareSQL(sql, params).executeUpdate();
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public String getTable() {
+        return table;
+    }
+
+    public String getDatabase() {
+        return database;
     }
 }

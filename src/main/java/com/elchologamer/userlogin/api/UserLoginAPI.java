@@ -27,7 +27,7 @@ public class UserLoginAPI {
      * @return true if the player is registered, false otherwise
      */
     public static boolean isRegistered(UUID uuid) {
-        return plugin.getDB().getPassword(uuid) != null;
+        return plugin.getDB().isRegistered(uuid);
     }
 
     /**

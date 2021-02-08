@@ -5,11 +5,12 @@ import org.bukkit.configuration.ConfigurationSection;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.util.Properties;
 
 public class MySQL extends SQLDatabase {
 
     public MySQL() {
-        super("com.jdbc.mysql.Driver");
+        super("mysql", "com.mysql.jdbc.Driver");
     }
 
     @Override
@@ -17,27 +18,20 @@ public class MySQL extends SQLDatabase {
         ConfigurationSection section = getPlugin().getConfig().getConfigurationSection("database.mysql");
         assert section != null;
 
-        database = section.getString("database", "userlogin_data");
-        table = section.getString("table", "player_data");
         String host = section.getString("host", "localhost");
         int port = section.getInt("port", 3306);
-        boolean useSSL = section.getBoolean("useSSL", false);
+        boolean ssl = section.getBoolean("ssl", section.getBoolean("useSSL"));
 
         String username = section.getString("username", "root");
-        String password = section.getString("password", "");
+        String password = section.getString("password", null);
 
+        Properties props = new Properties();
 
-        // Create connection
-        Connection con = DriverManager.getConnection(
-                "jdbc:mysql://" + host + ":" + port + "/?useSSL=" + useSSL,
-                username,
-                password
-        );
+        props.setProperty("user", username);
+        if (password != null) props.setProperty("password", password);
+        props.setProperty("useSSL", Boolean.toString(ssl));
 
-        // Connect to database
-        update("CREATE DATABASE IF NOT EXISTS `" + escapeTable(database) + "`");
-        query("USE `" + escapeTable(database) + "`");
-
-        return con;
+        String url = "jdbc:mysql://" + host + ":" + port + "/" + getDatabase();
+        return DriverManager.getConnection(url, props);
     }
 }

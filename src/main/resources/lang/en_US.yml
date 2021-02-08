@@ -4,7 +4,7 @@ commands:
     player-only: '&cThis is a player-only command'
     no-permission: '&cYou don''t have permission to use this command'
     player-not-found: '&cPlayer not found!'
-    register-failed: '&cRegistration failed, please try again.'
+    unregister-failed: '&cFailed to delete password. Read the console for more info'
   set: '&eThe {type} location has been set at &bX: {x}, Y: {y}, Z: {z}, Y: {yaw}, P: {pitch}, &eat the world &b"{world}"'
   reload: '&ePlugin reloaded!'
   descriptions:
@@ -12,7 +12,7 @@ commands:
     login: 'Logs in your user with the given password'
     register: 'Registers your user with the given password'
   usages:
-    userlogin: '&cCorrect usage: /userlogin <command> (Use /ul help for more)'
+    userlogin: '&cCorrect usage: /userlogin [command] (Use /ul help for more)'
     login: '&cCorrect usage: /login <password>'
     register: '&cCorrect usage: /register <password> <password>'
 messages:
@@ -24,6 +24,7 @@ messages:
   already-logged-in: '&cYou are already logged in!'
   logged-in: '&9Login successful!'
   registered: '&9You have been registered!'
+  register-failed: '&cRegistration failed, please try again.'
   welcome:
     registered: '&6Welcome! Use &3/login <password> &6to enter the server'
     unregistered: '&6Welcome! Use &3/register <password> <password> &6to register your account'
@@ -31,10 +32,15 @@ messages:
   timeout: 'You stayed for too much time without logging in'
   login-announcement: '&e{player} has joined the server!'
   move-warning: '&cYou have to login to move!'
+  commands-disabled: '&cYou must log in to use commands!'
   help:
     - '&a----------- | &2[UserLogin Help] &a| -----------'
     - '&2/ul help: &aShows this help list'
     - '&2/ul reload: &aReloads the configurations'
     - '&2/ul set [login|spawn]: &aSets the specified location at your position'
-    - '&2/ul unregister <player>: &aUnregisters the given player (Non-SQL mode only)'
+    - '&2/ul unregister <player>: &aUnregisters the specified player'
     - '&a-----------------------------------------------------'
+other:
+  database-connected: '&eDatabase connected!'
+  database-error: '&cFailed to connect to database, read below:'
+  driver-missing: '&cJDBC driver for database missing: {driver}'
