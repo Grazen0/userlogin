@@ -54,11 +54,11 @@ public class SetCommand extends SubCommand {
         ulPlayer.sendPathMessage(
                 "commands.set",
                 new QuickMap<>("type", (Object) args[0])
-                        .set("x", x)
-                        .set("y", y)
-                        .set("z", "z")
-                        .set("yaw", yaw)
-                        .set("pitch", pitch)
+                        .set("x", (int) x)
+                        .set("y", (int) y)
+                        .set("z", (int) z)
+                        .set("yaw", (int) yaw)
+                        .set("pitch", (int) pitch)
                         .set("world", world)
         );
 
