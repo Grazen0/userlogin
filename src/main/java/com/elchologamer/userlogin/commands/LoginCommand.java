@@ -8,31 +8,28 @@ import com.elchologamer.userlogin.util.extensions.ULPlayer;
 public class LoginCommand extends AuthCommand {
 
     public LoginCommand() {
-        super("login");
+        super("login", AuthType.LOGIN, 1);
     }
 
     @Override
-    protected AuthType authenticate(ULPlayer ulPlayer, String[] args) {
+    protected boolean authenticate(ULPlayer ulPlayer, String[] args) {
         Database db = getPlugin().getDB();
         String password = db.getPassword(ulPlayer.getPlayer().getUniqueId());
 
         // Check if player is registered
         if (password == null) {
-            ulPlayer.sendPathMessage("messages.not-registered");
-            return null;
+            ulPlayer.sendPathMessage("messages.not_registered");
+            return false;
         }
-
-        // Check usage
-        if (args.length != 1) return null;
 
         // Decrypt stored password if needed
         password = PasswordEncryptor.decodeBase64(password);
 
         if (!args[0].equals(password)) {
-            ulPlayer.sendPathMessage("messages.incorrect-password");
-            return null;
+            ulPlayer.sendPathMessage("messages.incorrect_password");
+            return false;
         }
 
-        return AuthType.LOGIN;
+        return true;
     }
 }

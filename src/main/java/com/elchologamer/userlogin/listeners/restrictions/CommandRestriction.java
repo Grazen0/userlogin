@@ -20,7 +20,7 @@ public class CommandRestriction extends Restriction<PlayerCommandPreprocessEvent
         String m = e.getMessage().replaceAll("^/", "");
         if (!m.startsWith("login") && !m.startsWith("register")) {
             e.setCancelled(true);
-            plugin.getPlayer(e.getPlayer()).sendPathMessage("messages.commands-disabled");
+            plugin.getPlayer(e.getPlayer()).sendPathMessage("messages.commands_disabled");
         }
     }
 }

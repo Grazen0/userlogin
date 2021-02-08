@@ -24,10 +24,10 @@ public class AuthenticationEvent extends PlayerEvent implements Cancellable {
         super(player);
         this.type = type;
 
-        String path = "messages." + (type == AuthType.LOGIN ? "logged-in" : "registered");
+        String path = "messages." + (type == AuthType.LOGIN ? "logged_in" : "registered");
         message = Utils.color(UserLogin.getPlugin().getMessage(path));
 
-        String originalMsg = UserLogin.getPlugin().getMessage("messages.login-announcement");
+        String originalMsg = UserLogin.getPlugin().getMessage("messages.login_announcement");
         announcement = Utils.color(originalMsg.replace("{player}", player.getName()));
     }
 

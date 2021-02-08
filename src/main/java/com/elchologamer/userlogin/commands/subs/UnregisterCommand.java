@@ -41,18 +41,18 @@ public class UnregisterCommand extends SubCommand {
         }
 
         if (uuid == null || db.getPassword(uuid) == null) {
-            sender.sendMessage(plugin.getMessage("commands.errors.player-not-found"));
+            sender.sendMessage(plugin.getMessage("commands.errors.player_not_found"));
             return true;
         }
 
         try {
             db.deletePassword(uuid);
 
-            String message = plugin.getMessage("commands.player-unregistered");
+            String message = plugin.getMessage("commands.player_unregistered");
             sender.sendMessage(message.replace("{player}", victim == null ? args[0] : victim.getName()));
         } catch (Exception e) {
             e.printStackTrace();
-            sender.sendMessage(plugin.getMessage("commands.errors.unregister-failed"));
+            sender.sendMessage(plugin.getMessage("commands.errors.unregister_failed"));
         }
 
         return true;

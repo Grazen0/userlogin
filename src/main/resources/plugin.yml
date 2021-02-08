@@ -32,14 +32,11 @@ permissions:
 commands:
   userlogin:
     description: 'The main command for UserLogin'
-    usage: '&cCorrect usage: /userlogin <command> (Use /ul help for more)'
     aliases: [ 'ul' ]
     permission: 'ul.userlogin'
   login:
     description: 'Logs in your user with the given password'
-    usage: '&cCorrect usage: /login <password>'
     permission: 'ul.login'
   register:
     description: 'Registers your user with the given password'
-    usage: '&cCorrect usage: /register <password> <password>'
     permission: 'ul.register'

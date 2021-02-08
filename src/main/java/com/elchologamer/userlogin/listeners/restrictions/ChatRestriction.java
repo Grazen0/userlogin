@@ -18,6 +18,6 @@ public class ChatRestriction extends Restriction<AsyncPlayerChatEvent> {
         if (!shouldRestrict(e)) return;
 
         e.setCancelled(true);
-        plugin.getPlayer(e.getPlayer()).sendPathMessage("messages.chat-disabled");
+        plugin.getPlayer(e.getPlayer()).sendPathMessage("messages.chat_disabled");
     }
 }

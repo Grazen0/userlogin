@@ -16,13 +16,21 @@ import org.bukkit.entity.Player;
 
 public abstract class AuthCommand extends BaseCommand {
 
+    private final AuthType type;
+    private final int minArgs;
     private final UserLogin plugin = UserLogin.getPlugin();
 
-    public AuthCommand(String name) {
-        super(name, true);
+    public AuthCommand(String name, AuthType type) {
+        this(name, type, 0);
     }
 
-    protected abstract AuthType authenticate(ULPlayer player, String[] args);
+    public AuthCommand(String name, AuthType type, int minArgs) {
+        super(name, true);
+        this.type = type;
+        this.minArgs = minArgs;
+    }
+
+    protected abstract boolean authenticate(ULPlayer player, String[] args);
 
     public UserLogin getPlugin() {
         return plugin;
@@ -34,13 +42,15 @@ public abstract class AuthCommand extends BaseCommand {
 
         // Check if player is already logged in
         if (ulPlayer.isLoggedIn()) {
-            ulPlayer.sendPathMessage("messages.already-logged-in");
+            ulPlayer.sendPathMessage("messages.already_logged_in");
             return true;
         }
 
+        // Check usage
+        if (args.length < minArgs) return false;
+
         // Authenticate player
-        AuthType type = authenticate(ulPlayer, args);
-        if (type != null) login(ulPlayer, type);
+        if (authenticate(ulPlayer, args)) login(ulPlayer, type);
 
         return true;
     }

@@ -144,13 +144,13 @@ public final class UserLogin extends JavaPlugin {
                 db.disconnect();
                 db.connect();
                 if (!(db instanceof YamlDB)) {
-                    Utils.log(getMessage("other.database-connected"));
+                    Utils.log(getMessage("other.database_connected"));
                 }
             } catch (Exception e) {
                 if (e instanceof ClassNotFoundException) {
-                    Utils.log(getMessage("other.driver-missing").replace("{driver}", e.getMessage()));
+                    Utils.log(getMessage("other.driver_missing").replace("{driver}", e.getMessage()));
                 } else {
-                    Utils.log(getMessage("other.database-error"));
+                    Utils.log(getMessage("other.database_error"));
                     e.printStackTrace();
                 }
             }

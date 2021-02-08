@@ -27,7 +27,7 @@ public class SubCommandHandler extends BaseCommand {
 
             // Check that player has permission
             if (!sender.hasPermission(subCommand.getPermission())) {
-                sender.sendMessage(plugin.getMessage("commands.errors.no-permission"));
+                sender.sendMessage(plugin.getMessage("commands.errors.no_permission"));
                 return true;
             }
 
@@ -39,6 +39,7 @@ public class SubCommandHandler extends BaseCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+        // TODO - Fix this shit
         List<String> options = new ArrayList<>();
 
         if (args.length == 1) {

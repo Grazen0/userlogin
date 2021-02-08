@@ -29,7 +29,7 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     @Override
     public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
         if (playerOnly && !(sender instanceof Player)) {
-            sender.sendMessage(plugin.getMessage("commands.errors.player-only"));
+            sender.sendMessage(plugin.getMessage("commands.errors.player_only"));
             return true;
         }
 
