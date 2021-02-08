@@ -6,7 +6,6 @@ import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class SubCommandHandler extends BaseCommand {
 
@@ -39,22 +38,23 @@ public class SubCommandHandler extends BaseCommand {
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
-        // TODO - Fix this shit
         List<String> options = new ArrayList<>();
 
         if (args.length == 1) {
-            options = subCommands.stream().map(BaseCommand::getName).collect(Collectors.toList());
+            for (SubCommand subCommand : subCommands) {
+                options.add(subCommand.getName());
+            }
         } else {
             for (SubCommand subCommand : subCommands) {
-                if (subCommand.getName().equals(args[0])) {
-                    options = subCommand.onTabComplete(sender, command, label, getSubArgs(args));
-                    break;
-                }
+                if (!subCommand.getName().equals(args[0])) continue;
+
+                options = subCommand.onTabComplete(sender, command, label, getSubArgs(args));
+                break;
             }
         }
 
         // Filter out list
-        if (options != null) options.removeIf(s -> !args[args.length - 1].startsWith(s));
+        if (options != null) options.removeIf(s -> !s.startsWith(args[args.length - 1]));
 
         return options;
     }
