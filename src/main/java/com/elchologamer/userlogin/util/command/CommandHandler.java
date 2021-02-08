@@ -16,7 +16,6 @@ public class CommandHandler extends BaseCommand {
         super(name);
     }
 
-
     @Override
     public boolean execute(CommandSender sender, Command command, String label, String[] args) {
         if (args.length == 0) return false;
