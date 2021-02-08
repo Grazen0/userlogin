@@ -106,7 +106,6 @@ public final class UserLogin extends JavaPlugin {
 
         PluginDescriptionFile desc = getDescription();
         String version = desc.getVersion();
-        String name = desc.getName();
 
         // Check for updates
         if (getConfig().getBoolean("checkUpdates", true)) {
@@ -117,14 +116,14 @@ public final class UserLogin extends JavaPlugin {
                 if (latest == null) {
                     Utils.log("&cUnable to fetch latest version");
                 } else if (!latest.equalsIgnoreCase(version)) {
-                    Utils.log("&eA new UserLogin version is available! (v" + latest + ")");
+                    Utils.log("&eA new UserLogin version is available! (v%s)", latest);
                 } else {
-                    Utils.log("&aRunning latest version! (v" + version + ")");
+                    Utils.log("&aRunning latest version! (v%s)", version);
                 }
             });
         }
 
-        Utils.log("&a" + name + " v" + version + " enabled!");
+        Utils.log("&a%s v%s enabled!", getName(), version);
     }
 
     public void load() {

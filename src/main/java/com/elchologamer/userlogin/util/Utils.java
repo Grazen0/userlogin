@@ -41,9 +41,11 @@ public abstract class Utils {
         if (plugin.getConfig().getBoolean("debug")) log(s);
     }
 
-    public static void log(Object msg) {
+    public static void log(Object msg, Object... args) {
+        String finalMessage = color(String.format(msg.toString(), args));
+
         plugin.getServer().getConsoleSender().sendMessage(
-                "[" + plugin.getName() + "] " + color(msg.toString())
+                "[" + plugin.getName() + "] " + finalMessage
         );
     }
 
