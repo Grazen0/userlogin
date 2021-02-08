@@ -17,7 +17,7 @@ commands:
     register: '&cUso correcto: /register <password> <password>'
 messages:
   not_registered: '&c¡No estás registrado! Use &a/register <password> <password> &cpara registrarte!'
-  already_registered: '&cYa est\xe1s registrado!'
+  already_registered: '&cYa estás registrado!'
   incorrect_password: '&4Contraseña incorrecta!'
   short_password: '&cTu contraseña debe tener un mínimo de &4{chars} &ccaracteres'
   different_passwords: '&cLas contraseñas no concuerdan!'
