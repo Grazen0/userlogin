@@ -7,12 +7,12 @@ import org.bukkit.command.CommandSender;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SubCommandHandler extends BaseCommand {
+public class CommandHandler extends BaseCommand {
 
     private final UserLogin plugin = UserLogin.getPlugin();
     private final List<SubCommand> subCommands = new ArrayList<>();
 
-    public SubCommandHandler(String name) {
+    public CommandHandler(String name) {
         super(name);
     }
 

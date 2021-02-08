@@ -15,7 +15,7 @@ import com.elchologamer.userlogin.listeners.restrictions.ItemDropRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
 import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.util.command.SubCommandHandler;
+import com.elchologamer.userlogin.util.command.CommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.database.YamlDB;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
@@ -77,7 +77,7 @@ public final class UserLogin extends JavaPlugin {
         } catch (ClassNotFoundException ignored) {
         }
 
-        SubCommandHandler mainCommand = new SubCommandHandler("userlogin");
+        CommandHandler mainCommand = new CommandHandler("userlogin");
 
         // Register sub-commands
         mainCommand.add(new HelpCommand());
