@@ -72,7 +72,9 @@ public class LangManager {
 
     public FileConfiguration getMessages() {
         String langName = plugin.getConfig().getString("lang", "en_US");
-        return langs.get(langName);
+        FileConfiguration lang = langs.get(langName);
+
+        return lang == null ? langs.values().iterator().next() : lang;
     }
 
     public Map<String, FileConfiguration> getLangs() {

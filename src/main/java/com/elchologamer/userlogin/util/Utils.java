@@ -58,7 +58,6 @@ public abstract class Utils {
         try {
             HttpURLConnection con = (HttpURLConnection) new URL(url).openConnection();
             con.setRequestMethod("GET");
-            con.setRequestProperty("User-Agent", "Mozilla/5.0");
 
             InputStream stream = con.getInputStream();
             BufferedReader in = new BufferedReader(new InputStreamReader(stream));

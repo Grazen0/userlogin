@@ -24,14 +24,12 @@ import com.elchologamer.userlogin.util.managers.LocationsManager;
 import com.elchologamer.userlogin.util.managers.PlayerManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class UserLogin extends JavaPlugin {
 
     private static UserLogin plugin;
-    private SubCommandHandler mainCommand;
 
     private PlayerManager playerManager;
     private LangManager langManager;
@@ -55,6 +53,8 @@ public final class UserLogin extends JavaPlugin {
         langManager = new LangManager();
         locationsManager = new LocationsManager();
 
+        langManager.load();
+
         // Plugin messaging setup
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
@@ -72,11 +72,11 @@ public final class UserLogin extends JavaPlugin {
         // Register Item Pickup restriction if class exists
         try {
             Class.forName("org.bukkit.event.entity.EntityPickupItemEvent");
-            registerEvent(new ItemPickupRestriction());
+            new ItemPickupRestriction().register();
         } catch (ClassNotFoundException ignored) {
         }
 
-        mainCommand = new SubCommandHandler("userlogin");
+        SubCommandHandler mainCommand = new SubCommandHandler("userlogin");
 
         // Register sub-commands
         mainCommand.add(new HelpCommand());
@@ -107,12 +107,12 @@ public final class UserLogin extends JavaPlugin {
         String name = desc.getName();
 
         if (getConfig().getBoolean("checkUpdates", true)) {
-            getServer().getScheduler().scheduleSyncDelayedTask(this, () -> {
+            getServer().getScheduler().runTaskAsynchronously(this, () -> {
                 String url = "https://api.spigotmc.org/legacy/update.php?resource=" + pluginID;
                 String latest = Utils.fetch(url);
 
                 if (latest == null) {
-                    Utils.log("&cUnable to get latest version");
+                    Utils.log("&cUnable to fetch latest version");
                     return;
                 }
 
@@ -159,10 +159,6 @@ public final class UserLogin extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    private void registerEvent(Listener listener) {
-        getServer().getPluginManager().registerEvents(listener, this);
     }
 
     public FileConfiguration getMessages() {
