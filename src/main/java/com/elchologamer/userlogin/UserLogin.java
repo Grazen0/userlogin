@@ -59,15 +59,15 @@ public final class UserLogin extends JavaPlugin {
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         // Register event listeners
-        registerEvent(new ChatRestriction());
-        registerEvent(new MovementRestriction());
-        registerEvent(new BlockBreakRestriction());
-        registerEvent(new CommandRestriction());
-        registerEvent(new ItemDropRestriction());
-        registerEvent(new MovementRestriction());
+        new ChatRestriction().register();
+        new MovementRestriction().register();
+        new BlockBreakRestriction().register();
+        new CommandRestriction().register();
+        new ItemDropRestriction().register();
+        new MovementRestriction().register();
 
-        registerEvent(new OnPlayerJoin());
-        registerEvent(new OnPlayerQuit());
+        new OnPlayerJoin().register();
+        new OnPlayerQuit().register();
 
         // Register Item Pickup restriction if class exists
         try {

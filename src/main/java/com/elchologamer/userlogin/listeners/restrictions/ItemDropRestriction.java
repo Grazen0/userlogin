@@ -1,6 +1,7 @@
 package com.elchologamer.userlogin.listeners.restrictions;
 
 import com.elchologamer.userlogin.util.Restriction;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerDropItemEvent;
 
 public class ItemDropRestriction extends Restriction<PlayerDropItemEvent> {
@@ -8,8 +9,8 @@ public class ItemDropRestriction extends Restriction<PlayerDropItemEvent> {
         super("itemDrop");
     }
 
-    @Override
+    @EventHandler
     public void handle(PlayerDropItemEvent e) {
-        e.setCancelled(true);
+        if (shouldRestrict(e)) e.setCancelled(true);
     }
 }

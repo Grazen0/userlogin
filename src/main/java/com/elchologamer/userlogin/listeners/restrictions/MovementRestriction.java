@@ -4,6 +4,7 @@ import com.elchologamer.userlogin.util.Restriction;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.player.PlayerMoveEvent;
 import org.bukkit.util.Vector;
 
@@ -19,8 +20,10 @@ public class MovementRestriction extends Restriction<PlayerMoveEvent> {
         super("movement");
     }
 
-    @Override
+    @EventHandler
     public void handle(PlayerMoveEvent e) {
+        if (!shouldRestrict(e)) return;
+
         Player p = e.getPlayer();
         Location from = e.getFrom();
         Location to = e.getTo();

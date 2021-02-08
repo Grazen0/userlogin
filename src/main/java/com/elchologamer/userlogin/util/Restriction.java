@@ -6,12 +6,10 @@ import org.bukkit.entity.Entity;
 import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.entity.EntityEvent;
 import org.bukkit.event.player.PlayerEvent;
 
-public abstract class Restriction<T extends Event> implements Listener {
+public abstract class Restriction<T extends Event> extends BaseListener {
 
     private final UserLogin plugin = UserLogin.getPlugin();
     protected final String configKey;
@@ -20,29 +18,23 @@ public abstract class Restriction<T extends Event> implements Listener {
         this.configKey = configKey;
     }
 
-    @EventHandler
-    public void onEvent(T e) {
+    public boolean shouldRestrict(T e) {
         boolean enabled = plugin.getConfig().getBoolean("restrictions." + configKey);
+        if (!enabled) return false;
 
         if (e instanceof PlayerEvent) {
             Player p = ((PlayerEvent) e).getPlayer();
-            if (!UserLoginAPI.isLoggedIn(p)) return;
-        } else if (e instanceof EntityEvent) {
-            Entity entity = ((EntityEvent) e).getEntity();
-            if (
-                    !entity.getType().equals(EntityType.PLAYER)
-                            || !UserLoginAPI.isLoggedIn((Player) entity)
-            ) return;
+            return !UserLoginAPI.isLoggedIn(p);
         }
 
-        if (enabled) handle(e);
-    }
+        if (e instanceof EntityEvent) {
+            Entity entity = ((EntityEvent) e).getEntity();
+            return !entity.getType().equals(EntityType.PLAYER)
+                    || !UserLoginAPI.isLoggedIn((Player) entity);
+        }
 
-    public String getConfigKey() {
-        return configKey;
+        return true;
     }
-
-    public abstract void handle(T event);
 
     public UserLogin getPlugin() {
         return plugin;

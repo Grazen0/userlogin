@@ -4,17 +4,17 @@ import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.UserLoginAPI;
 import com.elchologamer.userlogin.api.types.AuthType;
 import com.elchologamer.userlogin.commands.AuthCommand;
+import com.elchologamer.userlogin.util.BaseListener;
 import com.elchologamer.userlogin.util.extensions.QuickMap;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.net.InetSocketAddress;
 
-public class OnPlayerJoin implements Listener {
+public class OnPlayerJoin extends BaseListener {
 
     private final UserLogin plugin = UserLogin.getPlugin();
 

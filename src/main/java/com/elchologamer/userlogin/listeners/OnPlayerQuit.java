@@ -1,19 +1,19 @@
 package com.elchologamer.userlogin.listeners;
 
 import com.elchologamer.userlogin.UserLogin;
+import com.elchologamer.userlogin.util.BaseListener;
 import com.elchologamer.userlogin.util.CustomConfig;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
 
 import java.net.InetSocketAddress;
 import java.util.UUID;
 
-public class OnPlayerQuit implements Listener {
+public class OnPlayerQuit extends BaseListener {
 
     private final UserLogin plugin = UserLogin.getPlugin();
 

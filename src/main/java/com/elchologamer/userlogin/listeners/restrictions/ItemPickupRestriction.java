@@ -1,6 +1,7 @@
 package com.elchologamer.userlogin.listeners.restrictions;
 
 import com.elchologamer.userlogin.util.Restriction;
+import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityPickupItemEvent;
 
 public class ItemPickupRestriction extends Restriction<EntityPickupItemEvent> {
@@ -9,8 +10,8 @@ public class ItemPickupRestriction extends Restriction<EntityPickupItemEvent> {
         super("itemPickup");
     }
 
-    @Override
+    @EventHandler
     public void handle(EntityPickupItemEvent e) {
-        e.setCancelled(true);
+        if (shouldRestrict(e)) e.setCancelled(true);
     }
 }

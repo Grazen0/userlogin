@@ -34,6 +34,8 @@ public class CustomConfig {
     public void saveDefault() {
         if (file.exists()) return;
 
+        plugin.getDataFolder().mkdir();
+
         try (InputStream in = plugin.getResource(path)) {
             if (in != null) {
                 Files.copy(in, file.toPath());
