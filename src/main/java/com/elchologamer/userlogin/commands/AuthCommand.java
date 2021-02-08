@@ -6,7 +6,7 @@ import com.elchologamer.userlogin.api.event.AuthenticationEvent;
 import com.elchologamer.userlogin.api.types.AuthType;
 import com.elchologamer.userlogin.util.command.BaseCommand;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
-import com.elchologamer.userlogin.util.manager.LocationsManager;
+import com.elchologamer.userlogin.util.managers.LocationsManager;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;

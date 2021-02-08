@@ -1,4 +1,4 @@
-package com.elchologamer.userlogin.util.manager;
+package com.elchologamer.userlogin.util.managers;
 
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.CustomConfig;

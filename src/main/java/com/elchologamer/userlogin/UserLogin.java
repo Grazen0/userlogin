@@ -19,9 +19,9 @@ import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.SubCommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
-import com.elchologamer.userlogin.util.manager.LangManager;
-import com.elchologamer.userlogin.util.manager.LocationsManager;
-import com.elchologamer.userlogin.util.manager.PlayerManager;
+import com.elchologamer.userlogin.util.managers.LangManager;
+import com.elchologamer.userlogin.util.managers.LocationsManager;
+import com.elchologamer.userlogin.util.managers.PlayerManager;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
@@ -31,11 +31,11 @@ import org.bukkit.plugin.java.JavaPlugin;
 public final class UserLogin extends JavaPlugin {
 
     private static UserLogin plugin;
-    private final SubCommandHandler mainCommand = new SubCommandHandler("userlogin");
+    private SubCommandHandler mainCommand;
 
-    private final PlayerManager playerManager = new PlayerManager();
-    private final LangManager langManager = new LangManager();
-    private final LocationsManager locationsManager = new LocationsManager();
+    private PlayerManager playerManager;
+    private LangManager langManager;
+    private LocationsManager locationsManager;
 
     private final int pluginID = 80669;
     private final int bStatsID = 8586;
@@ -49,6 +49,11 @@ public final class UserLogin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+
+        // Initialize managers
+        playerManager = new PlayerManager();
+        langManager = new LangManager();
+        locationsManager = new LocationsManager();
 
         // Plugin messaging setup
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -70,6 +75,8 @@ public final class UserLogin extends JavaPlugin {
             registerEvent(new ItemPickupRestriction());
         } catch (ClassNotFoundException ignored) {
         }
+
+        mainCommand = new SubCommandHandler("userlogin");
 
         // Register sub-commands
         mainCommand.add(new HelpCommand());
