@@ -108,7 +108,7 @@ public final class UserLogin extends JavaPlugin {
         String version = desc.getVersion();
         String name = desc.getName();
 
-        // Check for new versions
+        // Check for updates
         if (getConfig().getBoolean("checkUpdates", true)) {
             getServer().getScheduler().runTaskAsynchronously(this, () -> {
                 String url = "https://api.spigotmc.org/legacy/update.php?resource=" + pluginID;
@@ -116,10 +116,7 @@ public final class UserLogin extends JavaPlugin {
 
                 if (latest == null) {
                     Utils.log("&cUnable to fetch latest version");
-                    return;
-                }
-
-                if (!latest.equalsIgnoreCase(version)) {
+                } else if (!latest.equalsIgnoreCase(version)) {
                     Utils.log("&eA new UserLogin version is available! (v" + latest + ")");
                 } else {
                     Utils.log("&aRunning latest version! (v" + version + ")");

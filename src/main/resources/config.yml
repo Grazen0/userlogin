@@ -115,8 +115,8 @@ database:
     file: 'playerData.yml'
 
 
-  # To use SQL, the specified database must already exist,
-  # the plugin will NOT create it.
+  # To use anything SQL-based, the specified database
+  # must already exist, the plugin will NOT create it.
 
   mysql:
     ssl: false
@@ -133,7 +133,7 @@ database:
     port: 5432
     username: 'root'
     password: 'password'
-    database: 'userlogin_data' # Database must be created manually
+    database: 'userlogin_data'
     table: 'player_data'
 
   mariadb:
