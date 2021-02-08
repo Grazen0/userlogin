@@ -93,13 +93,15 @@ public final class UserLogin extends JavaPlugin {
         load();
 
         // bStats setup
-        Metrics metrics = new Metrics(this, bStatsID);
-        metrics.addCustomChart(new Metrics.SimplePie("data_type",
-                () -> getConfig().getString("database.type", "yaml").toLowerCase())
-        );
-        metrics.addCustomChart(new Metrics.SimplePie("lang",
-                () -> getConfig().getString("lang", "en_US"))
-        );
+        if (!getConfig().getBoolean("debug")) {
+            Metrics metrics = new Metrics(this, bStatsID);
+            metrics.addCustomChart(new Metrics.SimplePie("data_type",
+                    () -> getConfig().getString("database.type", "yaml").toLowerCase())
+            );
+            metrics.addCustomChart(new Metrics.SimplePie("lang",
+                    () -> getConfig().getString("lang", "en_US"))
+            );
+        }
 
 
         PluginDescriptionFile desc = getDescription();
