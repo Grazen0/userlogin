@@ -90,6 +90,9 @@ public abstract class SQLDatabase extends Database {
     }
 
     protected PreparedStatement prepareSQL(String sql, Object... params) throws SQLException {
+        if (connection == null)
+            throw new SQLException("Tried to query database, but connection isn't available");
+
         PreparedStatement statement = connection.prepareStatement(sql);
 
         for (int i = 0; i < params.length; i++) {
