@@ -12,7 +12,7 @@ commands:
     login: 'Te logea al servidor con la contraseña ingresada'
     register: 'Te registra con la contraseña ingresada'
   usages:
-    userlogin: '&cUso correcto: /userlogin [command] (Usa &4/ul help &para m\xe1s)'
+    userlogin: '&cUso correcto: /userlogin [command] (Usa /ul help para más)'
     login: '&cUso correcto: /login <password>'
     register: '&cUso correcto: /register <password> <password>'
 messages:
