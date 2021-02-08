@@ -64,7 +64,7 @@ restrictions:
   itemPickup: false
 
 
-# Enable/disable speficic teleports
+# Enable/disable specific teleports
 teleports:
 
   # Save players' position on logout
