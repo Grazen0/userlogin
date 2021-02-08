@@ -41,6 +41,6 @@ messages:
     - '&2/ul unregister <player>: &aElimina el registro del jugador dado'
     - '&a-----------------------------------------------------'
 other:
-  database_connected: '&Base de datos conectada!'
+  database_connected: '&bBase de datos conectada!'
   database_error: '&cError al conectar a la base de datos, lea abajo:'
   driver_missing: '&cDriver JDBC para la base de datos no encontrado: {driver}'
