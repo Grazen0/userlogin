@@ -15,7 +15,8 @@ public class MySQL extends SQLDatabase {
 
     @Override
     protected Connection getConnection() throws SQLException {
-        ConfigurationSection section = getPlugin().getConfig().getConfigurationSection("database.mysql");
+        ConfigurationSection section = getPlugin().getConfig()
+                .getConfigurationSection("database.mysql");
         assert section != null;
 
         String host = section.getString("host", "localhost");

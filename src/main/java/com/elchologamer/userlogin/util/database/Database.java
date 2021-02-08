@@ -2,7 +2,6 @@ package com.elchologamer.userlogin.util.database;
 
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.util.database.sql.MariaDB;
 import com.elchologamer.userlogin.util.database.sql.MySQL;
 import com.elchologamer.userlogin.util.database.sql.PostgreSQL;
 import com.elchologamer.userlogin.util.database.sql.SQLite;
@@ -22,9 +21,6 @@ public abstract class Database {
             case "postgresql":
             case "postgres":
                 return new PostgreSQL();
-            case "mariadb":
-            case "maria":
-                return new MariaDB();
             case "sqlite":
                 return new SQLite();
             case "mongodb":

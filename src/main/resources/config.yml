@@ -108,16 +108,21 @@ bungeeCord:
 database:
 
   # Database type.
-  # One of: 'yaml', 'mysql', 'postgresql', 'mariadb', 'sqlite', 'mongodb'
+  # One of: 'yaml', 'mysql', 'postgresql', 'sqlite', 'mongodb'
   type: 'yaml'
 
   yaml:
     file: 'playerData.yml'
 
+  mongodb:
+    uri: 'mongodb://localhost:27017'
+    database: 'userlogin'
+    collection: 'players'
 
   # To use anything SQL-based, the specified database
   # must already exist, the plugin will NOT create it.
 
+  # The MySQL implementation also supports MariaDB
   mysql:
     ssl: false
     host: 'localhost'
@@ -136,20 +141,6 @@ database:
     database: 'userlogin_data'
     table: 'player_data'
 
-  mariadb:
-    ssl: false
-    host: 'localhost'
-    port: 3306
-    username: 'root'
-    password: 'password'
-    database: 'userlogin_data'
-    table: 'player_data'
-
   sqlite:
     database: 'C:/sqlite/db/userlogin.db'
     table: 'player_data'
-
-  mongodb:
-    uri: 'mongodb://localhost:27017'
-    database: 'userlogin'
-    collection: 'players'
