@@ -24,43 +24,35 @@ public class LangManager {
         String[] langs = {"en_US", "es_ES"};
 
         for (String lang : langs) {
-            String filename = lang + ".yml";
-            File file = new File(folder, filename);
+            try {
+                String filename = lang + ".yml";
+                File file = new File(folder, filename);
 
-            InputStream stream = plugin.getResource("lang/" + filename);
-            if (stream == null) continue;
+                // Load lang from plugin resource
+                InputStream stream = plugin.getResource("lang/" + filename);
+                if (stream == null) continue;
 
-            InputStreamReader reader = new InputStreamReader(stream);
-            FileConfiguration resourceConfig = YamlConfiguration.loadConfiguration(reader);
+                InputStreamReader reader = new InputStreamReader(stream);
+                FileConfiguration resourceConfig = YamlConfiguration.loadConfiguration(reader);
 
-            // Add missing keys to existing files
-            if (file.exists()) {
                 FileConfiguration config = YamlConfiguration.loadConfiguration(file);
 
+                // Add missing keys
                 for (String key : resourceConfig.getKeys(true)) {
-                    if (config.get(key) == null) {
-                        config.set(key, resourceConfig.get(key));
+                    Object value = resourceConfig.get(key);
+                    config.addDefault(key, value);
+
+                    // Backwards compatibility
+                    String oldKey = key.replace("_", "-");
+
+                    if (!oldKey.equals(key)) {
+                        config.set(key, config.get(oldKey));
+                        config.set(oldKey, null);
                     }
                 }
 
-                try {
-                    config.save(file);
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            FileConfiguration config = YamlConfiguration.loadConfiguration(file);
-
-
-            // Add default values from resource
-            for (String key : resourceConfig.getKeys(true)) {
-                config.addDefault(key, resourceConfig.get(key));
-            }
-
-            config.options().copyDefaults(true);
-
-            try {
+                // Save defaults
+                config.options().copyDefaults(true);
                 config.save(file);
             } catch (IOException e) {
                 e.printStackTrace();

@@ -177,7 +177,7 @@ public final class UserLogin extends JavaPlugin {
     public String getMessage(String path, String def) {
         FileConfiguration config = getMessages();
 
-        String message = config.getString(path);
+        String message = config.getString(path, config.getString(path.replace("_", "-")));
         return message == null ? def : Utils.color(message);
     }
 
