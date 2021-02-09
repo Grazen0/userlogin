@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.commands;
 
 import com.elchologamer.userlogin.api.types.AuthType;
-import com.elchologamer.userlogin.util.PasswordEncryptor;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.extensions.QuickMap;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
@@ -26,11 +25,11 @@ public class RegisterCommand extends AuthCommand {
             return false;
         }
 
-        // Check that password is over the minimum amount of characters
         String password = args[0];
         FileConfiguration config = getPlugin().getConfig();
         int minChars = config.getInt("password.minCharacters", 0);
 
+        // Check password length
         if (password.length() < minChars) {
             ulPlayer.sendPathMessage(
                     "messages.short_password",
@@ -44,10 +43,6 @@ public class RegisterCommand extends AuthCommand {
             ulPlayer.sendPathMessage("messages.different_passwords");
             return false;
         }
-
-        // Encrypt password if enabled
-        if (config.getBoolean("password.encrypt"))
-            password = PasswordEncryptor.encodeBase64(password);
 
         try {
             db.createPassword(uuid, password);

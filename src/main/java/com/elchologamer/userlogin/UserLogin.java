@@ -134,7 +134,7 @@ public final class UserLogin extends JavaPlugin {
         langManager.load();
 
         // Cancel all plugin tasks
-        getServer().getScheduler().cancelTasks(plugin);
+        getServer().getScheduler().cancelTasks(this);
         playerManager.clear();
 
         // Disconnect from database

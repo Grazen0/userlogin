@@ -1,9 +1,10 @@
 package com.elchologamer.userlogin.commands;
 
 import com.elchologamer.userlogin.api.types.AuthType;
-import com.elchologamer.userlogin.util.PasswordEncryptor;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
+
+import java.util.UUID;
 
 public class LoginCommand extends AuthCommand {
 
@@ -13,19 +14,17 @@ public class LoginCommand extends AuthCommand {
 
     @Override
     protected boolean authenticate(ULPlayer ulPlayer, String[] args) {
+        UUID uuid = ulPlayer.getPlayer().getUniqueId();
         Database db = getPlugin().getDB();
-        String password = db.getPassword(ulPlayer.getPlayer().getUniqueId());
 
         // Check if player is registered
-        if (password == null) {
+        if (!db.isRegistered(uuid)) {
             ulPlayer.sendPathMessage("messages.not_registered");
             return false;
         }
 
-        // Decrypt stored password if needed
-        password = PasswordEncryptor.decodeBase64(password);
-
-        if (!args[0].equals(password)) {
+        // Authenticate passwords
+        if (!db.comparePasswords(uuid, args[0])) {
             ulPlayer.sendPathMessage("messages.incorrect_password");
             return false;
         }

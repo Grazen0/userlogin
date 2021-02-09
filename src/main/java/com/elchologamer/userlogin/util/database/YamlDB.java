@@ -22,24 +22,24 @@ public class YamlDB extends Database {
     }
 
     @Override
-    public String getPassword(UUID uuid) {
+    public String getRawPassword(UUID uuid) {
         return playerData.get().getString(uuid.toString());
     }
 
     @Override
-    public void createPassword(UUID uuid, String password) {
-        updatePassword(uuid, password);
+    public void createRawPassword(UUID uuid, String password) {
+        updateRawPassword(uuid, password);
     }
 
     @Override
-    public void updatePassword(UUID uuid, String password) {
+    public void updateRawPassword(UUID uuid, String password) {
         playerData.get().set(uuid.toString(), password);
         playerData.save();
     }
 
     @Override
     public void deletePassword(UUID uuid) {
-        updatePassword(uuid, null);
+        updateRawPassword(uuid, null);
     }
 
     @Override
