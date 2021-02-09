@@ -14,6 +14,7 @@ import com.elchologamer.userlogin.listeners.restrictions.CommandRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemDropRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
+import com.elchologamer.userlogin.util.FastLoginHook;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.CommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
@@ -22,6 +23,7 @@ import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import com.elchologamer.userlogin.util.managers.LangManager;
 import com.elchologamer.userlogin.util.managers.LocationsManager;
 import com.elchologamer.userlogin.util.managers.PlayerManager;
+import com.github.games647.fastlogin.bukkit.FastLoginBukkit;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -49,6 +51,9 @@ public final class UserLogin extends JavaPlugin {
     public void onEnable() {
         plugin = this;
 
+        // Plugin messaging setup
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
         // Initialize managers
         playerManager = new PlayerManager();
         langManager = new LangManager();
@@ -56,8 +61,12 @@ public final class UserLogin extends JavaPlugin {
 
         langManager.load();
 
-        // Plugin messaging setup
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+        // Register FastLogin hook if enabled
+        if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
+            FastLoginBukkit fastLogin = JavaPlugin.getPlugin(FastLoginBukkit.class);
+            fastLogin.getCore().setAuthPluginHook(new FastLoginHook());
+            Utils.log("&6Registered FastLogin hook!");
+        }
 
         // Register event listeners
         new ChatRestriction().register();
@@ -204,5 +213,4 @@ public final class UserLogin extends JavaPlugin {
     public PlayerManager getPlayerManager() {
         return playerManager;
     }
-
 }
