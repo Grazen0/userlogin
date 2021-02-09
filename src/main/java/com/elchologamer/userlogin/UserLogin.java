@@ -137,11 +137,19 @@ public final class UserLogin extends JavaPlugin {
         getServer().getScheduler().cancelTasks(plugin);
         playerManager.clear();
 
+        // Disconnect from database
+        if (db != null) {
+            try {
+                db.disconnect();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+
         db = Database.select(); // Select database
 
         getServer().getScheduler().runTaskAsynchronously(this, () -> {
             try {
-                db.disconnect();
                 db.connect();
                 if (!(db instanceof YamlDB)) {
                     Utils.log(getMessage("other.database_connected"));
