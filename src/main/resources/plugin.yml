@@ -2,8 +2,9 @@ name: 'UserLogin'
 version: '${project.version}'
 main: 'com.elchologamer.userlogin.UserLogin'
 author: 'ElCholoGamer'
-description: 'A login security system for your server'
+description: 'A simple-to-use authentication system.'
 website: 'https://www.spigotmc.org/resources/userlogin.80669/'
+softdepend: [ 'FastLogin' ]
 
 permissions:
   ul.*:
