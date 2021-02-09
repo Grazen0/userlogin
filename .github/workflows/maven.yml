@@ -15,6 +15,7 @@ jobs:
         run: mvn install:install-file \
           -Dfile=lib/FastLogin.jar \
           -DgroupId=com.github.games647 \
+          -DartifactId=fastlogin \
           -Dversion=1.10 \
           -Dpackaging=jar \
           -DgeneratePom=true
