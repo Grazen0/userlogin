@@ -39,7 +39,7 @@ public class MongoDB extends Database {
     }
 
     @Override
-    public String getPassword(UUID uuid) {
+    public String getRawPassword(UUID uuid) {
         Bson filter = Filters.eq("_id", uuid.toString());
         Document doc = collection.find(filter).first();
         if (doc == null) return null;
@@ -48,13 +48,13 @@ public class MongoDB extends Database {
     }
 
     @Override
-    public void createPassword(UUID uuid, String password) {
+    public void createRawPassword(UUID uuid, String password) {
         Document doc = new Document("_id", uuid.toString()).append("password", password);
         collection.insertOne(doc);
     }
 
     @Override
-    public void updatePassword(UUID uuid, String password) {
+    public void updateRawPassword(UUID uuid, String password) {
         Bson filter = Filters.eq("_id", uuid.toString());
         Bson update = new Document("$set", new Document("password", password));
 

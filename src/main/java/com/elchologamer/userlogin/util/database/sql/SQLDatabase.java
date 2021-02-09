@@ -46,7 +46,7 @@ public abstract class SQLDatabase extends Database {
     protected abstract Connection getConnection() throws SQLException;
 
     @Override
-    public String getPassword(UUID uuid) {
+    public String getRawPassword(UUID uuid) {
         try {
             ResultSet set = query(
                     "SELECT password FROM " + table + " WHERE uuid=?",
@@ -62,7 +62,7 @@ public abstract class SQLDatabase extends Database {
     }
 
     @Override
-    public void createPassword(UUID uuid, String password) throws SQLException {
+    public void createRawPassword(UUID uuid, String password) throws SQLException {
         update(
                 "INSERT INTO " + table + " (uuid,password) VALUES (?,?)",
                 uuid, password
@@ -70,7 +70,7 @@ public abstract class SQLDatabase extends Database {
     }
 
     @Override
-    public void updatePassword(UUID uuid, String password) throws SQLException {
+    public void updateRawPassword(UUID uuid, String password) throws SQLException {
         update(
                 "UPDATE " + table + " SET password=? WHERE uuid=?",
                 password, uuid

@@ -40,7 +40,7 @@ public class UnregisterCommand extends SubCommand {
         } catch (UnsupportedEncodingException ignored) {
         }
 
-        if (uuid == null || db.getPassword(uuid) == null) {
+        if (uuid == null || !db.isRegistered(uuid)) {
             sender.sendMessage(plugin.getMessage("commands.errors.player_not_found"));
             return true;
         }
