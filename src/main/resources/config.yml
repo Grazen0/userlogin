@@ -34,8 +34,10 @@ timeout:
 # Password options
 password:
 
-  # Encrypt passwords when saving them to database. (RECOMMENDED)
-  encrypt: false
+  # Optionally add extra salt rounds to
+  # the password encryption method
+  # (The initial value, without extra, is 10)
+  extraSalt: 0
 
   # Minimum characters that a password must have
   minCharacters: 4
@@ -100,7 +102,7 @@ bungeeCord:
   # Enable BungeeCord functionalities
   enabled: false
 
-  # Server to send the player when logged in
+  # Server to send the player to, when logged in
   spawnServer: 'LOBBY'
 
 
@@ -108,7 +110,7 @@ bungeeCord:
 database:
 
   # Database type.
-  # One of: 'yaml', 'mysql', 'postgresql', 'sqlite', 'mongodb'
+  # One of: 'yaml', 'mongodb', 'mysql', 'postgresql', 'sqlite'
   type: 'yaml'
 
   yaml:
@@ -122,7 +124,7 @@ database:
   # To use anything SQL-based, the specified database
   # must already exist, the plugin will NOT create it.
 
-  # The MySQL implementation also supports MariaDB
+  # (The MySQL implementation also supports MariaDB)
   mysql:
     ssl: false
     host: 'localhost'
