@@ -3,6 +3,9 @@ package com.elchologamer.userlogin.util;
 import com.elchologamer.userlogin.UserLogin;
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 
@@ -10,9 +13,12 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Arrays;
+import java.util.UUID;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -72,6 +78,33 @@ public abstract class Utils {
 
             return result.toString();
         } catch (IOException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    public static UUID fetchPlayerUUID(String name) {
+        try {
+            String url = "https://api.mojang.com/users/profiles/minecraft/" + URLEncoder.encode(name, "UTF-8");
+            String res = Utils.fetch(url);
+            if (res == null) return null;
+
+            JsonElement base = new JsonParser().parse(res);
+            if (base == null || base.isJsonNull()) return null;
+
+            JsonObject data = base.getAsJsonObject();
+            if (!data.has("id")) return null;
+
+            // Found this solution here:
+            // https://stackoverflow.com/questions/18986712/creating-a-uuid-from-a-string-with-no-dashes
+            String uuidString = data.get("id").getAsString()
+                    .replaceFirst(
+                            "(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)",
+                            "$1-$2-$3-$4-$5"
+                    );
+
+            return UUID.fromString(uuidString);
+        } catch (UnsupportedEncodingException e) {
             e.printStackTrace();
             return null;
         }

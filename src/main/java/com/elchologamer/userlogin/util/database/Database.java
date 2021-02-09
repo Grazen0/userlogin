@@ -17,7 +17,7 @@ public abstract class Database {
     private static final UserLogin plugin = UserLogin.getPlugin();
 
     private final BCrypt.Hasher hasher = BCrypt.withDefaults();
-    private final BCrypt.Verifyer verifyer = BCrypt.verifyer();
+    private final BCrypt.Verifyer verifier = BCrypt.verifyer();
 
     public static Database select() {
         String type = plugin.getConfig().getString("database.type", "yaml");
@@ -77,7 +77,7 @@ public abstract class Database {
             return rawPassword.equals(otherPassword);
         }
 
-        BCrypt.Result result = verifyer.verify(otherPassword.toCharArray(), rawPassword);
+        BCrypt.Result result = verifier.verify(otherPassword.toCharArray(), rawPassword);
         return result.verified;
     }
 

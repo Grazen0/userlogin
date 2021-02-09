@@ -33,12 +33,7 @@ public class UnregisterCommand extends SubCommand {
 
         // Try getting player directly from server
         Player victim = sender.getServer().getPlayer(args[0]);
-        UUID uuid = null;
-
-        try {
-            uuid = victim == null ? getUuidFromAPI(args[0]) : victim.getUniqueId();
-        } catch (UnsupportedEncodingException ignored) {
-        }
+        UUID uuid = victim == null ? Utils.fetchPlayerUUID(args[0]) : victim.getUniqueId();
 
         if (uuid == null || !db.isRegistered(uuid)) {
             sender.sendMessage(plugin.getMessage("commands.errors.player_not_found"));
@@ -56,28 +51,6 @@ public class UnregisterCommand extends SubCommand {
         }
 
         return true;
-    }
-
-    private UUID getUuidFromAPI(String name) throws UnsupportedEncodingException {
-        String url = "https://api.mojang.com/users/profiles/minecraft/" + URLEncoder.encode(name, "UTF-8");
-        String res = Utils.fetch(url);
-        if (res == null) return null;
-
-        JsonElement base = new JsonParser().parse(res);
-        if (base == null || base.isJsonNull()) return null;
-
-        JsonObject data = base.getAsJsonObject();
-        if (!data.has("id")) return null;
-
-        // Found this solution here:
-        // https://stackoverflow.com/questions/18986712/creating-a-uuid-from-a-string-with-no-dashes
-        String uuidString = data.get("id").getAsString()
-                .replaceFirst(
-                        "(\\p{XDigit}{8})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}{4})(\\p{XDigit}+)",
-                        "$1-$2-$3-$4-$5"
-                );
-
-        return UUID.fromString(uuidString);
     }
 
     @Override
