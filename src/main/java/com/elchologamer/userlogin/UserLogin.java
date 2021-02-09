@@ -65,7 +65,7 @@ public final class UserLogin extends JavaPlugin {
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
             FastLoginBukkit fastLogin = JavaPlugin.getPlugin(FastLoginBukkit.class);
             fastLogin.getCore().setAuthPluginHook(new FastLoginHook());
-            Utils.log("&6Registered FastLogin hook!");
+            Utils.log("&6FastLogin hook registered!");
         }
 
         // Register event listeners
