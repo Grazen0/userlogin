@@ -8,7 +8,7 @@ import com.elchologamer.userlogin.commands.subs.SetCommand;
 import com.elchologamer.userlogin.commands.subs.UnregisterCommand;
 import com.elchologamer.userlogin.listeners.OnPlayerJoin;
 import com.elchologamer.userlogin.listeners.OnPlayerQuit;
-import com.elchologamer.userlogin.listeners.restrictions.BlockBreakRestriction;
+import com.elchologamer.userlogin.listeners.restrictions.BlockBreakingRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ChatRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.CommandRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemDropRestriction;
@@ -65,13 +65,13 @@ public final class UserLogin extends JavaPlugin {
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
             FastLoginBukkit fastLogin = JavaPlugin.getPlugin(FastLoginBukkit.class);
             fastLogin.getCore().setAuthPluginHook(new FastLoginHook());
-            Utils.log("&6FastLogin hook registered!");
+            Utils.log("FastLogin hook registered");
         }
 
         // Register event listeners
         new ChatRestriction().register();
         new MovementRestriction().register();
-        new BlockBreakRestriction().register();
+        new BlockBreakingRestriction().register();
         new CommandRestriction().register();
         new ItemDropRestriction().register();
         new MovementRestriction().register();
@@ -132,7 +132,7 @@ public final class UserLogin extends JavaPlugin {
             });
         }
 
-        Utils.log("&a%s v%s enabled!", getName(), version);
+        Utils.log("%s v%s enabled", getName(), version);
     }
 
     public void load() {
@@ -144,7 +144,7 @@ public final class UserLogin extends JavaPlugin {
 
         // Cancel all plugin tasks
         getServer().getScheduler().cancelTasks(this);
-        playerManager.clear();
+        playerManager.values().forEach(p -> p.setIP(null));
 
         // Disconnect from database
         if (db != null) {
