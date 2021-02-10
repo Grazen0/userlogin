@@ -45,25 +45,15 @@ password:
 
 # Restrictions for non-logged in players
 restrictions:
-
-  # Chat messages
   chat: false
-
-  # Command execution
   commands: false
-
-  # Player movement
-  movement: false
-  moveWarnFrequency: 20 # Move warning frequency (-1 to disable)
-
-  # Block breaking
-  blockBreak: false
-
-  # Drop items
+  blockBreaking: false
+  blockPlacing: false
   itemDrop: false
-
-  # Pick up items (1.12+ only)
-  itemPickup: false
+  itemPickup: false # 1.12+ only
+  movement:
+    enabled: false
+    warnFrequency: 20 # Use -1 to disable
 
 
 # Enable/disable specific teleports

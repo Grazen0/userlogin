@@ -2,6 +2,7 @@ package com.elchologamer.userlogin.util.database;
 
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.util.CustomConfig;
+import org.bukkit.configuration.file.FileConfiguration;
 
 import java.util.UUID;
 
@@ -23,7 +24,8 @@ public class YamlDB extends Database {
 
     @Override
     public String getRawPassword(UUID uuid) {
-        return playerData.get().getString(uuid.toString());
+        FileConfiguration config = playerData.get();
+        return config.getString(uuid.toString(), config.getString(uuid + ".password"));
     }
 
     @Override
