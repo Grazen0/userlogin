@@ -17,17 +17,6 @@ public class PlayerManager extends HashMap<UUID, ULPlayer> implements Listener {
         plugin.getServer().getPluginManager().registerEvents(this, plugin);
     }
 
-    @Override
-    public void clear() {
-        for (ULPlayer p : values()) {
-            p.cancelTimeout();
-            p.cancelRepeatingMessage();
-            p.setIP(null);
-        }
-
-        super.clear();
-    }
-
     public ULPlayer get(Player player) {
         UUID uuid = player.getUniqueId();
         if (containsKey(uuid)) return super.get(uuid);
