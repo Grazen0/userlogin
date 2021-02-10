@@ -4,14 +4,21 @@ import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.types.AuthType;
 import com.elchologamer.userlogin.commands.AuthCommand;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
+import com.github.games647.fastlogin.bukkit.FastLoginBukkit;
 import com.github.games647.fastlogin.core.hooks.AuthPlugin;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.UUID;
 
 public class FastLoginHook implements AuthPlugin<Player> {
 
     private final UserLogin plugin = UserLogin.getPlugin();
+
+    public void register() {
+        FastLoginBukkit fastLogin = JavaPlugin.getPlugin(FastLoginBukkit.class);
+        fastLogin.getCore().setAuthPluginHook(new FastLoginHook());
+    }
 
     @Override
     public boolean forceLogin(Player player) {
