@@ -26,7 +26,7 @@ public class AuthenticationEvent extends Event implements Cancellable {
 		this.player = player;
         this.type = type;
 
-        String path = "messages." + (type == AuthType.LOGIN ? "logged_in" : "registered");
+        String path = "messages." + type.getMessageKey();
         message = Utils.color(UserLogin.getPlugin().getMessage(path));
 
         String originalMsg = UserLogin.getPlugin().getMessage("messages.login_announcement");
