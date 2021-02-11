@@ -19,12 +19,10 @@ import com.elchologamer.userlogin.util.FastLoginHook;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.CommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
-import com.elchologamer.userlogin.util.database.YamlDB;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import com.elchologamer.userlogin.util.managers.LangManager;
 import com.elchologamer.userlogin.util.managers.LocationsManager;
 import com.elchologamer.userlogin.util.managers.PlayerManager;
-import com.github.games647.fastlogin.bukkit.FastLoginBukkit;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -162,7 +160,7 @@ public final class UserLogin extends JavaPlugin {
         getServer().getScheduler().runTaskAsynchronously(this, () -> {
             try {
                 db.connect();
-                if (!(db instanceof YamlDB)) {
+                if (db.logConnected()) {
                     Utils.log(getMessage("other.database_connected"));
                 }
             } catch (Exception e) {

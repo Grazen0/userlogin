@@ -16,8 +16,17 @@ public abstract class Database {
 
     private static final UserLogin plugin = UserLogin.getPlugin();
 
+    private final boolean logConnected;
     private final BCrypt.Hasher hasher = BCrypt.withDefaults();
     private final BCrypt.Verifyer verifier = BCrypt.verifyer();
+
+    public Database() {
+        this(true);
+    }
+
+    public Database(boolean logConnected) {
+        this.logConnected = logConnected;
+    }
 
     public static Database select() {
         String type = plugin.getConfig().getString("database.type", "yaml");
@@ -108,5 +117,9 @@ public abstract class Database {
 
     public UserLogin getPlugin() {
         return plugin;
+    }
+
+    public boolean logConnected() {
+        return logConnected;
     }
 }
