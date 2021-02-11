@@ -42,6 +42,11 @@ password:
   # Minimum characters that a password must have
   minCharacters: 4
 
+  # Maximum characters for a password.
+  # This will also be the maximum length
+  # for the VARCHAR data type in SQL storage.
+  maxCharacters: 128
+
 
 # Restrictions for non-logged in players
 restrictions:
