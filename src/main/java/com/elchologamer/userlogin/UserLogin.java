@@ -106,7 +106,7 @@ public final class UserLogin extends JavaPlugin {
         // bStats setup
         if (!getConfig().getBoolean("debug")) {
             Metrics metrics = new Metrics(this, bStatsID);
-            metrics.addCustomChart(new Metrics.SimplePie("data_type",
+            metrics.addCustomChart(new Metrics.SimplePie("storage_type",
                     () -> getConfig().getString("database.type", "yaml").toLowerCase())
             );
             metrics.addCustomChart(new Metrics.SimplePie("lang",
