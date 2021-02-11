@@ -12,7 +12,7 @@ import java.util.UUID;
 public abstract class SQLDatabase extends Database {
 
     private final String name;
-    protected Connection connection;
+    private Connection connection;
     private final String driver;
     private final String table;
     private final String database;

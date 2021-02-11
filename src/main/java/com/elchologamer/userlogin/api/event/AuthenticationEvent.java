@@ -7,13 +7,14 @@ import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
 import org.bukkit.event.HandlerList;
-import org.bukkit.event.player.PlayerEvent;
+import org.bukkit.event.Event;
 
-public class AuthenticationEvent extends PlayerEvent implements Cancellable {
+public class AuthenticationEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLER_LIST = new HandlerList();
     private boolean cancelled = false;
 
+	private final Player player;
     private final AuthType type;
     private Location destination = null;
     private String targetServer = null;
@@ -21,7 +22,8 @@ public class AuthenticationEvent extends PlayerEvent implements Cancellable {
     private String announcement;
 
     private AuthenticationEvent(Player player, AuthType type) {
-        super(player);
+        super(true);
+		this.player = player;
         this.type = type;
 
         String path = "messages." + (type == AuthType.LOGIN ? "logged_in" : "registered");
@@ -59,6 +61,10 @@ public class AuthenticationEvent extends PlayerEvent implements Cancellable {
     public void setCancelled(boolean cancelled) {
         this.cancelled = cancelled;
     }
+	
+	public Player getPlayer() {
+		return player;
+	}
 
     public void setDestination(Location destination) {
         this.destination = destination;
