@@ -34,10 +34,16 @@ public abstract class SQLDatabase extends Database {
         Class.forName(driver);
         connection = getConnection();
 
+        int maxChars = Math.max(
+                getPlugin().getConfig().getInt("password.maxCharacters", 0),
+                1
+        );
+
+
         // Create table
         update("CREATE TABLE IF NOT EXISTS " + table + " (" +
-                "uuid VARCHAR(45) NOT NULL, " +
-                "password VARCHAR(45) NOT NULL, " +
+                "uuid VARCHAR(45) NOT NULL," +
+                "password VARCHAR(" + maxChars + ") NOT NULL," +
                 "PRIMARY KEY (uuid)" +
                 ")"
         );
