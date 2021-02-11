@@ -51,6 +51,7 @@ public final class UserLogin extends JavaPlugin {
     @Override
     public void onEnable() {
         plugin = this;
+        Utils.debug("RUNNING IN DEBUG MODE");
 
         // Plugin messaging setup
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
@@ -64,8 +65,7 @@ public final class UserLogin extends JavaPlugin {
 
         // Register FastLogin hook if enabled
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
-            FastLoginBukkit fastLogin = JavaPlugin.getPlugin(FastLoginBukkit.class);
-            fastLogin.getCore().setAuthPluginHook(new FastLoginHook());
+            new FastLoginHook().register();
             Utils.log("FastLogin hook registered");
         }
 
