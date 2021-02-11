@@ -25,7 +25,13 @@ public class YamlDB extends Database {
     @Override
     public String getRawPassword(UUID uuid) {
         FileConfiguration config = playerData.get();
-        return config.getString(uuid.toString(), config.getString(uuid + ".password"));
+        String key = uuid.toString();
+
+        if (config.isConfigurationSection(key)) {
+            return config.getString(key + ".password");
+        } else {
+            return config.getString(key);
+        }
     }
 
     @Override
