@@ -84,7 +84,7 @@ public abstract class AuthCommand extends BaseCommand {
             event = new AuthenticationEvent(p, type, target);
         }
 
-        plugin.getServer().getPluginManager().callEvent(event);
+        // plugin.getServer().getPluginManager().callEvent(event);
         if (event.isCancelled()) return;
 
         ulPlayer.cancelTimeout();
