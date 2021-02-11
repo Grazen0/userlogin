@@ -14,6 +14,16 @@ public class MySQL extends SQLDatabase {
     }
 
     @Override
+    public void connect() throws SQLException, ClassNotFoundException {
+        super.connect();
+
+        // Remove username column if exists
+        if (query("SHOW COLUMNS FROM " + getTable() + " LIKE 'username'").next()) {
+            update("ALTER TABLE " + getTable() + " DROP COLUMN username");
+        }
+    }
+
+    @Override
     protected Connection getConnection() throws SQLException {
         ConfigurationSection section = getPlugin().getConfig()
                 .getConfigurationSection("database.mysql");
