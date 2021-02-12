@@ -16,7 +16,7 @@ public class LogFilter implements Filter {
     }
 
     private Result filter(String message) {
-        if (message.matches("(.+) issued server command: /(login|register)(.*)")) {
+        if (message.matches("(.+) issued server command: /(?i)(login|register)(.*)")) {
             return Result.DENY;
         } else {
             return Result.NEUTRAL;
