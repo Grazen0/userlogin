@@ -35,7 +35,7 @@ public abstract class SQLDatabase extends Database {
         connection = getConnection();
 
         int maxChars = Math.max(
-                getPlugin().getConfig().getInt("password.maxCharacters", 0),
+                getPlugin().getConfig().getInt("password.maxCharacters", 128),
                 1
         );
 
