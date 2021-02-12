@@ -14,6 +14,23 @@ public class PostgreSQL extends SQLDatabase {
     }
 
     @Override
+    public void connect() throws SQLException, ClassNotFoundException {
+        super.connect();
+
+        // Update password max length
+        int maxChars = Math.max(
+                getPlugin().getConfig().getInt("password.maxCharacters", 128),
+                1
+        );
+
+        update(
+                "ALTER TABLE " + getTable() + " " +
+                        "ALTER COLUMN password " +
+                        "TYPE VARCHAR(" + maxChars + ")"
+        );
+    }
+
+    @Override
     protected Connection getConnection() throws SQLException {
         ConfigurationSection section = getPlugin().getConfig()
                 .getConfigurationSection("database.postgresql");

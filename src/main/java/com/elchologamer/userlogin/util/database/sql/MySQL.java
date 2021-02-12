@@ -21,6 +21,13 @@ public class MySQL extends SQLDatabase {
         if (query("SHOW COLUMNS FROM " + getTable() + " LIKE 'username'").next()) {
             update("ALTER TABLE " + getTable() + " DROP COLUMN username");
         }
+
+        // Update password max length
+        int maxChars = Math.max(
+                getPlugin().getConfig().getInt("password.maxCharacters", 128),
+                1
+        );
+        update("ALTER TABLE " + getTable() + " MODIFY password VARCHAR(" + maxChars + ")");
     }
 
     @Override
