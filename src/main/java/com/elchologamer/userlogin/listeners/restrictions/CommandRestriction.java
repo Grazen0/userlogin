@@ -17,7 +17,7 @@ public class CommandRestriction extends Restriction<PlayerCommandPreprocessEvent
     public void handle(PlayerCommandPreprocessEvent e) {
         if (!shouldRestrict(e)) return;
 
-        String m = e.getMessage().replaceAll("^/", "");
+        String m = e.getMessage().replaceAll("^/", "").toLowerCase();
         if (!m.startsWith("login") && !m.startsWith("register")) {
             e.setCancelled(true);
             plugin.getPlayer(e.getPlayer()).sendPathMessage("messages.commands_disabled");

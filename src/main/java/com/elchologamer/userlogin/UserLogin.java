@@ -8,6 +8,7 @@ import com.elchologamer.userlogin.commands.subs.SetCommand;
 import com.elchologamer.userlogin.commands.subs.UnregisterCommand;
 import com.elchologamer.userlogin.listeners.OnPlayerJoin;
 import com.elchologamer.userlogin.listeners.OnPlayerQuit;
+import com.elchologamer.userlogin.listeners.restrictions.AttackRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.BlockBreakingRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.BlockPlacingRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ChatRestriction;
@@ -15,16 +16,16 @@ import com.elchologamer.userlogin.listeners.restrictions.CommandRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemDropRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
+import com.elchologamer.userlogin.listeners.restrictions.ReceiveDamageRestriction;
 import com.elchologamer.userlogin.util.FastLoginHook;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.CommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
-import com.elchologamer.userlogin.util.database.YamlDB;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
+import com.elchologamer.userlogin.util.LogFilter;
 import com.elchologamer.userlogin.util.managers.LangManager;
 import com.elchologamer.userlogin.util.managers.LocationsManager;
 import com.elchologamer.userlogin.util.managers.PlayerManager;
-import com.github.games647.fastlogin.bukkit.FastLoginBukkit;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -69,6 +70,12 @@ public final class UserLogin extends JavaPlugin {
             Utils.log("FastLogin hook registered");
         }
 
+        try {
+            LogFilter.register();
+        } catch (NoClassDefFoundError e) {
+            Utils.log("&eFailed to register logging filter");
+        }
+
         // Register event listeners
         new ChatRestriction().register();
         new MovementRestriction().register();
@@ -77,6 +84,8 @@ public final class UserLogin extends JavaPlugin {
         new CommandRestriction().register();
         new ItemDropRestriction().register();
         new MovementRestriction().register();
+        new AttackRestriction().register();
+        new ReceiveDamageRestriction().register();
 
         new OnPlayerJoin().register();
         new OnPlayerQuit().register();
@@ -106,7 +115,7 @@ public final class UserLogin extends JavaPlugin {
         // bStats setup
         if (!getConfig().getBoolean("debug")) {
             Metrics metrics = new Metrics(this, bStatsID);
-            metrics.addCustomChart(new Metrics.SimplePie("data_type",
+            metrics.addCustomChart(new Metrics.SimplePie("storage_type",
                     () -> getConfig().getString("database.type", "yaml").toLowerCase())
             );
             metrics.addCustomChart(new Metrics.SimplePie("lang",
@@ -162,7 +171,7 @@ public final class UserLogin extends JavaPlugin {
         getServer().getScheduler().runTaskAsynchronously(this, () -> {
             try {
                 db.connect();
-                if (!(db instanceof YamlDB)) {
+                if (db.logConnected()) {
                     Utils.log(getMessage("other.database_connected"));
                 }
             } catch (Exception e) {

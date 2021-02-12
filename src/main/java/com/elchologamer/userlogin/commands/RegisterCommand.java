@@ -28,12 +28,21 @@ public class RegisterCommand extends AuthCommand {
         String password = args[0];
         FileConfiguration config = getPlugin().getConfig();
         int minChars = config.getInt("password.minCharacters", 0);
+        int maxChars = config.getInt("password.maxChars", 128);
 
         // Check password length
         if (password.length() < minChars) {
             ulPlayer.sendPathMessage(
                     "messages.short_password",
                     new QuickMap<>("chars", minChars)
+            );
+            return false;
+        }
+
+        if (password.length() > maxChars) {
+            ulPlayer.sendPathMessage(
+                    "messages.long_password",
+                    new QuickMap<>("chars", maxChars)
             );
             return false;
         }

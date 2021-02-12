@@ -42,6 +42,11 @@ password:
   # Minimum characters that a password must have
   minCharacters: 4
 
+  # Maximum characters for a password.
+  # This will also be the maximum length
+  # for the VARCHAR data type in SQL storage.
+  maxCharacters: 128
+
 
 # Restrictions for non-logged in players
 restrictions:
@@ -51,6 +56,9 @@ restrictions:
   blockPlacing: false
   itemDrop: false
   itemPickup: false # 1.12+ only
+  damage:
+    attack: false
+    receive: false
   movement:
     enabled: false
     warnFrequency: 20 # Use -1 to disable
