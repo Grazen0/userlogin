@@ -80,7 +80,8 @@ public abstract class Database {
             // Password is not encrypted at all
             try {
                 updatePassword(uuid, rawPassword);
-            } catch (Exception ignored) {
+            } catch (Exception e) {
+                e.printStackTrace();
             }
 
             return rawPassword.equals(otherPassword);
