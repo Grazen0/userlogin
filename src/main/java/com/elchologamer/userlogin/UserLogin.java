@@ -20,6 +20,7 @@ import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.CommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
+import com.elchologamer.userlogin.util.LogFilter;
 import com.elchologamer.userlogin.util.managers.LangManager;
 import com.elchologamer.userlogin.util.managers.LocationsManager;
 import com.elchologamer.userlogin.util.managers.PlayerManager;
@@ -65,6 +66,12 @@ public final class UserLogin extends JavaPlugin {
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
             new FastLoginHook().register();
             Utils.log("FastLogin hook registered");
+        }
+
+        try {
+            LogFilter.register();
+        } catch (NoClassDefFoundError e) {
+            Utils.log("&eFailed to register logging filter");
         }
 
         // Register event listeners
