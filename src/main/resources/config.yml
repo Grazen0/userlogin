@@ -56,6 +56,9 @@ restrictions:
   blockPlacing: false
   itemDrop: false
   itemPickup: false # 1.12+ only
+  damage:
+    attack: false
+    receive: false
   movement:
     enabled: false
     warnFrequency: 20 # Use -1 to disable

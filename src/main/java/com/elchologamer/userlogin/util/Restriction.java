@@ -39,4 +39,8 @@ public abstract class Restriction<T extends Event> extends BaseListener {
     public UserLogin getPlugin() {
         return plugin;
     }
+
+    public String getConfigKey() {
+        return configKey;
+    }
 }

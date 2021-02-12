@@ -8,6 +8,7 @@ import com.elchologamer.userlogin.commands.subs.SetCommand;
 import com.elchologamer.userlogin.commands.subs.UnregisterCommand;
 import com.elchologamer.userlogin.listeners.OnPlayerJoin;
 import com.elchologamer.userlogin.listeners.OnPlayerQuit;
+import com.elchologamer.userlogin.listeners.restrictions.AttackRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.BlockBreakingRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.BlockPlacingRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ChatRestriction;
@@ -15,6 +16,7 @@ import com.elchologamer.userlogin.listeners.restrictions.CommandRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemDropRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
+import com.elchologamer.userlogin.listeners.restrictions.ReceiveDamageRestriction;
 import com.elchologamer.userlogin.util.FastLoginHook;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.CommandHandler;
@@ -82,6 +84,8 @@ public final class UserLogin extends JavaPlugin {
         new CommandRestriction().register();
         new ItemDropRestriction().register();
         new MovementRestriction().register();
+        new AttackRestriction().register();
+        new ReceiveDamageRestriction().register();
 
         new OnPlayerJoin().register();
         new OnPlayerQuit().register();
