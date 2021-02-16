@@ -47,6 +47,16 @@ public class RegisterCommand extends AuthCommand {
             return false;
         }
 
+        // Check password regex
+        String regex = config.getString("password.regex", "").trim();
+        if (!regex.equals("") && !password.matches(regex)) {
+            ulPlayer.sendPathMessage(
+                    "messages.regex_mismatch",
+                    new QuickMap<>("regex", regex)
+            );
+            return false;
+        }
+
         // Check that both passwords match
         if (!password.equals(args[1])) {
             ulPlayer.sendPathMessage("messages.different_passwords");

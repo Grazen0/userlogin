@@ -47,6 +47,10 @@ password:
   # for the VARCHAR data type in SQL storage.
   maxCharacters: 128
 
+  # Regular expression to validate passwords with.
+  # Leave empty to disable
+  regex: ''
+
 
 # Restrictions for non-logged in players
 restrictions:
