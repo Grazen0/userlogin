@@ -21,7 +21,7 @@ messages:
   incorrect_password: '&4Contraseña incorrecta!'
   short_password: '&cTu contraseña debe tener un mínimo de &4{chars} &ccaracteres'
   long_password: '&cTu contraseña puede tener un máximo de {chars} caracteres'
-    regex_mismatch: '&cTu contraseña tiene un patrón inválido!'
+  regex_mismatch: '&cTu contraseña tiene un patrón inválido!'
   different_passwords: '&cLas contraseñas no concuerdan!'
   already_logged_in: '&cYa estás logeado!'
   logged_in: '&9Has sido logeado!'
