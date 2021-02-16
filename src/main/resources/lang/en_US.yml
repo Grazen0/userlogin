@@ -21,6 +21,7 @@ messages:
   incorrect_password: '&4Incorrect password!'
   short_password: '&cYour password must have a minimum of &4{chars} &ccharacters'
   long_password: '&cYour password must have a maximum of {chars} characters'
+  regex_mismatch: '&cYour password has an invalid pattern!'
   different_passwords: '&cYour passwords don''t match!'
   already_logged_in: '&cYou are already logged in!'
   logged_in: '&9Login successful!'
