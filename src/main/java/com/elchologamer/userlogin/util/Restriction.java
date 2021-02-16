@@ -36,7 +36,9 @@ public abstract class Restriction<E extends Event> extends BaseListener {
             );
         }
 
-        plugin.getServer().getPluginManager().callEvent(event);
+        if (!e.isAsynchronous() || event.isAsynchronous()) {
+            plugin.getServer().getPluginManager().callEvent(event);
+        }
         return !event.isCancelled();
     }
 
