@@ -25,6 +25,9 @@ public class OnPlayerQuit extends BaseListener {
 
         if (!ulPlayer.isLoggedIn()) return;
 
+        ulPlayer.cancelTimeout();
+        ulPlayer.cancelRepeatingMessage();
+
         if (plugin.getConfig().getBoolean("teleports.savePosition")) {
             // Save the player's location
             UUID uuid = player.getUniqueId();

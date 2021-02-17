@@ -24,11 +24,20 @@ public class AuthenticationEvent extends PlayerEvent implements Cancellable {
         super(player);
         this.type = type;
 
-        String path = "messages." + type.getMessageKey();
-        message = Utils.color(UserLogin.getPlugin().getMessage(path));
+        UserLogin plugin = UserLogin.getPlugin();
 
-        String originalMsg = UserLogin.getPlugin().getMessage("messages.login_announcement");
-        announcement = Utils.color(originalMsg.replace("{player}", player.getName()));
+        String path = "messages." + type.getMessageKey();
+        message = Utils.color(plugin.getMessage(path));
+
+        if (plugin.getConfig().getBoolean("loginBroadcast")) {
+            String originalMsg = UserLogin.getPlugin().getMessage("messages.login_announcement");
+
+            announcement = originalMsg != null
+                    ? originalMsg.replace("{player}", player.getName())
+                    : null;
+        } else {
+            announcement = null;
+        }
     }
 
     public AuthenticationEvent(Player player, AuthType type, String targetServer) {

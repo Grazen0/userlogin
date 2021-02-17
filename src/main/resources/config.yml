@@ -18,6 +18,9 @@ checkUpdates: true
 # Language file to load
 lang: 'en_US'
 
+# Broadcast login messages
+loginBroadcast: true
+
 # Interval (seconds) for the pre-login welcome message (-1 to disable)
 repeatingWelcomeMsg: -1
 

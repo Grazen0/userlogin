@@ -47,7 +47,9 @@ public class MySQL extends SQLDatabase {
 
         props.setProperty("user", username);
         if (password != null) props.setProperty("password", password);
+
         props.setProperty("useSSL", Boolean.toString(ssl));
+        props.setProperty("autoReconnect", "true");
 
         String url = "jdbc:mysql://" + host + ":" + port + "/" + getDatabase();
         return DriverManager.getConnection(url, props);

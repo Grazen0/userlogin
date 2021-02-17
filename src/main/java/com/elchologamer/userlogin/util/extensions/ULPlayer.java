@@ -21,6 +21,8 @@ public class ULPlayer {
     }
 
     public void activateTimeout() {
+        if (loggedIn) return;
+
         BukkitScheduler scheduler = player.getServer().getScheduler();
         if (timeout != null) scheduler.cancelTask(timeout);
 
@@ -39,6 +41,8 @@ public class ULPlayer {
     }
 
     public void activateRepeatingMessage(String messagePath) {
+        if (loggedIn) return;
+
         long interval = plugin.getConfig().getLong("repeatingWelcomeMsg", -1) * 20;
         if (interval <= 0) return;
 
