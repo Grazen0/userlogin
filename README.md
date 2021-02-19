@@ -17,7 +17,6 @@ Prevent players from having their accounts be used by other players! This plugin
 - Supports a wide variety of databases.
 - Togglable restrictions for non-logged in players, such as movement and chat.
 - Multi-language support
-- Full MySQL database support!
 - Decent BungeeCord support
 
 ## Player commands
