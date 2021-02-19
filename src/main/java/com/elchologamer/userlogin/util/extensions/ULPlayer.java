@@ -27,6 +27,7 @@ public class ULPlayer {
         if (timeout != null) scheduler.cancelTask(timeout);
 
         if (!plugin.getConfig().getBoolean("timeout.enabled")) return;
+        cancelTimeout();
 
         timeout = scheduler.scheduleSyncDelayedTask(
                 plugin,
@@ -45,6 +46,8 @@ public class ULPlayer {
 
         long interval = plugin.getConfig().getLong("repeatingWelcomeMsg", -1) * 20;
         if (interval <= 0) return;
+
+        cancelRepeatingMessage();
 
         welcomeMessage = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
                 plugin,
