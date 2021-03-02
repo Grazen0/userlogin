@@ -9,6 +9,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
+      - run: |
+          echo "Before: ${{ github.event.before }}"
+          echo "After: ${{ github.event.after }}"
       - name: Set up JDK
         uses: actions/setup-java@v1
         with:
