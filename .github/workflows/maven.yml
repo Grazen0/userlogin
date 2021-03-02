@@ -29,7 +29,7 @@ jobs:
           echo "::set-output name=artifact_id::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
           echo "::set-output name=tag_name::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "::set-output name=short_sha::$(git rev-parse --short ${{ github.event.after }})"
-          echo "::set-output name=commit_list::$(git log --pretty=format:"%s")"
+          echo "::set-output name=commits::$(git log --pretty=format:"%s")"
       - name: Release Development bBild
         id: create_release
         uses: actions/create-release@v1
@@ -40,7 +40,7 @@ jobs:
           release_name: Dev Build ${{ steps.variables.outputs.short_sha }}
           body: |
             ## Commits:
-            ${{ steps.variables.outputs.commit_list }}
+            ${{ steps.variables.outputs.commits }}
       - name: Upload Jar to Release
         uses: actions/upload-release-asset@v1
         env:
