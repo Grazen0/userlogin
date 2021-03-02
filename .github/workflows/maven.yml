@@ -23,13 +23,14 @@ jobs:
         run: mvn initialize
       - name: Build with Maven
         run: mvn -B --no-transfer-progress package
+      - run: git log
       - name: Set Outputs
         id: variables
         run: |
           echo "::set-output name=artifact_id::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
           echo "::set-output name=tag_name::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "::set-output name=short_sha::$(git rev-parse --short ${{ github.event.after }})"
-          echo "::set-output name=commit_list::$(git log --pretty=format:"%s" ${{ github.event.before }}..HEAD)"
+          echo "::set-output name=commit_list::$(git log --pretty=format:"%s" ${{ github.event.before }}..${{ github.event.after }})"
       - name: Release Development bBild
         id: create_release
         uses: actions/create-release@v1
