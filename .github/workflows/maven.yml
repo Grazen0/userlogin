@@ -29,7 +29,7 @@ jobs:
           echo "::set-output name=artifact_id::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
           echo "::set-output name=tag_name::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "::set-output name=short_sha::$(git rev-parse --short ${{ github.event.after }})"
-          echo "::set-output name=commit_list::$(git log --pretty=format:"%s" ${{ github.event.before }}..${{ github.event.after }})"
+          echo "::set-output name=commit_list::$(git log --pretty=format:"%s" ${{ github.event.before }}..HEAD)"
       - name: Release Development bBild
         id: create_release
         uses: actions/create-release@v1
@@ -37,8 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.variables.outputs.tag_name }}-SNAPSHOT-${{ steps.variables.outputs.short_sha }}
-          release_name: Development Build ${{ steps.variables.outputs.short_sha }}
-          prerelease: true
+          release_name: Dev Build ${{ steps.variables.outputs.short_sha }}
           body: |
             ## Commits:
             ${{ steps.variables.outputs.commit_list }}
