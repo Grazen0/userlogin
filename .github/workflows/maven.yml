@@ -26,7 +26,7 @@ jobs:
       - name: Set Outputs
         id: variables
         run: |
-          echo "::set-output name=artifactId::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+          echo "::set-output name=artifact_id::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
           echo "::set-output name=tag_name::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
       - name: Release development build
