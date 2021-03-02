@@ -32,7 +32,7 @@ jobs:
           echo "::set-output name=tag_name::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "::set-output name=short_sha::$(git rev-parse --short ${{ github.event.after }})"
           echo "::set-output name=commits::$(git log --pretty=format:"%s" ${{ github.event.before }}..${{ github.event.after }})"
-      - name: Release Development bBild
+      - name: Release Development Build
         id: create_release
         uses: actions/create-release@v1
         env:
