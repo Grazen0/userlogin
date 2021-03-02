@@ -41,6 +41,12 @@ public abstract class Database {
                 return new SQLite();
             case "mongodb":
             case "mongo":
+                try {
+                    Class.forName("org.bson.Document");
+                } catch (ClassNotFoundException e) {
+                    Utils.log("&cMongoDB driver not found, defaulting to YAML");
+                    return new YamlDB();
+                }
                 return new MongoDB();
             default:
                 Utils.log("&eInvalid database type selected, defaulting to \"yaml\"");

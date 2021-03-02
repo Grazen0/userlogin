@@ -6,7 +6,6 @@ import com.elchologamer.userlogin.util.command.SubCommand;
 import com.elchologamer.userlogin.util.extensions.QuickMap;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -23,9 +22,11 @@ public class SetCommand extends SubCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command command, String[] args) {
-        if (!"login".equals(args[0]) && !"spawn".equals(args[0])) return false;
+    public boolean run(CommandSender sender, String[] args) {
+        if (args.length == 0) return false;
 
+        String type = args[0].toLowerCase();
+        if (!type.equals("spawn") && !type.equals("login")) return false;
 
         ULPlayer ulPlayer = plugin.getPlayer((Player) sender);
         Player player = ulPlayer.getPlayer();
@@ -42,18 +43,18 @@ public class SetCommand extends SubCommand {
         CustomConfig locationsConfig = plugin.getLocationsManager().getConfig();
         FileConfiguration config = locationsConfig.get();
 
-        config.set(args[0] + ".x", x);
-        config.set(args[0] + ".y", y);
-        config.set(args[0] + ".z", z);
-        config.set(args[0] + ".yaw", yaw);
-        config.set(args[0] + ".pitch", pitch);
-        config.set(args[0] + ".world", world);
+        config.set(type + ".x", x);
+        config.set(type + ".y", y);
+        config.set(type + ".z", z);
+        config.set(type + ".yaw", yaw);
+        config.set(type + ".pitch", pitch);
+        config.set(type + ".world", world);
         locationsConfig.save();
 
         // Send message
         ulPlayer.sendPathMessage(
                 "commands.set",
-                new QuickMap<>("type", (Object) args[0])
+                new QuickMap<>("type", (Object) type)
                         .set("x", (int) x)
                         .set("y", (int) y)
                         .set("z", (int) z)
@@ -66,12 +67,14 @@ public class SetCommand extends SubCommand {
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> tabComplete(CommandSender sender, String alias, String[] args) {
         List<String> options = new ArrayList<>();
+
         if (args.length == 1) {
             options.add("login");
             options.add("spawn");
         }
+
         return options;
     }
 }

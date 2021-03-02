@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.util.command;
 
 import com.elchologamer.userlogin.UserLogin;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 
 import java.util.ArrayList;
@@ -17,7 +16,7 @@ public class CommandHandler extends BaseCommand {
     }
 
     @Override
-    public boolean execute(CommandSender sender, Command command, String label, String[] args) {
+    public boolean run(CommandSender sender, String label, String[] args) {
         if (args.length == 0) return false;
 
         for (SubCommand subCommand : subCommands) {
@@ -29,14 +28,14 @@ public class CommandHandler extends BaseCommand {
                 return true;
             }
 
-            return subCommand.onCommand(sender, command, label, getSubArgs(args));
+            return subCommand.run(sender, label, getSubArgs(args));
         }
 
         return false;
     }
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+    public List<String> tabComplete(CommandSender sender, String label, String[] args) {
         List<String> options = new ArrayList<>();
 
         if (args.length == 1) {
@@ -47,13 +46,13 @@ public class CommandHandler extends BaseCommand {
             for (SubCommand subCommand : subCommands) {
                 if (!subCommand.getName().equals(args[0])) continue;
 
-                options = subCommand.onTabComplete(sender, command, label, getSubArgs(args));
+                options = subCommand.tabComplete(sender, label, getSubArgs(args));
                 break;
             }
         }
 
         // Filter out list
-        if (options != null) options.removeIf(s -> !s.startsWith(args[args.length - 1]));
+        options.removeIf(s -> !s.startsWith(args[args.length - 1]));
 
         return options;
     }

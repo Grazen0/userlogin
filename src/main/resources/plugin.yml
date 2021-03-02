@@ -29,14 +29,6 @@ permissions:
       ul.register:
         description: 'Permission to use the register command'
         default: true
-
-commands:
-  userlogin:
-    description: 'The main command for UserLogin'
-    permission: 'ul.userlogin'
-  login:
-    description: 'Logs in your user with the given password'
-    permission: 'ul.login'
-  register:
-    description: 'Registers your user with the given password'
-    permission: 'ul.register'
+      ul.changepassword:
+        description: 'Permission to use the changepassword command'
+        default: true

@@ -1,10 +1,6 @@
 package com.elchologamer.userlogin.util.command;
 
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public abstract class SubCommand extends BaseCommand {
 
@@ -28,23 +24,18 @@ public abstract class SubCommand extends BaseCommand {
     }
 
     @Override
-    public final boolean execute(CommandSender sender, Command command, String label, String[] args) {
+    public final boolean run(CommandSender sender, String label, String[] args) {
         if (permission != null && !sender.hasPermission(permission)) {
-            String message = command.getPermissionMessage();
+            String message = this.getPermissionMessage();
             if (message != null) sender.sendMessage(message);
             return true;
 
         }
 
-        return execute(sender, command, args);
+        return run(sender, args);
     }
 
-    public abstract boolean execute(CommandSender sender, Command command, String[] args);
-
-    @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return new ArrayList<>();
-    }
+    public abstract boolean run(CommandSender sender, String[] args);
 
     public String getPermission() {
         return permission;

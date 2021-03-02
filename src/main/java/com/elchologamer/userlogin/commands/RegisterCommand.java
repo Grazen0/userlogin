@@ -30,6 +30,12 @@ public class RegisterCommand extends AuthCommand {
         int minChars = config.getInt("password.minCharacters", 0);
         int maxChars = config.getInt("password.maxChars", 128);
 
+        // Check that both passwords match
+        if (!password.equals(args[1])) {
+            ulPlayer.sendPathMessage("messages.different_passwords");
+            return false;
+        }
+
         // Check password length
         if (password.length() < minChars) {
             ulPlayer.sendPathMessage(
@@ -54,12 +60,6 @@ public class RegisterCommand extends AuthCommand {
                     "messages.regex_mismatch",
                     new QuickMap<>("regex", regex)
             );
-            return false;
-        }
-
-        // Check that both passwords match
-        if (!password.equals(args[1])) {
-            ulPlayer.sendPathMessage("messages.different_passwords");
             return false;
         }
 

@@ -8,7 +8,6 @@ import com.elchologamer.userlogin.util.command.BaseCommand;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
 import com.elchologamer.userlogin.util.managers.LocationsManager;
 import org.bukkit.Location;
-import org.bukkit.command.Command;
 import org.bukkit.command.CommandSender;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -37,7 +36,7 @@ public abstract class AuthCommand extends BaseCommand {
     }
 
     @Override
-    public final boolean execute(CommandSender sender, Command command, String label, String[] args) {
+    public final boolean run(CommandSender sender, String label, String[] args) {
         ULPlayer ulPlayer = plugin.getPlayer((Player) sender);
 
         // Check if player is already logged in

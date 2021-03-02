@@ -1,20 +1,21 @@
 package com.elchologamer.userlogin.util.command;
 
 import com.elchologamer.userlogin.UserLogin;
+import org.bukkit.Server;
 import org.bukkit.command.Command;
-import org.bukkit.command.CommandExecutor;
+import org.bukkit.command.CommandMap;
 import org.bukkit.command.CommandSender;
-import org.bukkit.command.PluginCommand;
-import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
 
-public abstract class BaseCommand implements CommandExecutor, TabCompleter {
+public abstract class BaseCommand extends Command {
+
+    private static CommandMap commandMap = null;
 
     private final UserLogin plugin = UserLogin.getPlugin();
-    private final String name;
     private final boolean playerOnly;
 
     public BaseCommand(String name) {
@@ -22,14 +23,15 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
     }
 
     public BaseCommand(String name, boolean playerOnly) {
-        this.name = name;
+        super(name, "", "", new ArrayList<>());
         this.playerOnly = playerOnly;
+        setPermission("ul." + name);
     }
 
     @Override
-    public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+    public final boolean execute(CommandSender sender, String label, String[] args) {
         // Check if command is disabled
-        if (!plugin.getConfig().getBoolean("enabledCommands." + this.name, true)) {
+        if (!plugin.getConfig().getBoolean("enabledCommands." + getName(), true)) {
             sender.sendMessage(plugin.getMessage("commands.disabled"));
             return true;
         }
@@ -39,38 +41,50 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
             return true;
         }
 
-        return execute(sender, command, label, args);
+        boolean success = run(sender, label, args);
+        if (!success) sender.sendMessage(getUsage());
+
+        return true;
     }
 
     public void register() {
-        PluginCommand command = plugin.getCommand(name);
-        if (command == null) return;
+        String usage = plugin.getMessage("commands.usages." + getName());
+        if (usage != null) setUsage(usage);
 
-        String usage = plugin.getMessage("commands.usages." + name);
-        if (usage != null) command.setUsage(usage);
+        String description = plugin.getMessage("commands.descriptions." + getName());
+        if (description != null) setDescription(description);
 
-        String description = plugin.getMessage("commands.descriptions." + name);
-        if (description != null) command.setDescription(description);
+        List<String> aliases = plugin.getConfig().getStringList("commandAliases." + getName());
+        setAliases(aliases);
 
-        List<String> aliases = plugin.getConfig().getStringList("commandAliases." + name);
-        command.setAliases(aliases);
-
-        command.setExecutor(this);
+        getCommandMap().register(plugin.getName().toLowerCase(), this);
     }
 
-    public abstract boolean execute(CommandSender sender, Command command, String label, String[] args);
+    private static CommandMap getCommandMap() {
+        if (commandMap == null) {
+            try {
+                Server server = UserLogin.getPlugin().getServer();
+                Field mapField = server.getClass().getDeclaredField("commandMap");
+                mapField.setAccessible(true);
+
+                commandMap = (CommandMap) mapField.get(server);
+            } catch (NoSuchFieldException | IllegalAccessException e) {
+                e.printStackTrace();
+            }
+        }
+
+        return commandMap;
+    }
+
+    public abstract boolean run(CommandSender sender, String label, String[] args);
 
     @Override
-    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+    public List<String> tabComplete(CommandSender sender, String label, String[] args) {
         return new ArrayList<>();
     }
 
     public UserLogin getPlugin() {
         return plugin;
-    }
-
-    public String getName() {
-        return name;
     }
 
     public boolean isPlayerOnly() {
