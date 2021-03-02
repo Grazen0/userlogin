@@ -35,7 +35,7 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: v${{ steps.version.outputs.tag_name }}SNAPSHOT-${{ steps.variables.outputs.short_sha }}
+          tag_name: v${{ steps.variables.outputs.tag_name }}SNAPSHOT-${{ steps.variables.outputs.short_sha }}
           release_name: Release ${{ steps.variables.outputs.short_sha }}
       - name: Upload Jar to Release
         uses: actions/upload-release-asset@v1
@@ -43,6 +43,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/${{ steps.extract_pom.outputs.artifact_id }}-${{ steps.extract_pom.outputs.tag_name }}.jar
-          asset_name: ${{ steps.extract_pom.outputs.artifact_id }}.jar
+          asset_path: ./target/${{ steps.variables.outputs.artifact_id }}-${{ steps.variables.outputs.tag_name }}.jar
+          asset_name: ${{ steps.variables.outputs.artifact_id }}.jar
           asset_content_type: application/java-archive
