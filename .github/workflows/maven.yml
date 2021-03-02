@@ -9,11 +9,11 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - name: Set up JDK
+      - name: Set Up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
-      - name: Cache Maven packages
+      - name: Cache Maven Packages
         uses: actions/cache@v2
         with:
           path: ~/.m2
@@ -28,16 +28,17 @@ jobs:
         run: |
           echo "::set-output name=artifact_id::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
           echo "::set-output name=tag_name::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
-          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
+          echo "::set-output name=short_sha::$(git rev-parse --short ${{ github.event.after }})"
           echo "::set-output name=commit_list::$(git log --pretty=format:"%s" ${{ github.event.before }}..${{ github.event.after }})"
-      - name: Release development build
+      - name: Release Development bBild
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.variables.outputs.tag_name }}-SNAPSHOT-${{ steps.variables.outputs.short_sha }}
-          release_name: Release ${{ steps.variables.outputs.short_sha }}
+          release_name: Development Build ${{ steps.variables.outputs.short_sha }}
+          prerelease: true
           body: |
             ## Commits:
             ${{ steps.variables.outputs.commit_list }}
