@@ -1,4 +1,5 @@
 commands:
+  disabled: '&cThis command is disabled'
   player_unregistered: '&b{player} &ewas unregistered successfully!'
   errors:
     player_only: '&cThis is a player-only command'

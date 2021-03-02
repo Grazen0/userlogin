@@ -28,6 +28,12 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        // Check if command is disabled
+        if (!plugin.getConfig().getBoolean("enabledCommands." + this.name, true)) {
+            sender.sendMessage(plugin.getMessage("commands.disabled"));
+            return true;
+        }
+
         if (playerOnly && !(sender instanceof Player)) {
             sender.sendMessage(plugin.getMessage("commands.errors.player_only"));
             return true;

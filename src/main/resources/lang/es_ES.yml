@@ -1,4 +1,5 @@
 commands:
+  disabled: '&cÉste comando está deshabilitado'
   player_unregistered: '&b{player} &efue removido!'
   errors:
     player_only: '&cEste comando solo puede ser usado por jugadores'

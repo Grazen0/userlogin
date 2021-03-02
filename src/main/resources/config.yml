@@ -24,6 +24,12 @@ loginBroadcast: true
 # Interval (seconds) for the pre-login welcome message (-1 to disable)
 repeatingWelcomeMsg: -1
 
+# You can enable/disable commands here
+enabledCommands:
+  userlogin: true
+  register: true
+  login: true
+
 # Timeout-kicking settings
 timeout:
 
