@@ -23,25 +23,26 @@ jobs:
         run: mvn initialize
       - name: Build with Maven
         run: mvn -B --no-transfer-progress package
-      - name: Extract pom.xml Values
-        id: extract_pom
+      - name: Set Outputs
+        id: variables
         run: |
-          echo "::set-output name=ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
-          echo "::set-output name=TAG_NAME::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          echo "::set-output name=artifactId::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+          echo "::set-output name=tag_name::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          echo "::set-output name=short_sha::$(git rev-parse --short HEAD)"
       - name: Release development build
         id: create_release
         uses: actions/create-release@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
-          tag_name: v${{ steps.version.outputs.TAG_NAME }}SNAPSHOT-${{ github.sha }}
-          release_name: Release ${{ github.sha }}
+          tag_name: v${{ steps.version.outputs.tag_name }}SNAPSHOT-${{ steps.variables.outputs.short_sha }}
+          release_name: Release ${{ steps.variables.outputs.short_sha }}
       - name: Upload Jar to Release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }} # This token is provided by Actions, you do not need to create your own token
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./target/${{ steps.extract_pom.outputs.ARTIFACT_ID }}-${{ steps.extract_pom.outputs.TAG_NAME }}.jar
-          asset_name: ${{ steps.extract_pom.outputs.ARTIFACT_ID }}.jar
+          asset_path: ./target/${{ steps.extract_pom.outputs.artifact_id }}-${{ steps.extract_pom.outputs.tag_name }}.jar
+          asset_name: ${{ steps.extract_pom.outputs.artifact_id }}.jar
           asset_content_type: application/java-archive
