@@ -52,6 +52,9 @@ public abstract class BaseCommand implements CommandExecutor, TabCompleter {
         String description = plugin.getMessage("commands.descriptions." + name);
         if (description != null) command.setDescription(description);
 
+        List<String> aliases = plugin.getConfig().getStringList("commandAliases." + name);
+        command.setAliases(aliases);
+
         command.setExecutor(this);
     }
 

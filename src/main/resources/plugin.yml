@@ -4,7 +4,7 @@ main: 'com.elchologamer.userlogin.UserLogin'
 author: 'ElCholoGamer'
 description: 'A simple-to-use authentication system.'
 website: 'https://www.spigotmc.org/resources/userlogin.80669/'
-softdepend: [ 'FastLogin' ]
+softdepend: ['FastLogin']
 
 permissions:
   ul.*:
@@ -33,7 +33,6 @@ permissions:
 commands:
   userlogin:
     description: 'The main command for UserLogin'
-    aliases: [ 'ul' ]
     permission: 'ul.userlogin'
   login:
     description: 'Logs in your user with the given password'
