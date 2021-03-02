@@ -29,6 +29,7 @@ enabledCommands:
   userlogin: true
   register: true
   login: true
+  changepassword: true
 
 # Custom command aliases
 # (Will only take effect on a server restart)
@@ -36,6 +37,7 @@ commandAliases:
   userlogin: ['ul']
   register: []
   login: []
+  changepassword: []
 
 # Timeout-kicking settings
 timeout:

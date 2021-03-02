@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin;
 
+import com.elchologamer.userlogin.commands.ChangePasswordCommand;
 import com.elchologamer.userlogin.commands.LoginCommand;
 import com.elchologamer.userlogin.commands.RegisterCommand;
 import com.elchologamer.userlogin.commands.subs.HelpCommand;
@@ -18,11 +19,11 @@ import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
 import com.elchologamer.userlogin.listeners.restrictions.ReceiveDamageRestriction;
 import com.elchologamer.userlogin.util.FastLoginHook;
+import com.elchologamer.userlogin.util.LogFilter;
 import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.util.command.CommandHandler;
 import com.elchologamer.userlogin.util.database.Database;
 import com.elchologamer.userlogin.util.extensions.ULPlayer;
-import com.elchologamer.userlogin.util.LogFilter;
 import com.elchologamer.userlogin.util.managers.LangManager;
 import com.elchologamer.userlogin.util.managers.LocationsManager;
 import com.elchologamer.userlogin.util.managers.PlayerManager;
@@ -109,6 +110,7 @@ public final class UserLogin extends JavaPlugin {
         mainCommand.register();
         new LoginCommand().register();
         new RegisterCommand().register();
+        new ChangePasswordCommand().register();
 
         load();
 

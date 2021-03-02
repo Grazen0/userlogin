@@ -12,10 +12,12 @@ commands:
     userlogin: 'The main command for UserLogin'
     login: 'Logs in your user with the given password'
     register: 'Registers your user with the given password'
+    changepassword: 'Changes your password to a new one'
   usages:
     userlogin: '&cCorrect usage: /userlogin [command] (Use /ul help for more)'
     login: '&cCorrect usage: /login <password>'
     register: '&cCorrect usage: /register <password> <password>'
+    changepassword: '&cCorrect usage: /changepassword <old-password> <new-password> <new-password>'
 messages:
   not_registered: '&cYou are not registered! Use &a/register <password> <password> &cto get registered!'
   already_registered: '&cYou are already registered!'
@@ -36,6 +38,9 @@ messages:
   login_announcement: '&e{player} has joined the server!'
   move_warning: '&cYou have to login to move!'
   commands_disabled: '&cYou must log in to use commands!'
+  must_log_in: '&cYou must be logged in to use this command'
+  password_changed: '&6Your password has been changed successfully'
+  password_change_error: '&cThere was an error changing your password'
   help:
     - '&a----------- | &2[UserLogin Help] &a| -----------'
     - '&2/ul help: &aShows this help list'
