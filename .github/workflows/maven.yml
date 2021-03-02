@@ -26,8 +26,8 @@ jobs:
       - name: Extract pom.xml Values
         id: extract_pom
         run: |
-          echo "Artifact ID: ::set-output name=ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
-          echo "Current version: ::set-output name=TAG_NAME::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
+          echo "::set-output name=ARTIFACT_ID::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
+          echo "::set-output name=TAG_NAME::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
       - name: Release development build
         id: create_release
         uses: actions/create-release@v1
