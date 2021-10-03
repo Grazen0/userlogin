@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin.util;
 
+import com.elchologamer.userlogin.UserLogin;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -11,17 +12,17 @@ import java.nio.file.Files;
 
 public class CustomConfig {
 
-    private final JavaPlugin plugin;
+    private final UserLogin plugin;
     private final String path;
     private final File file;
     private FileConfiguration config;
 
-    public CustomConfig(JavaPlugin plugin, String path) {
-        this(plugin, path, true);
+    public CustomConfig(String path) {
+        this(path, true);
     }
 
-    public CustomConfig(JavaPlugin plugin, String path, boolean autoLoad) {
-        this.plugin = plugin;
+    public CustomConfig(String path, boolean autoLoad) {
+        this.plugin = UserLogin.getPlugin();
         this.path = path;
         this.file = new File(plugin.getDataFolder(), path);
 
@@ -56,8 +57,7 @@ public class CustomConfig {
     }
 
     public FileConfiguration get() {
-        if (config == null)
-            reload();
+        if (config == null) reload();
         return config;
     }
 
@@ -69,15 +69,7 @@ public class CustomConfig {
         }
     }
 
-    public JavaPlugin getPlugin() {
-        return plugin;
-    }
-
     public File getFile() {
         return file;
-    }
-
-    public String getPath() {
-        return path;
     }
 }

@@ -14,7 +14,7 @@ public class YamlDB extends Database {
         super(false);
         String filePath = getPlugin().getConfig()
                 .getString("database.yaml.file", "playerData.yml");
-        playerData = new CustomConfig(UserLogin.getPlugin(), filePath);
+        playerData = new CustomConfig(filePath);
     }
 
     @Override
