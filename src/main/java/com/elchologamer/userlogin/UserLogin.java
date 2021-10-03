@@ -51,8 +51,6 @@ public final class UserLogin extends JavaPlugin {
         langManager = new LangManager();
         locationsManager = new LocationsManager();
 
-        langManager.load();
-
         // Register FastLogin hook
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
             FastLoginBukkit fastLogin = JavaPlugin.getPlugin(FastLoginBukkit.class);
