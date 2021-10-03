@@ -2,10 +2,10 @@ package com.elchologamer.userlogin.database;
 
 import at.favre.lib.crypto.bcrypt.BCrypt;
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.Utils;
 import com.elchologamer.userlogin.database.sql.MySQL;
 import com.elchologamer.userlogin.database.sql.PostgreSQL;
 import com.elchologamer.userlogin.database.sql.SQLite;
+import com.elchologamer.userlogin.util.Utils;
 
 import java.io.ByteArrayInputStream;
 import java.io.ObjectInputStream;
@@ -41,12 +41,6 @@ public abstract class Database {
                 return new SQLite();
             case "mongodb":
             case "mongo":
-                try {
-                    Class.forName("org.bson.Document");
-                } catch (ClassNotFoundException e) {
-                    Utils.log("&cMongoDB driver not found, defaulting to YAML");
-                    return new YamlDB();
-                }
                 return new MongoDB();
             default:
                 Utils.log("&eInvalid database type selected, defaulting to \"yaml\"");
