@@ -3,33 +3,24 @@ package com.elchologamer.userlogin;
 import com.elchologamer.userlogin.command.ChangePasswordCommand;
 import com.elchologamer.userlogin.command.LoginCommand;
 import com.elchologamer.userlogin.command.RegisterCommand;
+import com.elchologamer.userlogin.command.base.CommandHandler;
 import com.elchologamer.userlogin.command.sub.HelpCommand;
 import com.elchologamer.userlogin.command.sub.ReloadCommand;
 import com.elchologamer.userlogin.command.sub.SetCommand;
 import com.elchologamer.userlogin.command.sub.UnregisterCommand;
+import com.elchologamer.userlogin.database.Database;
 import com.elchologamer.userlogin.listener.OnPlayerJoin;
 import com.elchologamer.userlogin.listener.OnPlayerQuit;
-import com.elchologamer.userlogin.listener.restriction.AttackRestriction;
-import com.elchologamer.userlogin.listener.restriction.BlockBreakingRestriction;
-import com.elchologamer.userlogin.listener.restriction.BlockPlacingRestriction;
-import com.elchologamer.userlogin.listener.restriction.ChatRestriction;
-import com.elchologamer.userlogin.listener.restriction.CommandRestriction;
-import com.elchologamer.userlogin.listener.restriction.ItemDropRestriction;
-import com.elchologamer.userlogin.listener.restriction.ItemPickupRestriction;
-import com.elchologamer.userlogin.listener.restriction.MovementRestriction;
-import com.elchologamer.userlogin.listener.restriction.ReceiveDamageRestriction;
-import com.elchologamer.userlogin.util.FastLoginHook;
-import com.elchologamer.userlogin.util.LogFilter;
-import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.command.base.CommandHandler;
-import com.elchologamer.userlogin.database.Database;
+import com.elchologamer.userlogin.listener.restriction.*;
 import com.elchologamer.userlogin.manager.LangManager;
 import com.elchologamer.userlogin.manager.LocationsManager;
 import com.elchologamer.userlogin.manager.PlayerManager;
+import com.elchologamer.userlogin.util.FastLoginHook;
+import com.elchologamer.userlogin.util.LogFilter;
+import com.elchologamer.userlogin.util.Utils;
+import com.github.games647.fastlogin.bukkit.FastLoginBukkit;
 import org.bstats.bukkit.Metrics;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.plugin.PluginDescriptionFile;
 import org.bukkit.plugin.java.JavaPlugin;
 
 public final class UserLogin extends JavaPlugin {
@@ -54,19 +45,19 @@ public final class UserLogin extends JavaPlugin {
         plugin = this;
         Utils.debug("RUNNING IN DEBUG MODE");
 
-        // Plugin messaging setup
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
-        // Initialize managers
         playerManager = new PlayerManager();
         langManager = new LangManager();
         locationsManager = new LocationsManager();
 
         langManager.load();
 
-        // Register FastLogin hook if enabled
+        // Register FastLogin hook
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
-            new FastLoginHook().register();
+            FastLoginBukkit fastLogin = JavaPlugin.getPlugin(FastLoginBukkit.class);
+            fastLogin.getCore().setAuthPluginHook(new FastLoginHook());
+
             Utils.log("FastLogin hook registered");
         }
 
@@ -98,8 +89,6 @@ public final class UserLogin extends JavaPlugin {
         }
 
         CommandHandler mainCommand = new CommandHandler("userlogin");
-
-        // Register sub-commands
         mainCommand.add(new HelpCommand());
         mainCommand.add(new SetCommand());
         mainCommand.add(new ReloadCommand());
@@ -124,13 +113,9 @@ public final class UserLogin extends JavaPlugin {
             );
         }
 
-
-        PluginDescriptionFile desc = getDescription();
-        String version = desc.getVersion();
-
         // Check for updates
         if (getConfig().getBoolean("checkUpdates", true)) {
-            getServer().getScheduler().runTaskAsynchronously(this, this::CheckUpdates);
+            getServer().getScheduler().runTaskAsynchronously(this, this::checkUpdates);
         }
 
         Utils.log("%s v%s enabled", getName(), plugin.getDescription().getVersion());
@@ -145,7 +130,7 @@ public final class UserLogin extends JavaPlugin {
 
         // Cancel all plugin tasks
         getServer().getScheduler().cancelTasks(this);
-        playerManager.values().forEach(p -> p.setIP(null));
+        playerManager.clear();
 
         // Disconnect from database
         if (db != null) {
@@ -158,10 +143,10 @@ public final class UserLogin extends JavaPlugin {
 
         // Start database
         db = Database.select();
-        getServer().getScheduler().runTaskAsynchronously(this, this::ConnectDatabase);
+        getServer().getScheduler().runTaskAsynchronously(this, this::connectDatabase);
     }
 
-    private void ConnectDatabase() {
+    private void connectDatabase() {
         try {
             db.connect();
             if (db.logConnected()) {
@@ -177,7 +162,7 @@ public final class UserLogin extends JavaPlugin {
         }
     }
 
-    private void CheckUpdates() {
+    private void checkUpdates() {
         String url = "https://api.spigotmc.org/legacy/update.php?resource=" + pluginID;
         String version = getDescription().getVersion();
         String latest = Utils.fetch(url);
@@ -212,7 +197,7 @@ public final class UserLogin extends JavaPlugin {
         return locationsManager;
     }
 
-    public PlayerManager getPlayerManager() {
+    public PlayerManager getPlayers() {
         return playerManager;
     }
 

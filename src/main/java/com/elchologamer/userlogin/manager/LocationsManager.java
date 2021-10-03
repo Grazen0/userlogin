@@ -15,7 +15,24 @@ public class LocationsManager {
     private final CustomConfig locationsConfig;
 
     public LocationsManager() {
-        locationsConfig = new CustomConfig(plugin, "locations.yml");
+        locationsConfig = new CustomConfig("locations.yml");
+    }
+
+    public void saveLocation(String key, Location location) {
+        ConfigurationSection section = locationsConfig.get().createSection(key);
+
+        section.set("world", location.getWorld().getName());
+        section.set("x", location.getX());
+        section.set("y", location.getY());
+        section.set("z", location.getZ());
+        section.set("yaw", location.getYaw());
+        section.set("pitch", location.getPitch());
+
+        locationsConfig.save();
+    }
+
+    public void savePlayerLocation(Player player) {
+        saveLocation("playerLocations." + player.getUniqueId(), player.getLocation());
     }
 
     public Location getPlayerLocation(Player player) {
@@ -42,7 +59,7 @@ public class LocationsManager {
 
         Location spawn = world.getSpawnLocation();
 
-        // Return actual location
+        // Return location
         return new Location(
                 world,
                 section.getDouble("x", spawn.getX()),

@@ -1,63 +1,192 @@
 package com.elchologamer.userlogin;
 
+import com.elchologamer.userlogin.api.UserLoginAPI;
+import com.elchologamer.userlogin.api.event.AuthenticationEvent;
+import com.elchologamer.userlogin.api.types.AuthType;
+import com.elchologamer.userlogin.manager.LocationsManager;
+import com.elchologamer.userlogin.util.QuickMap;
 import com.elchologamer.userlogin.util.Utils;
+import org.bukkit.Location;
+import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.event.player.PlayerJoinEvent;
 import org.bukkit.scheduler.BukkitScheduler;
 
+import java.net.InetSocketAddress;
 import java.util.Map;
 
 public class ULPlayer {
 
     private final UserLogin plugin = UserLogin.getPlugin();
+
     private Player player;
     private boolean loggedIn = false;
-    private Integer timeout = null;
-    private Integer welcomeMessage = null;
+    private int timeout = -1;
+    private int welcomeMessage = -1;
     private String ip = null;
 
     public ULPlayer(Player player) {
         this.player = player;
     }
 
-    public void activateTimeout() {
-        if (loggedIn) return;
+    public void onJoin(PlayerJoinEvent event) {
+        loggedIn = false;
+        this.player = event.getPlayer(); // Replace with newly joined player
+
+        // Teleport to login position
+        if (plugin.getConfig().getBoolean("teleports.toLogin")) {
+            Location loc = plugin.getLocationsManager().getLocation(
+                    "login",
+                    player.getWorld().getSpawnLocation()
+            );
+
+            player.teleport(loc);
+        }
+
+        // Bypass if IP is registered
+        if (ip != null && plugin.getConfig().getBoolean("ipRecords.enabled")) {
+            InetSocketAddress address = player.getAddress();
+
+            if (address != null) {
+                if (address.getHostString().equals(ip)) {
+                    ip = null;
+                    login(AuthType.LOGIN);
+                    return;
+                }
+            }
+        }
+
 
         BukkitScheduler scheduler = player.getServer().getScheduler();
-        if (timeout != null) scheduler.cancelTask(timeout);
 
-        if (!plugin.getConfig().getBoolean("timeout.enabled")) return;
-        cancelTimeout();
+        // Timeout
+        if (plugin.getConfig().getBoolean("timeout.enabled", true)) {
+            long timeoutDelay = plugin.getConfig().getLong("timeout.time");
 
-        timeout = scheduler.scheduleSyncDelayedTask(
-                plugin,
-                () -> player.kickPlayer(plugin.getLang().getMessage("messages.timeout")),
-                plugin.getConfig().getLong("timeout.time") * 20
-        );
-    }
+            timeout = scheduler.scheduleSyncDelayedTask(
+                    plugin,
+                    () -> player.kickPlayer(plugin.getLang().getMessage("messages.timeout")),
+                    timeoutDelay * 20
+            );
+        }
 
-    public void cancelTimeout() {
-        if (timeout != null)
-            player.getServer().getScheduler().cancelTask(timeout);
-    }
 
-    public void activateRepeatingMessage(String messagePath) {
-        if (loggedIn) return;
-
+        // Repeating welcome message
         long interval = plugin.getConfig().getLong("repeatingWelcomeMsg", -1) * 20;
-        if (interval <= 0) return;
+        if (interval > 0) {
+            welcomeMessage = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
+                    plugin,
+                    this::sendWelcomeMessage,
+                    interval, interval
+            );
+        }
 
-        cancelRepeatingMessage();
-
-        welcomeMessage = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
-                plugin,
-                () -> sendMessage(messagePath),
-                interval, interval
-        );
+        sendWelcomeMessage();
     }
 
-    public void cancelRepeatingMessage() {
-        if (welcomeMessage != null)
+    public void onQuit() {
+        if (!loggedIn) {
+            cancelPreLoginTasks();
+        } else {
+            loggedIn = false;
+
+            if (plugin.getConfig().getBoolean("teleports.savePosition")) {
+                plugin.getLocationsManager().savePlayerLocation(player);
+            }
+
+            // Store IP address if enabled
+            if (plugin.getConfig().getBoolean("ipRecords.enabled")) {
+                InetSocketAddress address = player.getAddress();
+
+                if (address != null) {
+                    ip = address.getHostString();
+
+                    // Schedule IP deletion
+                    long delay = plugin.getConfig().getLong("ipRecords.delay", 10);
+                    plugin.getServer().getScheduler().scheduleSyncDelayedTask(
+                            plugin,
+                            () -> ip = null,
+                            delay * 20
+                    );
+                }
+            }
+        }
+    }
+
+    public void login(AuthType type) {
+        // Teleport player
+        FileConfiguration config = plugin.getConfig();
+        ConfigurationSection teleports = config.getConfigurationSection("teleports");
+        assert teleports != null;
+
+        // Call event
+        AuthenticationEvent event;
+        boolean bungeeEnabled = config.getBoolean("bungeeCord.enabled");
+
+        if (bungeeEnabled) {
+            String target = config.getString("bungeeCord.spawnServer");
+            event = new AuthenticationEvent(player, type, target);
+        } else {
+            Location target = null;
+            LocationsManager manager = plugin.getLocationsManager();
+
+            if (teleports.getBoolean("savePosition")) {
+                target = manager.getPlayerLocation(player);
+            } else if (teleports.getBoolean("toSpawn", true)) {
+                target = manager.getLocation("spawn");
+            }
+
+            event = new AuthenticationEvent(player, type, target);
+        }
+
+        plugin.getServer().getPluginManager().callEvent(event);
+        if (event.isCancelled()) return;
+
+        cancelPreLoginTasks();
+
+        // Send message
+        String message = event.getMessage();
+        if (message != null) player.sendMessage(message);
+
+        // Join announcement
+        String announcement = event.getAnnouncement();
+        if (announcement != null) {
+            for (Player onlinePlayer : player.getServer().getOnlinePlayers()) {
+                if (UserLoginAPI.isLoggedIn(player)) {
+                    onlinePlayer.sendMessage(announcement);
+                }
+            }
+        }
+
+        loggedIn = true;
+
+        // Teleport to destination
+        Location targetLoc = event.getDestination();
+        String targetServer = event.getTargetServer();
+
+        if (bungeeEnabled && targetServer != null) {
+            Utils.sendPluginMessage(player, "BungeeCord", "Connect", targetServer);
+        } else if (targetLoc != null) {
+            player.teleport(targetLoc);
+        }
+    }
+
+    private void sendWelcomeMessage() {
+        String path = "messages.welcome." + (UserLoginAPI.isRegistered(player) ? "registered" : "unregistered");
+        sendMessage(path, new QuickMap<>("player", player.getName()));
+    }
+
+    public void cancelPreLoginTasks() {
+        if (timeout != -1) {
+            player.getServer().getScheduler().cancelTask(timeout);
+            timeout = -1;
+        }
+
+        if (welcomeMessage != -1) {
             player.getServer().getScheduler().cancelTask(welcomeMessage);
+            welcomeMessage = -1;
+        }
     }
 
     public void sendMessage(String path) {
@@ -77,31 +206,11 @@ public class ULPlayer {
         player.sendMessage(Utils.color(message));
     }
 
-    public void changeServer(String target) {
-        Utils.sendPluginMessage(player, "BungeeCord", "Connect", target);
-    }
-
     public boolean isLoggedIn() {
         return loggedIn;
     }
 
-    public void setLoggedIn(boolean loggedIn) {
-        this.loggedIn = loggedIn;
-    }
-
-    public void setIP(String ip) {
-        this.ip = ip;
-    }
-
-    public String getIP() {
-        return ip;
-    }
-
     public Player getPlayer() {
         return player;
-    }
-
-    public void setPlayer(Player player) {
-        this.player = player;
     }
 }

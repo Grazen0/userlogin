@@ -1,37 +1,23 @@
 package com.elchologamer.userlogin.manager;
 
-import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.ULPlayer;
 import org.bukkit.entity.Player;
-import org.bukkit.event.EventHandler;
-import org.bukkit.event.Listener;
-import org.bukkit.event.player.PlayerJoinEvent;
 
 import java.util.HashMap;
 import java.util.UUID;
 
-public class PlayerManager extends HashMap<UUID, ULPlayer> implements Listener {
+public class PlayerManager extends HashMap<UUID, ULPlayer> {
 
-    public PlayerManager() {
-        UserLogin plugin = UserLogin.getPlugin();
-        plugin.getServer().getPluginManager().registerEvents(this, plugin);
-    }
-
-    public ULPlayer get(Player player) {
+    public ULPlayer getOrCreate(Player player) {
         UUID uuid = player.getUniqueId();
-        if (containsKey(uuid)) return super.get(uuid);
 
-        ULPlayer newPlayer = new ULPlayer(player);
-        put(uuid, newPlayer);
+        if (containsKey(uuid)) {
+            return get(uuid);
+        } else {
+            ULPlayer newPlayer = new ULPlayer(player);
+            put(uuid, newPlayer);
 
-        return newPlayer;
-    }
-
-    @EventHandler
-    public void onPlayerJoin(PlayerJoinEvent e) {
-        Player p = e.getPlayer();
-        UUID uuid = p.getUniqueId();
-
-        if (containsKey(uuid)) get(uuid).setPlayer(p);
+            return newPlayer;
+        }
     }
 }

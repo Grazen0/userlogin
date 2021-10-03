@@ -1,13 +1,11 @@
 package com.elchologamer.userlogin.command.sub;
 
+import com.elchologamer.userlogin.ULPlayer;
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.CustomConfig;
 import com.elchologamer.userlogin.command.base.SubCommand;
 import com.elchologamer.userlogin.util.QuickMap;
-import com.elchologamer.userlogin.ULPlayer;
 import org.bukkit.Location;
 import org.bukkit.command.CommandSender;
-import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
@@ -33,34 +31,18 @@ public class SetCommand extends SubCommand {
 
         // Save location
         Location loc = player.getLocation();
-        double x = loc.getX();
-        double y = loc.getY();
-        double z = loc.getZ();
-        float yaw = loc.getYaw();
-        float pitch = loc.getPitch();
-        String world = loc.getWorld().getName();
-
-        CustomConfig locationsConfig = plugin.getLocationsManager().getConfig();
-        FileConfiguration config = locationsConfig.get();
-
-        config.set(type + ".x", x);
-        config.set(type + ".y", y);
-        config.set(type + ".z", z);
-        config.set(type + ".yaw", yaw);
-        config.set(type + ".pitch", pitch);
-        config.set(type + ".world", world);
-        locationsConfig.save();
+        plugin.getLocationsManager().saveLocation(type, loc);
 
         // Send message
         ulPlayer.sendMessage(
                 "commands.set",
                 new QuickMap<>("type", (Object) type)
-                        .set("x", (int) x)
-                        .set("y", (int) y)
-                        .set("z", (int) z)
-                        .set("yaw", (int) yaw)
-                        .set("pitch", (int) pitch)
-                        .set("world", world)
+                        .set("x", (int) loc.getX())
+                        .set("y", (int) loc.getY())
+                        .set("z", (int) loc.getZ())
+                        .set("yaw", (int) loc.getYaw())
+                        .set("pitch", (int) loc.getPitch())
+                        .set("world", loc.getWorld().getName())
         );
 
         return true;
