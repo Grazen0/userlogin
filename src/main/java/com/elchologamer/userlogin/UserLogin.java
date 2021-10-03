@@ -1,32 +1,31 @@
 package com.elchologamer.userlogin;
 
-import com.elchologamer.userlogin.commands.ChangePasswordCommand;
-import com.elchologamer.userlogin.commands.LoginCommand;
-import com.elchologamer.userlogin.commands.RegisterCommand;
-import com.elchologamer.userlogin.commands.subs.HelpCommand;
-import com.elchologamer.userlogin.commands.subs.ReloadCommand;
-import com.elchologamer.userlogin.commands.subs.SetCommand;
-import com.elchologamer.userlogin.commands.subs.UnregisterCommand;
-import com.elchologamer.userlogin.listeners.OnPlayerJoin;
-import com.elchologamer.userlogin.listeners.OnPlayerQuit;
-import com.elchologamer.userlogin.listeners.restrictions.AttackRestriction;
-import com.elchologamer.userlogin.listeners.restrictions.BlockBreakingRestriction;
-import com.elchologamer.userlogin.listeners.restrictions.BlockPlacingRestriction;
-import com.elchologamer.userlogin.listeners.restrictions.ChatRestriction;
-import com.elchologamer.userlogin.listeners.restrictions.CommandRestriction;
-import com.elchologamer.userlogin.listeners.restrictions.ItemDropRestriction;
-import com.elchologamer.userlogin.listeners.restrictions.ItemPickupRestriction;
-import com.elchologamer.userlogin.listeners.restrictions.MovementRestriction;
-import com.elchologamer.userlogin.listeners.restrictions.ReceiveDamageRestriction;
+import com.elchologamer.userlogin.command.ChangePasswordCommand;
+import com.elchologamer.userlogin.command.LoginCommand;
+import com.elchologamer.userlogin.command.RegisterCommand;
+import com.elchologamer.userlogin.command.sub.HelpCommand;
+import com.elchologamer.userlogin.command.sub.ReloadCommand;
+import com.elchologamer.userlogin.command.sub.SetCommand;
+import com.elchologamer.userlogin.command.sub.UnregisterCommand;
+import com.elchologamer.userlogin.listener.OnPlayerJoin;
+import com.elchologamer.userlogin.listener.OnPlayerQuit;
+import com.elchologamer.userlogin.listener.restriction.AttackRestriction;
+import com.elchologamer.userlogin.listener.restriction.BlockBreakingRestriction;
+import com.elchologamer.userlogin.listener.restriction.BlockPlacingRestriction;
+import com.elchologamer.userlogin.listener.restriction.ChatRestriction;
+import com.elchologamer.userlogin.listener.restriction.CommandRestriction;
+import com.elchologamer.userlogin.listener.restriction.ItemDropRestriction;
+import com.elchologamer.userlogin.listener.restriction.ItemPickupRestriction;
+import com.elchologamer.userlogin.listener.restriction.MovementRestriction;
+import com.elchologamer.userlogin.listener.restriction.ReceiveDamageRestriction;
 import com.elchologamer.userlogin.util.FastLoginHook;
 import com.elchologamer.userlogin.util.LogFilter;
 import com.elchologamer.userlogin.util.Utils;
-import com.elchologamer.userlogin.util.command.CommandHandler;
-import com.elchologamer.userlogin.util.database.Database;
-import com.elchologamer.userlogin.util.extensions.ULPlayer;
-import com.elchologamer.userlogin.util.managers.LangManager;
-import com.elchologamer.userlogin.util.managers.LocationsManager;
-import com.elchologamer.userlogin.util.managers.PlayerManager;
+import com.elchologamer.userlogin.command.base.CommandHandler;
+import com.elchologamer.userlogin.database.Database;
+import com.elchologamer.userlogin.manager.LangManager;
+import com.elchologamer.userlogin.manager.LocationsManager;
+import com.elchologamer.userlogin.manager.PlayerManager;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
@@ -131,21 +130,10 @@ public final class UserLogin extends JavaPlugin {
 
         // Check for updates
         if (getConfig().getBoolean("checkUpdates", true)) {
-            getServer().getScheduler().runTaskAsynchronously(this, () -> {
-                String url = "https://api.spigotmc.org/legacy/update.php?resource=" + pluginID;
-                String latest = Utils.fetch(url);
-
-                if (latest == null) {
-                    Utils.log("&cUnable to fetch latest version");
-                } else if (!latest.equalsIgnoreCase(version)) {
-                    Utils.log("&eA new UserLogin version is available! (v%s)", latest);
-                } else {
-                    Utils.log("&aRunning latest version! (v%s)", version);
-                }
-            });
+            getServer().getScheduler().runTaskAsynchronously(this, this::CheckUpdates);
         }
 
-        Utils.log("%s v%s enabled", getName(), version);
+        Utils.log("%s v%s enabled", getName(), plugin.getDescription().getVersion());
     }
 
     public void load() {
@@ -168,23 +156,39 @@ public final class UserLogin extends JavaPlugin {
             }
         }
 
-        db = Database.select(); // Select database
+        // Start database
+        db = Database.select();
+        getServer().getScheduler().runTaskAsynchronously(this, this::ConnectDatabase);
+    }
 
-        getServer().getScheduler().runTaskAsynchronously(this, () -> {
-            try {
-                db.connect();
-                if (db.logConnected()) {
-                    Utils.log(getMessage("other.database_connected"));
-                }
-            } catch (Exception e) {
-                if (e instanceof ClassNotFoundException) {
-                    Utils.log(getMessage("other.driver_missing").replace("{driver}", e.getMessage()));
-                } else {
-                    Utils.log(getMessage("other.database_error"));
-                    e.printStackTrace();
-                }
+    private void ConnectDatabase() {
+        try {
+            db.connect();
+            if (db.logConnected()) {
+                Utils.log(langManager.getMessage("other.database_connected"));
             }
-        });
+        } catch (Exception e) {
+            if (e instanceof ClassNotFoundException) {
+                Utils.log(langManager.getMessage("other.driver_missing").replace("{driver}", e.getMessage()));
+            } else {
+                Utils.log(langManager.getMessage("other.database_error"));
+                e.printStackTrace();
+            }
+        }
+    }
+
+    private void CheckUpdates() {
+        String url = "https://api.spigotmc.org/legacy/update.php?resource=" + pluginID;
+        String version = getDescription().getVersion();
+        String latest = Utils.fetch(url);
+
+        if (latest == null) {
+            Utils.log("&cUnable to fetch latest version");
+        } else if (!latest.equalsIgnoreCase(version)) {
+            Utils.log("&eA new UserLogin version is available! (v%s)", latest);
+        } else {
+            Utils.log("&aRunning latest version! (v%s)", version);
+        }
     }
 
     @Override
@@ -194,21 +198,6 @@ public final class UserLogin extends JavaPlugin {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
-
-    public FileConfiguration getMessages() {
-        return langManager.getMessages();
-    }
-
-    public String getMessage(String path, String def) {
-        FileConfiguration config = getMessages();
-
-        String message = config.getString(path, config.getString(path.replace("_", "-")));
-        return message == null ? def : Utils.color(message);
-    }
-
-    public String getMessage(String path) {
-        return getMessage(path, null);
     }
 
     public ULPlayer getPlayer(Player player) {
@@ -225,5 +214,9 @@ public final class UserLogin extends JavaPlugin {
 
     public PlayerManager getPlayerManager() {
         return playerManager;
+    }
+
+    public LangManager getLang() {
+        return langManager;
     }
 }

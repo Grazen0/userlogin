@@ -1,7 +1,7 @@
 package com.elchologamer.userlogin.api;
 
 import com.elchologamer.userlogin.UserLogin;
-import com.elchologamer.userlogin.util.extensions.ULPlayer;
+import com.elchologamer.userlogin.ULPlayer;
 import org.bukkit.entity.Player;
 
 import java.util.UUID;
