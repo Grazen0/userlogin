@@ -184,7 +184,7 @@ public final class UserLogin extends JavaPlugin {
     }
 
     public ULPlayer getPlayer(Player player) {
-        return playerManager.get(player);
+        return playerManager.get(player.getUniqueId());
     }
 
     public Database getDB() {
