@@ -33,6 +33,7 @@ for (const file of langFiles) {
 const fileKeysArr = Array.from(fileKeys.values());
 
 // Time complexity go nyoooom
+// O(n² - n)
 fileKeys.forEach((keys, file) => {
 	console.log(`Comparing "${file}"...`);
 
