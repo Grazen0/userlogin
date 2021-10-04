@@ -15,16 +15,16 @@
 # Enable update checking
 checkUpdates: true
 
-# Language file to load
+# Language file to use
 lang: 'en_US'
 
-# Broadcast login messages
+# Broadcast message when a player logs in
 loginBroadcast: true
 
-# Interval (seconds) for the pre-login welcome message (-1 to disable)
+# Interval (seconds) for repeating the welcome message (-1 to disable)
 repeatingWelcomeMsg: -1
 
-# You can enable/disable commands here
+# You can enable/disable specific commands here
 enabledCommands:
   userlogin: true
   register: true
@@ -32,29 +32,29 @@ enabledCommands:
   changepassword: true
 
 # Custom command aliases
-# (Will only take effect on a server restart)
+# (Changes will only take effect on a server restart)
 commandAliases:
   userlogin: ['ul']
   register: []
   login: []
   changepassword: []
 
-# Timeout-kicking settings
 timeout:
 
-  # Enable/disable timeout kicking
+  # Enable/disable kicking non-logged in players after a certain time
   enabled: true
 
-  # Timeout delay in seconds
+  # Delay (seconds) for kicking non-logged in players
   time: 60
 
 
 # Password options
 password:
 
-  # Optionally add extra salt rounds to
-  # the password encryption method
-  # (The initial value, without extra, is 10)
+  # Optionally, add extra salt rounds to
+  # the password encryption method.
+  # A higher value means higher password encryption,
+  # but slower authentication.
   extraSalt: 0
 
   # Minimum characters that a password must have
@@ -70,7 +70,7 @@ password:
   regex: ''
 
 
-# Restrictions for non-logged in players
+# Restrictions that will apply for non-logged in players
 restrictions:
   chat: false
   commands: false
@@ -83,46 +83,42 @@ restrictions:
     receive: false
   movement:
     enabled: false
-    warnFrequency: 20 # Use -1 to disable
+    warnFrequency: 20 # Message players every few ticks when they move. (-1 to disable)
 
 
 # Enable/disable specific teleports
 teleports:
 
-  # Save players' position on logout
+  # Save player positions on logout
   savePosition: false
   # The savePosition mode teleports the player
   # to their last position when they log in.
-  # Useful for survival servers and such.
+  # Useful for survival servers and similar.
 
   # Teleport players to login location on join
   toLogin: true
 
-  # Teleport players to spawn when logged in.
-  # Only takes effect when the BungeeCord and
+  # Teleport players to the position set with "/ul set spawn"
+  # when logged in. Only takes effect when the BungeeCord and
   # savePosition modes are disabled.
   toSpawn: true
 
-
-# Player IP record options
 ipRecords:
 
-  # Allow players to bypass login if they enter with the
-  # same IP address consecutively
+  # Allow players to bypass login if they log in with the
+  # same IP address inside a certain timeframe
   enabled: false
 
-  # Time (seconds) during which the player's IP
-  # will be remembered
+  # Time (seconds) for which the player's IP will be remembered
   delay: 30
 
 
-# BungeeCord options
 bungeeCord:
 
-  # Enable BungeeCord functionalities
+  # Enable sending logged in players to another server in the network
   enabled: false
 
-  # Server to send the player to, when logged in
+  # Target server to send the player to when logged in
   spawnServer: 'LOBBY'
 
 
@@ -144,7 +140,7 @@ database:
   # To use anything SQL-based, the specified database
   # must already exist, the plugin will NOT create it.
 
-  # (The MySQL implementation also supports MariaDB)
+  # The MySQL implementation also works with MariaDB databases
   mysql:
     ssl: false
     host: 'localhost'
