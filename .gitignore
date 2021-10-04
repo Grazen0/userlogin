@@ -110,3 +110,7 @@ buildNumber.properties
 
 # Common working directory
 run/
+
+# Node.js stuff
+node_modules/
+yarn.lock
