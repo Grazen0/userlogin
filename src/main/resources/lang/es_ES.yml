@@ -29,7 +29,7 @@ messages:
   already_logged_in: '&cYa estás logeado!'
   logged_in: '&9Has sido logeado!'
   registered: '&9Has sido registrado!'
-  regregister_failed: '&cRegistro fallido, por favor intenta de nuevo.'
+  register_failed: '&cRegistro fallido, por favor intenta de nuevo.'
   welcome:
     registered: '&6Bienvenido! Usa &3/login <password> &6para entrar al servidor'
     unregistered: '&6Bienvenido! Usa &3/register <password> <password> &6para registrarte'
