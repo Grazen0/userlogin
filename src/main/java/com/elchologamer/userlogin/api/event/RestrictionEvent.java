@@ -9,10 +9,10 @@ public class RestrictionEvent<E extends Event> extends Event implements Cancella
     private static final HandlerList HANDLERS = new HandlerList();
     private boolean cancelled = false;
 
-    private final E event;
+    private final E restrictedEvent;
 
-    public RestrictionEvent(E event) {
-        this.event = event;
+    public RestrictionEvent(E restrictedEvent) {
+        this.restrictedEvent = restrictedEvent;
     }
 
     @Override
@@ -34,7 +34,7 @@ public class RestrictionEvent<E extends Event> extends Event implements Cancella
         return HANDLERS;
     }
 
-    public E getEvent() {
-        return event;
+    public E getRestrictedEvent() {
+        return restrictedEvent;
     }
 }

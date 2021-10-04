@@ -125,8 +125,8 @@ public class ULPlayer {
         boolean bungeeEnabled = config.getBoolean("bungeeCord.enabled");
 
         if (bungeeEnabled) {
-            String target = config.getString("bungeeCord.spawnServer");
-            event = new AuthenticationEvent(player, type, target);
+            String targetServer = config.getString("bungeeCord.spawnServer");
+            event = new AuthenticationEvent(player, type, targetServer);
         } else {
             Location target = null;
             LocationsManager manager = plugin.getLocationsManager();
@@ -145,9 +145,9 @@ public class ULPlayer {
 
         cancelPreLoginTasks();
 
-        // Send message
-        String message = event.getMessage();
-        if (message != null) player.sendMessage(message);
+        // Send login message
+        String loginMessage = event.getMessage();
+        if (loginMessage != null) player.sendMessage(loginMessage);
 
         // Join announcement
         String announcement = event.getAnnouncement();
@@ -162,13 +162,13 @@ public class ULPlayer {
         loggedIn = true;
 
         // Teleport to destination
-        Location targetLoc = event.getDestination();
+        Location targetLocation = event.getDestination();
         String targetServer = event.getTargetServer();
 
         if (bungeeEnabled && targetServer != null) {
             Utils.sendPluginMessage(player, "BungeeCord", "Connect", targetServer);
-        } else if (targetLoc != null) {
-            player.teleport(targetLoc);
+        } else if (targetLocation != null) {
+            player.teleport(targetLocation);
         }
     }
 
