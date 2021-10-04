@@ -1,54 +1,30 @@
 # UserLogin
 
-![Banner][banner]
+This is the source code for the [UserLogin](https://www.spigotmc.org/resources/userlogin.80669/) Minecraft plugin.
 
-## About
+## Building the plugin
 
-Prevent players from having their accounts be used by other players! This plugin will add an authentication layer of security to your server in no time, and with just a bit of configuration.
+There aren't really any requirements besides having Java and [Maven](https://maven.apache.org/) installed on your
+computer.
 
-## Features
+To install `lib/FastLogin.jar`, a required dependency, run:
 
-- Easy player authentication.
-- Password encryption for maximum security.
-- FastLogin support for premium login.
-- Fully customizable login and spawn coordinates.
-- Fully customizable messages.
-- Time-out functionality to kick AFK players.
-- Supports a wide variety of databases.
-- Togglable restrictions for non-logged in players, such as movement and chat.
-- Multi-language support
-- Full MySQL database support!
-- Decent BungeeCord support
+```bash
+$ mvn initialize
+```
 
-## Player commands
+To build the .jar file, run:
 
-- **/login &lt;password&gt;**: If registered and the password is correct, it will teleport the player to the spawn location
-- **/register &lt;password&gt; &lt;password&gt;**: Registers the player with the given password.
+```bash
+$ mvn package
+```
 
-## Op-only commands
+(I think it's that simple)
 
-- **/ul help**: Shows the help list for all admin commands
-- **/ul set [login|spawn]**: Sets the specified location at the player's exact position.
-- **/ul reload**: Reloads the plugin and all the configuration files.
-- **/ul unregister &lt;player&gt;**: Unregisters the specified player, deleting their password.
+## Contributing
 
-## Permissions
-
-Permission nodes can be configured with the format ul.[command], or ul.\* for every permission.
-
-## Configuration
-
-The latest **config.yml** version can be found [**here**][config].
-
-## bStats graph
-
-![bStats graph][bstats]
-
-## Support
-
-A support [Discord server][support] is open for reporting any issues or suggestions.
-
-[banner]: https://i.imgur.com/B91xrjs.png
-[config]: https://github.com/ElCholoGamer/userlogin/blob/master/src/main/resources/config.yml
-[bstats]: https://bstats.org/signatures/bukkit/UserLogin.svg
-[support]: https://discord.gg/gbjaEDzRXU
+If you found a bug or have a suggestion, feel free
+to [open an issue](https://github.com/ElCholoGamer/userlogin/issues/new). For stuff like bugs and suggestions. If you
+want to contribute directly to the plugin's source code, feel free to fork the repository and open
+a [pull request](https://github.com/ElCholoGamer/userlogin/pulls). (Make sure to follow
+the [contribution guidelines](/CONTRIBUTING.md)!)
