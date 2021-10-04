@@ -16,7 +16,7 @@ jobs:
       - name: Install dependency
         run: npm install yaml
 
-      - name: Run script
+      - name: Compare lang files
         run: node compare-lang-files.js
 
   build:
@@ -27,12 +27,12 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Set Up JDK
+      - name: Set up JDK
         uses: actions/setup-java@v1
         with:
           java-version: 1.8
 
-      - name: Cache Maven Packages
+      - name: Cache Maven packages
         uses: actions/cache@v2
         with:
           path: ~/.m2
@@ -45,7 +45,7 @@ jobs:
       - name: Build with Maven
         run: mvn -B --no-transfer-progress package
 
-      - name: Set Outputs
+      - name: Set outputs
         id: variables
         run: |
           echo "::set-output name=artifact_id::$(mvn help:evaluate -Dexpression=project.artifactId -q -DforceStdout)"
@@ -54,7 +54,7 @@ jobs:
           echo "::set-output name=commits::$(git log --pretty=format:"%s" ${{ github.event.before }}..${{ github.event.after }})"
           echo "::set-output name=branch::$(echo ${GITHUB_REF##*/})"
 
-      - name: Release Development Build
+      - name: Release build
         id: create_release
         uses: actions/create-release@v1
         env:
@@ -66,7 +66,7 @@ jobs:
             ## Commits
             ${{ join(github.event.commits.*.message, '\\n') }}
 
-      - name: Upload Plugin Jar to Release
+      - name: Upload plugin .jar to release
         uses: actions/upload-release-asset@v1
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
