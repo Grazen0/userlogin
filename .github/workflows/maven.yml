@@ -35,7 +35,6 @@ jobs:
           echo "::set-output name=tag_name::$(mvn help:evaluate -Dexpression=project.version -q -DforceStdout)"
           echo "::set-output name=short_sha::$(git rev-parse --short ${{ github.event.after }})"
           echo "::set-output name=commits::$(git log --pretty=format:"%s" ${{ github.event.before }}..${{ github.event.after }})"
-          echo "::set-output name=branch::$(${GITHUB_REF#refs/heads/})"
 
       - name: Release Development Build
         id: create_release
@@ -44,7 +43,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: v${{ steps.variables.outputs.tag_name }}-SNAPSHOT-${{ steps.variables.outputs.short_sha }}
-          release_name: Build ${{ steps.variables.outputs.branch }}-${{ steps.variables.outputs.short_sha }}
+          release_name: Build ${GITHUB_REF##*/}-${{ steps.variables.outputs.short_sha }}
           body: |
             ## Commits
             ${{ join(github.event.commits.*.message, '\\n') }}
