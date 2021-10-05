@@ -65,7 +65,7 @@ jobs:
           prerelease: ${{ steps.variables.outputs.branch != "master" }}
           body: |
             ## Commits
-            ${{ join(github.event.commits.*.message, '\\n') }}
+            ${{ join(github.event.commits.*.message, "\n") }}
 
       - name: Upload plugin .jar to release
         uses: actions/upload-release-asset@v1
