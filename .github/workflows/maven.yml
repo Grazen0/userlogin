@@ -62,6 +62,7 @@ jobs:
         with:
           tag_name: v${{ steps.variables.outputs.tag_name }}-SNAPSHOT-${{ steps.variables.outputs.short_sha }}
           release_name: ${{ steps.variables.outputs.branch }}-${{ steps.variables.outputs.short_sha }}
+          prerelease: ${{ steps.variables.outputs.branch != "master" }}
           body: |
             ## Commits
             ${{ join(github.event.commits.*.message, '\\n') }}
