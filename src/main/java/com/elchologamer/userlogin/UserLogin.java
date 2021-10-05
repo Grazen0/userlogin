@@ -18,7 +18,6 @@ import com.elchologamer.userlogin.manager.PlayerManager;
 import com.elchologamer.userlogin.util.FastLoginHook;
 import com.elchologamer.userlogin.util.LogFilter;
 import com.elchologamer.userlogin.util.Utils;
-import com.github.games647.fastlogin.bukkit.FastLoginBukkit;
 import org.bstats.bukkit.Metrics;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -51,11 +50,11 @@ public final class UserLogin extends JavaPlugin {
         langManager = new LangManager();
         locationsManager = new LocationsManager();
 
+        reloadPlugin();
+
         // Register FastLogin hook
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
-            FastLoginBukkit fastLogin = JavaPlugin.getPlugin(FastLoginBukkit.class);
-            fastLogin.getCore().setAuthPluginHook(new FastLoginHook());
-
+            new FastLoginHook().register();
             Utils.log("FastLogin hook registered");
         }
 
@@ -98,8 +97,6 @@ public final class UserLogin extends JavaPlugin {
         new RegisterCommand().register();
         new ChangePasswordCommand().register();
 
-        load();
-
         // bStats setup
         if (!getConfig().getBoolean("debug")) {
             Metrics metrics = new Metrics(this, bStatsID);
@@ -119,7 +116,7 @@ public final class UserLogin extends JavaPlugin {
         Utils.log("%s v%s enabled", getName(), plugin.getDescription().getVersion());
     }
 
-    public void load() {
+    public void reloadPlugin() {
         // Load configurations
         saveDefaultConfig();
         reloadConfig();

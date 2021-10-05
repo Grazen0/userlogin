@@ -21,7 +21,7 @@ public class ReloadCommand extends SubCommand {
             }
         }
 
-        plugin.load();
+        plugin.reloadPlugin();
 
         sender.sendMessage(plugin.getLang().getMessage("commands.reload"));
         return true;
