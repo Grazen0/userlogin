@@ -15,13 +15,13 @@ public class ReloadCommand extends SubCommand {
 
     @Override
     public boolean run(CommandSender sender, String[] args) {
+        plugin.reloadPlugin();
+
         for (ULPlayer ulPlayer : plugin.getPlayers().values()) {
-            if (!ulPlayer.isLoggedIn()) {
-                ulPlayer.cancelPreLoginTasks();
+            if (ulPlayer.getPlayer().isOnline() && !ulPlayer.isLoggedIn()) {
+                ulPlayer.onJoin(null);
             }
         }
-
-        plugin.reloadPlugin();
 
         sender.sendMessage(plugin.getLang().getMessage("commands.reload"));
         return true;

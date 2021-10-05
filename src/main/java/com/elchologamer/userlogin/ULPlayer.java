@@ -32,7 +32,9 @@ public class ULPlayer {
 
     public void onJoin(PlayerJoinEvent event) {
         loggedIn = false;
-        this.player = event.getPlayer(); // Replace with newly joined player
+        if (event != null) {
+            this.player = event.getPlayer(); // Replace with newly joined player
+        }
 
         // Teleport to login position
         if (plugin.getConfig().getBoolean("teleports.toLogin")) {
@@ -51,37 +53,13 @@ public class ULPlayer {
             if (address != null) {
                 if (address.getHostString().equals(ip)) {
                     ip = null;
-                    login(AuthType.LOGIN);
+                    onAuthenticate(AuthType.LOGIN);
                     return;
                 }
             }
         }
 
-
-        BukkitScheduler scheduler = player.getServer().getScheduler();
-
-        // Timeout
-        if (plugin.getConfig().getBoolean("timeout.enabled", true)) {
-            long timeoutDelay = plugin.getConfig().getLong("timeout.time");
-
-            timeout = scheduler.scheduleSyncDelayedTask(
-                    plugin,
-                    () -> player.kickPlayer(plugin.getLang().getMessage("messages.timeout")),
-                    timeoutDelay * 20
-            );
-        }
-
-
-        // Repeating welcome message
-        long interval = plugin.getConfig().getLong("repeatingWelcomeMsg", -1) * 20;
-        if (interval > 0) {
-            welcomeMessage = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
-                    plugin,
-                    this::sendWelcomeMessage,
-                    interval, interval
-            );
-        }
-
+        schedulePreLoginTasks();
         sendWelcomeMessage();
     }
 
@@ -114,7 +92,7 @@ public class ULPlayer {
         }
     }
 
-    public void login(AuthType type) {
+    public void onAuthenticate(AuthType type) {
         // Teleport player
         FileConfiguration config = plugin.getConfig();
         ConfigurationSection teleports = config.getConfigurationSection("teleports");
@@ -132,9 +110,9 @@ public class ULPlayer {
             LocationsManager manager = plugin.getLocationsManager();
 
             if (teleports.getBoolean("savePosition")) {
-                target = manager.getPlayerLocation(player);
+                target = manager.getPlayerLocation(player, player.getWorld().getSpawnLocation());
             } else if (teleports.getBoolean("toSpawn", true)) {
-                target = manager.getLocation("spawn");
+                target = manager.getLocation("spawn", player.getWorld().getSpawnLocation());
             }
 
             event = new AuthenticationEvent(player, type, target);
@@ -175,6 +153,32 @@ public class ULPlayer {
     private void sendWelcomeMessage() {
         String path = "messages.welcome." + (UserLoginAPI.isRegistered(player) ? "registered" : "unregistered");
         sendMessage(path, new QuickMap<>("player", player.getName()));
+    }
+
+    public void schedulePreLoginTasks() {
+        BukkitScheduler scheduler = player.getServer().getScheduler();
+
+        // Timeout
+        if (plugin.getConfig().getBoolean("timeout.enabled", true)) {
+            long timeoutDelay = plugin.getConfig().getLong("timeout.time");
+
+            timeout = scheduler.scheduleSyncDelayedTask(
+                    plugin,
+                    () -> player.kickPlayer(plugin.getLang().getMessage("messages.timeout")),
+                    timeoutDelay * 20
+            );
+        }
+
+
+        // Repeating welcome message
+        long interval = plugin.getConfig().getLong("repeatingWelcomeMsg", -1) * 20;
+        if (interval > 0) {
+            welcomeMessage = plugin.getServer().getScheduler().scheduleSyncRepeatingTask(
+                    plugin,
+                    this::sendWelcomeMessage,
+                    interval, interval
+            );
+        }
     }
 
     public void cancelPreLoginTasks() {

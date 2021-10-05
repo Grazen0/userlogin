@@ -39,7 +39,7 @@ public abstract class AuthCommand extends BaseCommand {
         if (args.length < minArgs) return false;
 
         // Authenticate player
-        if (authenticate(ulPlayer, args)) ulPlayer.login(type);
+        if (authenticate(ulPlayer, args)) ulPlayer.onAuthenticate(type);
 
         return true;
     }

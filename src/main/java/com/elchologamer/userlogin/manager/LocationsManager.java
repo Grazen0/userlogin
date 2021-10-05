@@ -7,8 +7,6 @@ import org.bukkit.World;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.entity.Player;
 
-import java.util.UUID;
-
 public class LocationsManager {
 
     private final UserLogin plugin = UserLogin.getPlugin();
@@ -36,11 +34,11 @@ public class LocationsManager {
     }
 
     public Location getPlayerLocation(Player player) {
-        return getPlayerLocation(player.getUniqueId());
+        return getPlayerLocation(player, null);
     }
 
-    public Location getPlayerLocation(UUID uuid) {
-        return getLocation("playerLocations." + uuid, getLocation("spawn"));
+    public Location getPlayerLocation(Player player, Location def) {
+        return getLocation("playerLocations." + player.getUniqueId(), def);
     }
 
     public Location getLocation(String key) {

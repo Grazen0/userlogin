@@ -26,7 +26,7 @@ public class FastLoginHook implements AuthPlugin<Player> {
 
         plugin.getServer().getScheduler().runTask(
                 plugin,
-                () -> ulPlayer.login(AuthType.LOGIN)
+                () -> ulPlayer.onAuthenticate(AuthType.LOGIN)
         );
         return true;
     }
