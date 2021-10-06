@@ -17,8 +17,8 @@ import com.elchologamer.userlogin.manager.LocationsManager;
 import com.elchologamer.userlogin.manager.PlayerManager;
 import com.elchologamer.userlogin.util.FastLoginHook;
 import com.elchologamer.userlogin.util.LogFilter;
+import com.elchologamer.userlogin.util.Metrics;
 import com.elchologamer.userlogin.util.Utils;
-import org.bstats.bukkit.Metrics;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 
