@@ -111,6 +111,9 @@ buildNumber.properties
 # Common working directory
 run/
 
+# Utility scripts
+*.bat
+
 # Node.js stuff
 node_modules/
 yarn.lock
