@@ -33,7 +33,7 @@ class UserLogin : JavaPlugin() {
 
     companion object {
         private var _plugin: UserLogin? = null
-        val plugin = _plugin!!
+        val plugin = _plugin ?: throw IllegalArgumentException("Plugin is not initialized")
 
         private const val pluginID = 80669
         private const val bStatsID = 8586
@@ -161,13 +161,7 @@ class UserLogin : JavaPlugin() {
         }
     }
 
-    override fun onDisable() {
-        try {
-            db.disconnect()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-    }
+    override fun onDisable() = db.disconnect()
 
     fun getPlayer(player: Player): ULPlayer {
         return players.getOrCreate(player)
