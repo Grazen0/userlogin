@@ -10,7 +10,7 @@ object MovementRestriction : BaseRestriction<PlayerMoveEvent>("movement") {
     private val warnCoolDown: MutableMap<UUID, Int> = HashMap()
 
     override fun shouldRestrict(event: PlayerMoveEvent): Boolean =
-        (event.to?.let { event.from sameBlockHorizontally it } ?: false) && super.shouldRestrict(event)
+        (event.to?.let { !(event.from sameBlockHorizontally it) } ?: false) && super.shouldRestrict(event)
 
     // TODO: Testing
     @EventHandler

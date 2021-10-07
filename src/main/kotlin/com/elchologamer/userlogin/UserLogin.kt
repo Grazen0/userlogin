@@ -26,14 +26,19 @@ import org.bukkit.plugin.java.JavaPlugin
 class UserLogin : JavaPlugin() {
     val players = PlayerManager()
     val lang = LangManager()
-    val locationsManager = LocationsManager()
+
+    private var _locationsManager: LocationsManager? = null
+    val locationsManager
+        get() = _locationsManager ?: throw IllegalArgumentException("LocationsManager is not initialized")
 
     private var _db: Database? = null
-    val db = _db ?: throw IllegalArgumentException("Database is not initialized")
+    val db
+        get() = _db ?: throw IllegalArgumentException("Database is not initialized")
 
     companion object {
         private var _plugin: UserLogin? = null
-        val plugin = _plugin ?: throw IllegalArgumentException("Plugin is not initialized")
+        val plugin
+            get() = _plugin ?: throw IllegalArgumentException("Plugin is not initialized")
 
         private const val pluginID = 80669
         private const val bStatsID = 8586
@@ -43,6 +48,8 @@ class UserLogin : JavaPlugin() {
         _plugin = this
 
         Utils.debug("RUNNING IN DEBUG MODE")
+
+        _locationsManager = LocationsManager()
 
         server.messenger.registerOutgoingPluginChannel(this, "BungeeCord")
 
@@ -114,20 +121,15 @@ class UserLogin : JavaPlugin() {
         // Load configurations
         saveDefaultConfig()
         reloadConfig()
-        locationsManager.locations.saveDefault()
+
+        this.locationsManager.locations.saveDefault()
         lang.reload()
 
         // Cancel all plugin tasks
         server.scheduler.cancelTasks(this)
 
-        // Disconnect from database
-        try {
-            db.disconnect()
-        } catch (e: Exception) {
-            e.printStackTrace()
-        }
-
         // Start database
+        _db?.disconnect()
         _db = Database.select()
         server.scheduler.runTaskAsynchronously(this, Runnable { connectDatabase() })
     }

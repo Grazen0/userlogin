@@ -26,15 +26,17 @@ class CommandHandler(name: String) : BaseCommand(name) {
         val options = if (args.size == 1) {
             subCommands.map { it.name }
         } else {
-            subCommands.find {it.name == args[0]}?.tabComplete(sender, label, getSubArgs(args))
+            subCommands.find { it.name == args[0] }?.tabComplete(sender, label, getSubArgs(args))
         } ?: ArrayList()
 
         // Filter out list
-        return options.filter { it.startsWith(args[args.size - 1])}
+        return options.filter { it.startsWith(args[args.size - 1]) }
     }
 
-    // TODO: Testing
-    private fun getSubArgs(args: Array<String>): Array<String> = args.copyOfRange(1, args.size - 1)
+    private fun getSubArgs(args: Array<String>): Array<String> {
+        val size = (args.size - 1).coerceAtLeast(0)
+        return args.copyOfRange(1.coerceAtMost(size), size)
+    }
 
     fun add(subCommand: SubCommand) {
         subCommands.add(subCommand)

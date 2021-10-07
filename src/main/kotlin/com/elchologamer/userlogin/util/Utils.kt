@@ -42,7 +42,7 @@ object Utils {
     fun sendPluginMessage(player: Player, channel: String, vararg args: String) {
         val out = ByteStreams.newDataOutput()
 
-        Arrays.stream(args).forEach { s: String? -> out.writeUTF(s) }
+        args.forEach { out.writeUTF(it) }
         player.sendPluginMessage(plugin, channel, out.toByteArray())
     }
 

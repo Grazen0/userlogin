@@ -8,11 +8,11 @@ import org.bukkit.event.EventHandler
 import org.bukkit.event.entity.EntityDamageByEntityEvent
 
 object AttackRestriction : BaseRestriction<EntityDamageByEntityEvent>("damage.attack") {
-    override fun shouldRestrict(e: EntityDamageByEntityEvent): Boolean {
+    override fun shouldRestrict(event: EntityDamageByEntityEvent): Boolean {
         if (!plugin.config.getBoolean("restrictions.$configKey")) return false
 
-        return if (e.damager.type != EntityType.PLAYER) false
-        else !UserLoginAPI.isLoggedIn(e.damager as Player)
+        return if (event.damager.type != EntityType.PLAYER) false
+        else !UserLoginAPI.isLoggedIn(event.damager as Player)
     }
 
     @EventHandler

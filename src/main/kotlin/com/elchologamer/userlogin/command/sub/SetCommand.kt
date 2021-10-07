@@ -34,11 +34,11 @@ class SetCommand : SubCommand("set", true, "ul.set") {
         return true
     }
 
-    override fun tabComplete(sender: CommandSender, alias: String, args: Array<String>): List<String> {
+    override fun tabComplete(sender: CommandSender, label: String, args: Array<String>): List<String> {
         val options: MutableList<String> = ArrayList()
 
         if (args.size == 1) {
-            options.add("login" )
+            options.add("login")
             options.add("spawn")
         }
 
