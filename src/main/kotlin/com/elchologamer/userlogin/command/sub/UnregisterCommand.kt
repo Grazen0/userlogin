@@ -7,15 +7,22 @@ import org.bukkit.command.CommandSender
 
 class UnregisterCommand : SubCommand("unregister", "ul.unregister") {
     override fun run(sender: CommandSender, args: Array<String>): Boolean {
-        if (args.isEmpty()) return false
+        if (args.isNotEmpty()) {
+            sender.server.scheduler.runTaskAsynchronously(plugin, Runnable { asyncRun(sender, args) })
+            return true
+        }
 
+        return false
+    }
+
+    private fun asyncRun(sender: CommandSender, args: Array<String>) {
         // Try getting player directly from server
         val victim = sender.server.getPlayer(args[0])
         val uuid = victim?.uniqueId ?: fetchPlayerUUID(args[0])
 
         if (uuid == null || !plugin.db.isRegistered(uuid)) {
             sender.sendMessage(plugin.lang.getMessage("commands.errors.player_not_found"))
-            return true
+            return
         }
 
         try {
@@ -27,6 +34,5 @@ class UnregisterCommand : SubCommand("unregister", "ul.unregister") {
             e.printStackTrace()
             sender.sendMessage(plugin.lang.getMessage("commands.errors.unregister_failed"))
         }
-        return true
     }
 }
