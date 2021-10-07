@@ -3,14 +3,14 @@ package com.elchologamer.userlogin.listener.restriction
 import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import com.elchologamer.userlogin.api.UserLoginAPI
 import com.elchologamer.userlogin.api.event.RestrictionEvent
-import com.elchologamer.userlogin.listener.BaseListener
 import org.bukkit.entity.EntityType
 import org.bukkit.entity.Player
 import org.bukkit.event.Event
+import org.bukkit.event.Listener
 import org.bukkit.event.entity.EntityEvent
 import org.bukkit.event.player.PlayerEvent
 
-abstract class BaseRestriction<E : Event> protected constructor(val configKey: String) : BaseListener() {
+abstract class BaseRestriction<E : Event> protected constructor(val configKey: String) : Listener {
 
     open fun shouldRestrict(event: E): Boolean {
         if (

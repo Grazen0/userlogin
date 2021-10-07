@@ -68,22 +68,24 @@ class UserLogin : JavaPlugin() {
         }
 
         // Register event listeners
-        ChatRestriction.register()
-        MovementRestriction.register()
-        BlockBreakingRestriction.register()
-        BlockPlacingRestriction.register()
-        CommandRestriction.register()
-        ItemDropRestriction.register()
-        MovementRestriction.register()
-        AttackRestriction.register()
-        ReceiveDamageRestriction.register()
-        OnPlayerJoin.register()
-        OnPlayerQuit.register()
+        arrayListOf(
+            ChatRestriction,
+            MovementRestriction,
+            BlockBreakingRestriction,
+            BlockPlacingRestriction,
+            CommandRestriction,
+            ItemDropRestriction,
+            MovementRestriction,
+            AttackRestriction,
+            ReceiveDamageRestriction,
+            OnPlayerJoin,
+            OnPlayerQuit
+        ).forEach { server.pluginManager.registerEvents(it, this) }
 
         // Register Item Pickup restriction if class exists
         try {
             Class.forName("org.bukkit.event.entity.EntityPickupItemEvent")
-            ItemPickupRestriction.register()
+            server.pluginManager.registerEvents(ItemPickupRestriction, this)
         } catch (ignored: ClassNotFoundException) {
         }
 

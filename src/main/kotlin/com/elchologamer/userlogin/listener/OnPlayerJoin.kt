@@ -2,9 +2,10 @@ package com.elchologamer.userlogin.listener
 
 import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import org.bukkit.event.EventHandler
+import org.bukkit.event.Listener
 import org.bukkit.event.player.PlayerJoinEvent
 
-object OnPlayerJoin : BaseListener() {
+object OnPlayerJoin : Listener {
 
     @EventHandler
     fun onPlayerJoin(e: PlayerJoinEvent) {

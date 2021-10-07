@@ -7,7 +7,7 @@ import org.bukkit.event.player.PlayerMoveEvent
 import java.util.*
 
 object MovementRestriction : BaseRestriction<PlayerMoveEvent>("movement") {
-    private val warnCoolDown: MutableMap<UUID, Int> = HashMap()
+    private val warnCoolDown = HashMap<UUID, Int>()
 
     override fun shouldRestrict(event: PlayerMoveEvent): Boolean =
         (event.to?.let { !(event.from sameBlockHorizontally it) } ?: false) && super.shouldRestrict(event)
