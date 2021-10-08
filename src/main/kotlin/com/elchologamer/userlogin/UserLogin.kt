@@ -9,22 +9,18 @@ import com.elchologamer.userlogin.command.sub.ReloadCommand
 import com.elchologamer.userlogin.command.sub.SetCommand
 import com.elchologamer.userlogin.command.sub.UnregisterCommand
 import com.elchologamer.userlogin.database.Database
-import com.elchologamer.userlogin.listener.OnPlayerJoin
-import com.elchologamer.userlogin.listener.OnPlayerQuit
+import com.elchologamer.userlogin.listener.JoinQuitListener
 import com.elchologamer.userlogin.listener.restriction.*
 import com.elchologamer.userlogin.manager.LangManager
 import com.elchologamer.userlogin.manager.LocationsManager
-import com.elchologamer.userlogin.manager.PlayerManager
 import com.elchologamer.userlogin.util.FastLoginHook
 import com.elchologamer.userlogin.util.LogFilter
 import com.elchologamer.userlogin.util.Metrics
 import com.elchologamer.userlogin.util.Metrics.SimplePie
 import com.elchologamer.userlogin.util.Utils
-import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
-class UserLogin : JavaPlugin() {
-    val players = PlayerManager()
+sealed class UserLogin : JavaPlugin() {
     val lang = LangManager()
 
     private var _locationsManager: LocationsManager? = null
@@ -69,6 +65,7 @@ class UserLogin : JavaPlugin() {
 
         // Register event listeners
         arrayListOf(
+            JoinQuitListener,
             ChatRestriction,
             MovementRestriction,
             BlockBreakingRestriction,
@@ -77,9 +74,7 @@ class UserLogin : JavaPlugin() {
             ItemDropRestriction,
             MovementRestriction,
             AttackRestriction,
-            ReceiveDamageRestriction,
-            OnPlayerJoin,
-            OnPlayerQuit
+            ReceiveDamageRestriction
         ).forEach { server.pluginManager.registerEvents(it, this) }
 
         // Register Item Pickup restriction if class exists
@@ -166,8 +161,4 @@ class UserLogin : JavaPlugin() {
     }
 
     override fun onDisable() = db.disconnect()
-
-    fun getPlayer(player: Player): ULPlayer {
-        return players.getOrCreate(player)
-    }
 }

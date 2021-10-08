@@ -1,6 +1,6 @@
 package com.elchologamer.userlogin.listener.restriction
 
-import com.elchologamer.userlogin.UserLogin.Companion.plugin
+import com.elchologamer.userlogin.ULPlayer
 import org.bukkit.event.EventHandler
 import org.bukkit.event.player.PlayerCommandPreprocessEvent
 
@@ -13,7 +13,7 @@ object CommandRestriction : BaseRestriction<PlayerCommandPreprocessEvent>("comma
 
         if (!command.startsWith("login") && !command.startsWith("register")) {
             e.isCancelled = true
-            plugin.getPlayer(e.player).sendMessage("messages.commands_disabled")
+            ULPlayer[e.player].sendMessage("messages.commands_disabled")
         }
     }
 }

@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin.util
 
+import com.elchologamer.userlogin.ULPlayer
 import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import com.elchologamer.userlogin.api.types.AuthType
 import com.github.games647.fastlogin.bukkit.FastLoginBukkit
@@ -14,7 +15,7 @@ object FastLoginHook : AuthPlugin<Player> {
     }
 
     override fun forceLogin(player: Player): Boolean {
-        val ulPlayer = plugin.getPlayer(player)
+        val ulPlayer = ULPlayer[player]
         if (ulPlayer.loggedIn) return false
 
         plugin.server.scheduler.runTask(

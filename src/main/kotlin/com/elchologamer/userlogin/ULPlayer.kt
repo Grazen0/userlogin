@@ -8,19 +8,33 @@ import com.elchologamer.userlogin.util.QuickMap
 import com.elchologamer.userlogin.util.Utils
 import org.bukkit.Location
 import org.bukkit.entity.Player
-import org.bukkit.event.player.PlayerJoinEvent
+import java.util.*
 
-class ULPlayer(var player: Player) {
+class ULPlayer private constructor(val uuid: UUID) {
     var loggedIn = false
         private set
 
     private var timeout = -1
     private var welcomeMessage = -1
+    private var ipForgor = -1
     private var ip: String? = null
 
-    fun onJoin(event: PlayerJoinEvent?) {
+    val player
+        get() = plugin.server.getPlayer(uuid) ?: throw IllegalArgumentException("Player with UUID $uuid not found")
+
+    companion object {
+        val players = HashMap<UUID, ULPlayer>()
+
+        operator fun get(uuid: UUID) = players[uuid] ?: ULPlayer(uuid)
+        operator fun get(player: Player) = get(player.uniqueId)
+    }
+
+    init {
+        players[player.uniqueId] = this
+    }
+
+    fun onJoin() {
         loggedIn = false
-        player = event?.player ?: player
 
         // Teleport to login position
         if (plugin.config.getBoolean("teleports.toLogin")) {
@@ -28,11 +42,17 @@ class ULPlayer(var player: Player) {
         }
 
         // Bypass if IP is registered
-        if (ip != null && plugin.config.getBoolean("ipRecords.enabled")) {
-            if (player.address?.hostString == ip) {
-                ip = null
-                onAuthenticate(AuthType.LOGIN)
-                return
+        if (plugin.config.getBoolean("ipRecords.enabled")) {
+            ip?.let {
+                if (player.address?.hostString == it) {
+                    onAuthenticate(AuthType.LOGIN)
+                    return
+                }
+            }
+
+            if (ipForgor != -1) {
+                plugin.server.scheduler.cancelTask(ipForgor)
+                ipForgor = -1
             }
         }
 
@@ -45,16 +65,15 @@ class ULPlayer(var player: Player) {
             cancelPreLoginTasks()
         } else {
             loggedIn = false
+
             if (plugin.config.getBoolean("teleports.savePosition")) {
                 plugin.locationsManager.savePlayerLocation(player)
             }
 
             // Store IP address if enabled
             if (plugin.config.getBoolean("ipRecords.enabled")) {
-                ip = player.address?.hostString
-
                 // Schedule IP deletion
-                plugin.server.scheduler.scheduleSyncDelayedTask(
+                ipForgor = plugin.server.scheduler.scheduleSyncDelayedTask(
                     plugin,
                     { ip = null },
                     plugin.config.getLong("ipRecords.delay", 10) * 20
@@ -91,6 +110,11 @@ class ULPlayer(var player: Player) {
         if (event.isCancelled) return
 
         cancelPreLoginTasks()
+
+        // Save IP address
+        if (plugin.config.getBoolean("ipRecords.enabled")) {
+            ip = player.address?.hostString
+        }
 
         // Send login message
         event.message?.let { player.sendMessage(it) }

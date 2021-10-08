@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin.listener.restriction
 
+import com.elchologamer.userlogin.ULPlayer
 import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import org.bukkit.Location
 import org.bukkit.event.EventHandler
@@ -12,7 +13,6 @@ object MovementRestriction : BaseRestriction<PlayerMoveEvent>("movement") {
     override fun shouldRestrict(event: PlayerMoveEvent): Boolean =
         (event.to?.let { !(event.from sameBlockHorizontally it) } ?: false) && super.shouldRestrict(event)
 
-    // TODO: Testing
     @EventHandler
     fun handle(e: PlayerMoveEvent) {
         if (!shouldRestrict(e)) return
@@ -38,7 +38,7 @@ object MovementRestriction : BaseRestriction<PlayerMoveEvent>("movement") {
 
         if (++current >= frequency) {
             // Send warning message and reset counter
-            plugin.getPlayer(e.player).sendMessage("messages.move_warning")
+            ULPlayer[e.player].sendMessage("messages.move_warning")
             current = 0
         }
 

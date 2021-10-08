@@ -1,9 +1,15 @@
 package com.elchologamer.userlogin.api
 
+import com.elchologamer.userlogin.ULPlayer
 import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import org.bukkit.entity.Player
 import java.util.*
 
+/**
+ * The class which contains several useful methods within
+ * the UserLogin API. Use the INSTANCE property
+ * to access its methods.
+ */
 object UserLoginAPI {
     /**
      * Checks if a player is registered.
@@ -21,8 +27,8 @@ object UserLoginAPI {
      * @param uuid the UUID of the player to check
      * @return true if the player is registered, false otherwise
      */
-    fun isRegistered(uuid: UUID?): Boolean {
-        return plugin.db.isRegistered(uuid!!)
+    fun isRegistered(uuid: UUID): Boolean {
+        return plugin.db.isRegistered(uuid)
     }
 
     /**
@@ -32,8 +38,8 @@ object UserLoginAPI {
      * @return true if the player is logged in, false otherwise
      */
     @Deprecated("As of v2.7.0, use any of the available overloads instead")
-    fun isLoggedIn(player: String?): Boolean {
-        val p = plugin.server.getPlayer(player!!) ?: return false
+    fun isLoggedIn(player: String): Boolean {
+        val p = plugin.server.getPlayer(player) ?: return false
         return isLoggedIn(p)
     }
 
@@ -53,8 +59,7 @@ object UserLoginAPI {
      * @param uuid the UUID of the player to check for
      * @return true if the player is logged in, false otherwise
      */
-    fun isLoggedIn(uuid: UUID?): Boolean {
-        val ulPlayer = plugin.players[uuid]
-        return ulPlayer?.loggedIn == true
+    fun isLoggedIn(uuid: UUID): Boolean {
+        return ULPlayer[uuid].loggedIn
     }
 }

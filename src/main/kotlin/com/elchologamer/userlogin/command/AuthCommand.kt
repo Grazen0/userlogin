@@ -1,7 +1,6 @@
 package com.elchologamer.userlogin.command
 
 import com.elchologamer.userlogin.ULPlayer
-import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import com.elchologamer.userlogin.api.types.AuthType
 import com.elchologamer.userlogin.command.base.BaseCommand
 import org.bukkit.command.CommandSender
@@ -11,7 +10,7 @@ abstract class AuthCommand(name: String, private val type: AuthType, private val
     BaseCommand(name, true) {
 
     override fun run(sender: CommandSender, label: String, args: Array<String>): Boolean {
-        val ulPlayer = plugin.getPlayer((sender as Player?)!!)
+        val ulPlayer = ULPlayer[sender as Player]
 
         // Check if player is already logged in
         if (ulPlayer.loggedIn) {

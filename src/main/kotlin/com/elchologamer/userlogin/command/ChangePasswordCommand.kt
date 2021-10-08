@@ -10,11 +10,13 @@ import org.bukkit.entity.Player
 object ChangePasswordCommand : BaseCommand("changepassword", true) {
     override fun run(sender: CommandSender, label: String, args: Array<String>): Boolean {
         val player = sender as Player
-        val ulPlayer: ULPlayer = plugin.getPlayer(player)
+        val ulPlayer = ULPlayer[player]
+
         if (!ulPlayer.loggedIn) {
             ulPlayer.sendMessage("messages.must_log_in")
             return true
         }
+
         if (args.size < 3) return false
 
         // Check first password
