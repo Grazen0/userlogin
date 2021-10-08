@@ -20,7 +20,7 @@ import com.elchologamer.userlogin.util.Metrics.SimplePie
 import com.elchologamer.userlogin.util.Utils
 import org.bukkit.plugin.java.JavaPlugin
 
-sealed class UserLogin : JavaPlugin() {
+class UserLogin : JavaPlugin() {
     private var _db: Database? = null
     val db
         get() = _db ?: throw IllegalArgumentException("Database is not initialized")
