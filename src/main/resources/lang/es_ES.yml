@@ -1,4 +1,5 @@
 commands:
+  disabled: '&cÉste comando está deshabilitado'
   player_unregistered: '&b{player} &efue removido!'
   errors:
     player_only: '&cEste comando solo puede ser usado por jugadores'
@@ -11,10 +12,12 @@ commands:
     userlogin: 'Comando principal de UserLogin'
     login: 'Te logea al servidor con la contraseña ingresada'
     register: 'Te registra con la contraseña ingresada'
+    changepassword: 'Cambia tu contraseña'
   usages:
     userlogin: '&cUso correcto: /userlogin [command] (Usa /ul help para más)'
     login: '&cUso correcto: /login <password>'
     register: '&cUso correcto: /register <password> <password>'
+    changepassword: '&cUso correcto: /changepassword <old-password> <new-password> <new-password>'
 messages:
   not_registered: '&c¡No estás registrado! Use &a/register <password> <password> &cpara registrarte!'
   already_registered: '&cYa estás registrado!'
@@ -26,15 +29,19 @@ messages:
   already_logged_in: '&cYa estás logeado!'
   logged_in: '&9Has sido logeado!'
   registered: '&9Has sido registrado!'
-  regregister_failed: '&cRegistro fallido, por favor intenta de nuevo.'
+  register_failed: '&cRegistro fallido, por favor intenta de nuevo.'
   welcome:
     registered: '&6Bienvenido! Usa &3/login <password> &6para entrar al servidor'
     unregistered: '&6Bienvenido! Usa &3/register <password> <password> &6para registrarte'
   chat_disabled: '&cDebes estar logeado para usar el chat!'
   move_warning: '&cTienes que logearte para moverte!'
   timeout: 'Te has quedado mucho tiempo sin logearte'
+  max_attempts_exceeded: 'Has excedido {count} intentos para logearte, intenta de nuevo'
   login_announcement: '&e{player} se ha unido al servidor!'
   commands_disabled: '&cTienes que logearte para usar comandos!'
+  must_log_in: '&cYou must be logged in to use this command'
+  password_changed: '&6Tu contraseña ha sido cambiada'
+  password_change_error: '&cHubo un error al cambiar tu contraseña'
   help:
     - '&a--------- | &2[Ayuda de UserLogin] &a| ---------'
     - '&2/ul help: &aMuestra esta lista de ayuda'
