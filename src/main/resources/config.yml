@@ -51,6 +51,10 @@ timeout:
 # Password options
 password:
 
+  # Max amount of login attempts before
+  # kicking a player (-1 to disable)
+  maxLoginAttempts: 10
+
   # Optionally, add extra salt rounds to
   # the password encryption method.
   # A higher value means higher password encryption,

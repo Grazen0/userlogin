@@ -36,6 +36,7 @@ messages:
   chat_disabled: '&cDebes estar logeado para usar el chat!'
   move_warning: '&cTienes que logearte para moverte!'
   timeout: 'Te has quedado mucho tiempo sin logearte'
+  max_attempts_exceeded: 'Has excedido {count} intentos para logearte, intenta de nuevo'
   login_announcement: '&e{player} se ha unido al servidor!'
   commands_disabled: '&cTienes que logearte para usar comandos!'
   must_log_in: '&cYou must be logged in to use this command'

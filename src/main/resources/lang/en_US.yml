@@ -35,6 +35,7 @@ messages:
     unregistered: '&6Welcome! Use &3/register <password> <password> &6to register your account'
   chat_disabled: '&cYou must first log in to use the chat!'
   timeout: 'You stayed for too much time without logging in'
+  max_attempts_exceeded: 'You have exceeded {count} attempts to log in, please try again'
   login_announcement: '&e{player} has joined the server!'
   move_warning: '&cYou have to login to move!'
   commands_disabled: '&cYou must log in to use commands!'
