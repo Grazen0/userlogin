@@ -15,8 +15,6 @@ import java.net.URLEncoder
 import java.util.*
 
 object Utils {
-
-    // TODO: Test function
     fun color(s: String): String {
         var out = s
 

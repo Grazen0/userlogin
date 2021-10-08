@@ -9,7 +9,6 @@ import org.bukkit.event.Cancellable
 import org.bukkit.event.HandlerList
 import org.bukkit.event.player.PlayerEvent
 
-// TODO: Test
 class AuthenticationEvent(player: Player, val type: AuthType) : PlayerEvent(player), Cancellable {
     private var cancelled = false
     var destination: Location? = null
