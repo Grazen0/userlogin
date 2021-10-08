@@ -8,7 +8,7 @@ import com.github.games647.fastlogin.core.hooks.AuthPlugin
 import org.bukkit.entity.Player
 import org.bukkit.plugin.java.JavaPlugin
 
-object FastLoginHook : AuthPlugin<Player> {
+internal object FastLoginHook : AuthPlugin<Player> {
     fun register() {
         val fastLogin = JavaPlugin.getPlugin(FastLoginBukkit::class.java)
         fastLogin.core.authPluginHook = this

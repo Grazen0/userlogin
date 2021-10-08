@@ -3,6 +3,7 @@ package com.elchologamer.userlogin.command.sub
 import com.elchologamer.userlogin.ULPlayer
 import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import com.elchologamer.userlogin.command.base.SubCommand
+import com.elchologamer.userlogin.manager.LangManager
 import org.bukkit.command.CommandSender
 
 class ReloadCommand : SubCommand("reload", "ul.reload") {
@@ -16,7 +17,7 @@ class ReloadCommand : SubCommand("reload", "ul.reload") {
             }
         }
 
-        sender.sendMessage(plugin.lang.getMessage("commands.reload"))
+        sender.sendMessage(LangManager.getMessage("commands.reload"))
         return true
     }
 }

@@ -1,7 +1,8 @@
 package com.elchologamer.userlogin.command.sub
 
-import com.elchologamer.userlogin.UserLogin.Companion.plugin
+import com.elchologamer.userlogin.ULPlayer
 import com.elchologamer.userlogin.command.base.SubCommand
+import com.elchologamer.userlogin.manager.LocationsManager
 import com.elchologamer.userlogin.util.QuickMap
 import org.bukkit.command.CommandSender
 import org.bukkit.entity.Player
@@ -13,15 +14,14 @@ class SetCommand : SubCommand("set", true, "ul.set") {
         val type = args[0].lowercase()
         if (type != "spawn" && type != "login") return false
 
-        val ulPlayer = plugin.getPlayer((sender as Player))
-        val player = ulPlayer.player
+        val player = sender as Player
 
         // Save location
         val loc = player.location
-        plugin.locationsManager.saveLocation(type, loc)
+        LocationsManager.saveLocation(type, loc)
 
         // Send message
-        ulPlayer.sendMessage(
+        ULPlayer[player].sendMessage(
             "commands.set",
             QuickMap<String, Any>("type", type)
                 .set("x", loc.x.toInt())

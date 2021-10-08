@@ -21,12 +21,6 @@ import com.elchologamer.userlogin.util.Utils
 import org.bukkit.plugin.java.JavaPlugin
 
 sealed class UserLogin : JavaPlugin() {
-    val lang = LangManager()
-
-    private var _locationsManager: LocationsManager? = null
-    val locationsManager
-        get() = _locationsManager ?: throw IllegalArgumentException("LocationsManager is not initialized")
-
     private var _db: Database? = null
     val db
         get() = _db ?: throw IllegalArgumentException("Database is not initialized")
@@ -44,8 +38,6 @@ sealed class UserLogin : JavaPlugin() {
         _plugin = this
 
         Utils.debug("RUNNING IN DEBUG MODE")
-
-        _locationsManager = LocationsManager()
 
         server.messenger.registerOutgoingPluginChannel(this, "BungeeCord")
 
@@ -119,8 +111,8 @@ sealed class UserLogin : JavaPlugin() {
         saveDefaultConfig()
         reloadConfig()
 
-        this.locationsManager.locations.saveDefault()
-        lang.reload()
+        LocationsManager.locations.saveDefault()
+        LangManager.reload()
 
         // Cancel all plugin tasks
         server.scheduler.cancelTasks(this)
@@ -136,12 +128,12 @@ sealed class UserLogin : JavaPlugin() {
             db.connect()
 
             if (db.logConnected) {
-                Utils.log(lang.getMessage("other.database_connected", "&eDatabase connected"))
+                Utils.log(LangManager.getMessage("other.database_connected", "&eDatabase connected"))
             }
         } catch (e: Exception) {
             val log = if (e.message != null && e is ClassNotFoundException)
-                lang.getMessage("other.driver_missing")?.replace("{driver}", e.message!!) else
-                lang.getMessage("other.database_error")
+                LangManager.getMessage("other.driver_missing")?.replace("{driver}", e.message!!) else
+                LangManager.getMessage("other.database_error")
 
             log?.let { Utils.log(it) }
             e.printStackTrace()

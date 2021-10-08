@@ -6,7 +6,7 @@ import org.bukkit.Location
 import org.bukkit.configuration.ConfigurationSection
 import org.bukkit.entity.Player
 
-class LocationsManager {
+object LocationsManager {
     val locations = CustomConfig("locations.yml", false)
 
     fun savePlayerLocation(player: Player) {

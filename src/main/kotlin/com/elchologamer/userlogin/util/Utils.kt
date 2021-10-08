@@ -14,7 +14,7 @@ import java.net.URL
 import java.net.URLEncoder
 import java.util.*
 
-object Utils {
+internal object Utils {
     fun color(s: String): String {
         var out = s
 

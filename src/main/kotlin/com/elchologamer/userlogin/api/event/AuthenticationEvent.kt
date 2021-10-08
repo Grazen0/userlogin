@@ -2,6 +2,7 @@ package com.elchologamer.userlogin.api.event
 
 import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import com.elchologamer.userlogin.api.types.AuthType
+import com.elchologamer.userlogin.manager.LangManager
 import com.elchologamer.userlogin.util.Utils
 import org.bukkit.Location
 import org.bukkit.entity.Player
@@ -13,9 +14,9 @@ class AuthenticationEvent(player: Player, val type: AuthType) : PlayerEvent(play
     private var cancelled = false
     var destination: Location? = null
     var targetServer: String? = null
-    var message: String? = Utils.color(plugin.lang.getMessage("messages.${type.messageKey}")!!)
+    var message: String? = Utils.color(LangManager.getMessage("messages.${type.messageKey}")!!)
     var announcement = if (plugin.config.getBoolean("loginBroadcast")) {
-        plugin.lang.getMessage("messages.login_announcement")?.replace("{player}", player.name)
+        LangManager.getMessage("messages.login_announcement")?.replace("{player}", player.name)
     } else {
         null
     }

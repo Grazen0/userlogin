@@ -9,7 +9,7 @@ import org.apache.logging.log4j.core.LogEvent
 import org.apache.logging.log4j.core.Logger
 import org.apache.logging.log4j.message.Message
 
-object LogFilter : Filter {
+internal object LogFilter : Filter {
 
     fun register() {
         val logger = LogManager.getRootLogger() as Logger

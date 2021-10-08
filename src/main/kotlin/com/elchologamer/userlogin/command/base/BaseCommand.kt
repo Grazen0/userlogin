@@ -1,6 +1,7 @@
 package com.elchologamer.userlogin.command.base
 
 import com.elchologamer.userlogin.UserLogin.Companion.plugin
+import com.elchologamer.userlogin.manager.LangManager
 import org.bukkit.command.Command
 import org.bukkit.command.CommandMap
 import org.bukkit.command.CommandSender
@@ -35,12 +36,12 @@ abstract class BaseCommand constructor(name: String, val playerOnly: Boolean = f
     override fun execute(sender: CommandSender, label: String, args: Array<String>): Boolean {
         // Check if command is disabled
         if (!plugin.config.getBoolean("enabledCommands.$name", true)) {
-            sender.sendMessage(plugin.lang.getMessage("commands.disabled"))
+            sender.sendMessage(LangManager.getMessage("commands.disabled"))
             return true
         }
 
         if (playerOnly && sender !is Player) {
-            sender.sendMessage(plugin.lang.getMessage("commands.errors.player_only"))
+            sender.sendMessage(LangManager.getMessage("commands.errors.player_only"))
             return true
         }
 
@@ -51,10 +52,10 @@ abstract class BaseCommand constructor(name: String, val playerOnly: Boolean = f
     }
 
     fun register() {
-        val usage = plugin.lang.getMessage("commands.usages.$name")
+        val usage = LangManager.getMessage("commands.usages.$name")
         usage?.let { setUsage(it) }
 
-        val description = plugin.lang.getMessage("commands.descriptions.$name")
+        val description = LangManager.getMessage("commands.descriptions.$name")
         description?.let { setDescription(it) }
 
         val aliases = plugin.config.getStringList("commandAliases.$name")

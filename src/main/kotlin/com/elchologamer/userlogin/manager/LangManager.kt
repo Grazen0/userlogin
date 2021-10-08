@@ -8,7 +8,7 @@ import java.io.File
 import java.io.IOException
 import java.io.InputStreamReader
 
-class LangManager {
+object LangManager {
     private val langConfigs: MutableMap<String, FileConfiguration> = HashMap()
 
     fun createDefault() {

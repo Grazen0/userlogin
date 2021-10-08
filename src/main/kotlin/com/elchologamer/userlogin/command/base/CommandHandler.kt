@@ -1,6 +1,6 @@
 package com.elchologamer.userlogin.command.base
 
-import com.elchologamer.userlogin.UserLogin.Companion.plugin
+import com.elchologamer.userlogin.manager.LangManager
 import org.bukkit.command.CommandSender
 
 class CommandHandler(name: String) : BaseCommand(name) {
@@ -14,7 +14,7 @@ class CommandHandler(name: String) : BaseCommand(name) {
 
             // Check that player has permission
             if (subCommand.permission != null && !sender.hasPermission(subCommand.permission!!)) {
-                sender.sendMessage(plugin.lang.getMessage("commands.errors.no_permission"))
+                sender.sendMessage(LangManager.getMessage("commands.errors.no_permission"))
                 return true
             }
             return subCommand.run(sender, label, getSubArgs(args))

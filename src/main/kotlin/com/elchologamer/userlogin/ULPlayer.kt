@@ -4,6 +4,8 @@ import com.elchologamer.userlogin.UserLogin.Companion.plugin
 import com.elchologamer.userlogin.api.UserLoginAPI
 import com.elchologamer.userlogin.api.event.AuthenticationEvent
 import com.elchologamer.userlogin.api.types.AuthType
+import com.elchologamer.userlogin.manager.LangManager
+import com.elchologamer.userlogin.manager.LocationsManager
 import com.elchologamer.userlogin.util.QuickMap
 import com.elchologamer.userlogin.util.Utils
 import org.bukkit.Location
@@ -38,7 +40,7 @@ class ULPlayer private constructor(val uuid: UUID) {
 
         // Teleport to login position
         if (plugin.config.getBoolean("teleports.toLogin")) {
-            player.teleport(plugin.locationsManager.getLocation("login", player.world.spawnLocation))
+            player.teleport(LocationsManager.getLocation("login", player.world.spawnLocation))
         }
 
         // Bypass if IP is registered
@@ -67,7 +69,7 @@ class ULPlayer private constructor(val uuid: UUID) {
             loggedIn = false
 
             if (plugin.config.getBoolean("teleports.savePosition")) {
-                plugin.locationsManager.savePlayerLocation(player)
+                LocationsManager.savePlayerLocation(player)
             }
 
             // Store IP address if enabled
@@ -97,9 +99,9 @@ class ULPlayer private constructor(val uuid: UUID) {
             var target: Location? = null
 
             if (teleports.getBoolean("savePosition")) {
-                target = plugin.locationsManager.getPlayerLocation(player, player.world.spawnLocation)
+                target = LocationsManager.getPlayerLocation(player, player.world.spawnLocation)
             } else if (teleports.getBoolean("toSpawn", true)) {
-                target = plugin.locationsManager.getLocation("spawn", player.world.spawnLocation)
+                target = LocationsManager.getLocation("spawn", player.world.spawnLocation)
             }
 
             event = AuthenticationEvent(player, type, target)
@@ -149,7 +151,7 @@ class ULPlayer private constructor(val uuid: UUID) {
             val timeoutDelay = plugin.config.getLong("timeout.time")
             timeout = player.server.scheduler.scheduleSyncDelayedTask(
                 plugin,
-                { player.kickPlayer(plugin.lang.getMessage("messages.timeout")) },
+                { player.kickPlayer(LangManager.getMessage("messages.timeout")) },
                 timeoutDelay * 20
             )
         }
@@ -178,7 +180,7 @@ class ULPlayer private constructor(val uuid: UUID) {
     }
 
     fun sendMessage(path: String, replace: Map<String, Any>? = null) {
-        var message = plugin.lang.getMessage(path)
+        var message = LangManager.getMessage(path)
         if (message == null || message.isBlank()) return
 
         replace?.let {
