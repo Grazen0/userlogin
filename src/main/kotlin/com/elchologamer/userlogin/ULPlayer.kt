@@ -143,11 +143,15 @@ class ULPlayer private constructor(val uuid: UUID) {
         }
     }
 
-    fun onLoginAttempt() {
+    fun onLoginAttempt(): Boolean {
         val maxAttempts = plugin.config.getInt("password.maxLoginAttempts")
-        if (++loginAttempts >= maxAttempts) {
-            player.kickPlayer(LangManager.getMessage("messages.max_attempts_exceeded"))
-        }
+
+        return if (++loginAttempts >= maxAttempts) {
+            player.kickPlayer(
+                LangManager.getMessage("messages.max_attempts_exceeded")?.replace("{count}", maxAttempts.toString())
+            )
+            false
+        } else true
     }
 
     private fun sendWelcomeMessage() {
