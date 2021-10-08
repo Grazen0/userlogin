@@ -30,11 +30,11 @@ object Utils {
         return org.bukkit.ChatColor.translateAlternateColorCodes('&', out)
     }
 
-    fun debug(s: Any) {
-        if (plugin.config.getBoolean("debug")) log(s)
+    fun debug(msg: Any, vararg args: Any) {
+        if (plugin.config.getBoolean("debug")) log(msg, *args)
     }
 
-    fun log(msg: Any, vararg args: Any?) =
+    fun log(msg: Any, vararg args: Any) =
         plugin.server.consoleSender.sendMessage("[${plugin.name}] ${color(String.format(msg.toString(), *args))}")
 
     fun sendPluginMessage(player: Player, channel: String, vararg args: String) {
@@ -57,7 +57,7 @@ object Utils {
         }
     }
 
-    fun fetchPlayerUUID(name: String?): UUID? {
+    fun fetchPlayerUUID(name: String): UUID? {
         return try {
             val url = "https://api.mojang.com/users/profiles/minecraft/" + URLEncoder.encode(name, "UTF-8")
             val res = fetch(url) ?: return null
