@@ -16,9 +16,11 @@ object LoginCommand : AuthCommand("login", AuthType.LOGIN, 1) {
 
         // Authenticate passwords
         if (!plugin.db.comparePasswords(uuid, args[0])) {
+            ulPlayer.onLoginAttempt()
             ulPlayer.sendMessage("messages.incorrect_password")
             return false
         }
+
         return true
     }
 }

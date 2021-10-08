@@ -15,11 +15,13 @@ import java.util.*
 class ULPlayer private constructor(val uuid: UUID) {
     var loggedIn = false
         private set
+    private var ip: String? = null
+    private var loginAttempts = 0
 
+    // Scheduler task IDs
     private var timeout = -1
     private var welcomeMessage = -1
     private var ipForgor = -1
-    private var ip: String? = null
 
     val player
         get() = plugin.server.getPlayer(uuid) ?: throw IllegalArgumentException("Player with UUID $uuid not found")
@@ -37,6 +39,7 @@ class ULPlayer private constructor(val uuid: UUID) {
 
     fun onJoin() {
         loggedIn = false
+        loginAttempts = 0
 
         // Teleport to login position
         if (plugin.config.getBoolean("teleports.toLogin")) {
@@ -137,6 +140,13 @@ class ULPlayer private constructor(val uuid: UUID) {
             Utils.sendPluginMessage(player, "BungeeCord", "Connect", event.targetServer!!)
         } else if (event.destination != null) {
             player.teleport(event.destination!!)
+        }
+    }
+
+    fun onLoginAttempt() {
+        val maxAttempts = plugin.config.getInt("password.maxLoginAttempts")
+        if (++loginAttempts >= maxAttempts) {
+            player.kickPlayer(LangManager.getMessage("messages.max_attempts_exceeded"))
         }
     }
 
