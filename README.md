@@ -23,8 +23,9 @@ $ mvn package
 
 ## Contributing
 
-If you found a bug or have a suggestion, feel free
-to [open an issue](https://github.com/ElCholoGamer/userlogin/issues/new). If you want to contribute directly to the
-plugin's source code, feel free to fork the repository and open
+If you found the plugin useful, make sure to leave a star on the repo!
+If you got a bug or a suggestion, feel free to 
+[open an issue](https://github.com/ElCholoGamer/userlogin/issues/new). If you want to 
+contribute directly to the plugin's source code, feel free to fork the repository and open
 a [pull request](https://github.com/ElCholoGamer/userlogin/pulls). (Make sure to follow
 the [contribution guidelines](/CONTRIBUTING.md)!)
