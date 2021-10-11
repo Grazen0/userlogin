@@ -1,4 +1,4 @@
-# UserLogin
+# UserLogin &middot; ![CI](https://github.com/ElCholoGamer/userlogin/actions/workflows/maven.yml/badge.svg)
 
 This is the source code for the [UserLogin](https://www.spigotmc.org/resources/userlogin.80669/) Minecraft plugin.
 
