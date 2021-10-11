@@ -7,10 +7,12 @@ import com.elchologamer.userlogin.util.QuickMap;
 import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.configuration.ConfigurationSection;
+import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.entity.Player;
 
 import java.net.InetSocketAddress;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -99,16 +101,17 @@ public class ULPlayer {
 
     public void onAuthenticate(AuthType type) {
         Player player = getPlayer();
+        FileConfiguration config = plugin.getConfig();
 
-        ConfigurationSection teleports = plugin.getConfig().getConfigurationSection("teleports");
+        ConfigurationSection teleports = config.getConfigurationSection("teleports");
         assert teleports != null;
 
         // Call event
         AuthenticationEvent event;
 
-        boolean bungeeEnabled = plugin.getConfig().getBoolean("bungeeCord.enabled");
+        boolean bungeeEnabled = config.getBoolean("bungeeCord.enabled");
         if (bungeeEnabled) {
-            String targetServer = plugin.getConfig().getString("bungeeCord.spawnServer");
+            String targetServer = config.getString("bungeeCord.spawnServer");
             event = new AuthenticationEvent(player, type, targetServer);
         } else {
             Location target = null;
@@ -130,7 +133,7 @@ public class ULPlayer {
         cancelPreLoginTasks();
 
         // Save IP address
-        if (plugin.getConfig().getBoolean("ipRecords.enabled")) {
+        if (config.getBoolean("ipRecords.enabled")) {
             InetSocketAddress addr = player.getAddress();
             if (addr != null) ip = addr.getHostString();
         }
@@ -148,6 +151,15 @@ public class ULPlayer {
         }
 
         loggedIn = true;
+
+        // Run login commands
+        List<String> loginCommands = config.getStringList("loginCommands");
+        for (String command : loginCommands) {
+            plugin.getServer().dispatchCommand(
+                    plugin.getServer().getConsoleSender(),
+                    command.replace("{player}", player.getName()).replaceFirst("^/", "")
+            );
+        }
 
         // Teleport to destination
         if (bungeeEnabled && event.getTargetServer() != null) {

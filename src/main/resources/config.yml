@@ -34,10 +34,14 @@ enabledCommands:
 # Custom command aliases
 # (Changes will only take effect on a server restart)
 commandAliases:
-  userlogin: ['ul']
-  register: []
-  login: []
-  changepassword: []
+  userlogin: [ 'ul' ]
+  register: [ ]
+  login: [ ]
+  changepassword: [ ]
+
+# A list of commands that will be executed when a player
+# logs in, useful for adding extra functionality
+loginCommands: [ ]
 
 timeout:
 
