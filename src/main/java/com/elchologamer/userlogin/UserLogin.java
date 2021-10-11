@@ -67,7 +67,6 @@ public final class UserLogin extends JavaPlugin {
         registerEvents(new BlockPlacingRestriction());
         registerEvents(new CommandRestriction());
         registerEvents(new ItemDropRestriction());
-        registerEvents(new MovementRestriction());
         registerEvents(new AttackRestriction());
         registerEvents(new ReceiveDamageRestriction());
 

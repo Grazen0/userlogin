@@ -71,7 +71,7 @@ public class MovementRestriction extends BaseRestriction<PlayerMoveEvent> {
         if (current >= frequency) {
             // Send warning message and reset counter
             ULPlayer.get(player).sendMessage("messages.move_warning");
-            current = 0;
+            current -= frequency;
         }
 
         warnCoolDown.put(uuid, current);
