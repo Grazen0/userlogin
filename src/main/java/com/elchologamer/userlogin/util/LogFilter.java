@@ -1,5 +1,6 @@
 package com.elchologamer.userlogin.util;
 
+import com.elchologamer.userlogin.UserLogin;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Marker;
@@ -7,6 +8,10 @@ import org.apache.logging.log4j.core.Filter;
 import org.apache.logging.log4j.core.LogEvent;
 import org.apache.logging.log4j.core.Logger;
 import org.apache.logging.log4j.message.Message;
+import org.bukkit.configuration.ConfigurationSection;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class LogFilter implements Filter {
 
@@ -16,7 +21,22 @@ public class LogFilter implements Filter {
     }
 
     private Result filter(String message) {
-        if (message.matches("(.+) issued server command: /(?i)(l|login|reg|register|cp|changepassword)(.*)")) {
+
+        List<String> commands = new ArrayList<>();
+
+        StringBuilder regex = new StringBuilder();
+
+        ConfigurationSection section = UserLogin.getPlugin().getConfig().getConfigurationSection("commandAliases");
+        if (section != null) {
+            commands.addAll(section.getStringList("login"));
+            commands.addAll(section.getStringList("register"));
+            commands.addAll(section.getStringList("changepassword"));
+            for(String command : commands){
+                regex.append("|").append(command);
+            }
+        }
+
+        if (message.matches("(.+) issued server command: /(?i)(login|register|changepassword" + regex + ")(.*)")) {
             return Result.DENY;
         } else {
             return Result.NEUTRAL;
