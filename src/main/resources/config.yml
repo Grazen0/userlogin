@@ -21,6 +21,9 @@ lang: 'en_US'
 # Broadcast message when a player logs in
 loginBroadcast: true
 
+# Disable vanilla join messages
+disableVanillaJoinMessages: true
+
 # Interval (seconds) for repeating the welcome message (-1 to disable)
 repeatingWelcomeMsg: -1
 
