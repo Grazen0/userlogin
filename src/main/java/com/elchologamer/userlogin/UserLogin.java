@@ -10,7 +10,6 @@ import com.elchologamer.userlogin.command.sub.SetCommand;
 import com.elchologamer.userlogin.command.sub.UnregisterCommand;
 import com.elchologamer.userlogin.database.Database;
 import com.elchologamer.userlogin.listener.JoinQuitListener;
-import com.elchologamer.userlogin.listener.VelocityMessageListener;
 import com.elchologamer.userlogin.listener.restriction.*;
 import com.elchologamer.userlogin.manager.LangManager;
 import com.elchologamer.userlogin.manager.LocationsManager;
@@ -21,7 +20,6 @@ import com.elchologamer.userlogin.util.Metrics.SimplePie;
 import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.PluginMessageListenerRegistration;
 
 public final class UserLogin extends JavaPlugin {
 
@@ -32,7 +30,6 @@ public final class UserLogin extends JavaPlugin {
 
     private LangManager lang;
     private LocationsManager locationsManager;
-    private PluginMessageListenerRegistration registration;
     private Database db = null;
 
     @Override
@@ -42,9 +39,7 @@ public final class UserLogin extends JavaPlugin {
         Utils.debug("RUNNING IN DEBUG MODE");
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        registerEvents(new VelocityMessageListener());
-        registration = getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:main", new VelocityMessageListener());
-        Utils.log("Registered channels " + getServer().getMessenger().getIncomingChannels(this) + ". Is valid = " + registration.isValid());
+        getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:main", new JoinQuitListener());
 
         // Must be loaded on enable as they get the plugin instance when initialized
         locationsManager = new LocationsManager();
