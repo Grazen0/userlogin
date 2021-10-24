@@ -32,11 +32,11 @@ public class LogFilter implements Filter {
             commands.addAll(section.getStringList("register"));
             commands.addAll(section.getStringList("changepassword"));
             for(String command : commands){
-                regex.append("|").append(command);
+                regex.append(" |").append(command);
             }
         }
 
-        if (message.matches("(.+) issued server command: /(?i)(login|register|changepassword" + regex + ")(.*)")) {
+        if (message.matches("(.+) issued server command: /(?i)(login |register |changepassword" + regex + " )(.*)")) {
             return Result.DENY;
         } else {
             return Result.NEUTRAL;

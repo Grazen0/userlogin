@@ -46,11 +46,16 @@ public class ULPlayer {
         return player;
     }
 
-    public void onJoin() {
+    public void onJoin(boolean fromOtherServer) {
         loggedIn = false;
         loginAttempts = 0;
 
         Player player = getPlayer();
+
+        if (fromOtherServer) {
+            onAuthenticate(AuthType.LOGIN);
+            return;
+        }
 
         // Teleport to login position
         if (plugin.getConfig().getBoolean("teleports.toLogin")) {

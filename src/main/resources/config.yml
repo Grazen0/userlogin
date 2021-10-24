@@ -21,6 +21,9 @@ lang: 'en_US'
 # Broadcast message when a player logs in
 loginBroadcast: true
 
+# Disable vanilla join messages
+disableVanillaJoinMessages: true
+
 # Interval (seconds) for repeating the welcome message (-1 to disable)
 repeatingWelcomeMsg: -1
 
@@ -35,9 +38,9 @@ enabledCommands:
 # (Changes will only take effect on a server restart)
 commandAliases:
   userlogin: [ 'ul' ]
-  register: [ ]
-  login: [ ]
-  changepassword: [ ]
+  register: [ 'reg' ]
+  login: [ 'l' ]
+  changepassword: [ 'cp' ]
 
 # A list of commands that will be executed when a player
 # logs in, useful for adding extra functionality
