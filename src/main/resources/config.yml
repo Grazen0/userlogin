@@ -11,9 +11,6 @@
 # ascii art is pretty cool huh
 # Discord support server: https://discord.gg/gbjaEDzRXU
 
-# Enable autologin feature (require UserLoginVelocity and restart)
-autologin: false
-
 # Enable update checking
 checkUpdates: true
 
@@ -42,7 +39,7 @@ commandAliases:
   userlogin: [ 'ul' ]
   register: [ ]
   login: [ ]
-  changepassword: [  ]
+  changepassword: [ ]
 
 # A list of commands that will be executed when a player
 # logs in, useful for adding extra functionality
@@ -134,6 +131,8 @@ bungeeCord:
   # Target server to send the player to when logged in
   spawnServer: 'LOBBY'
 
+# Enable autologin feature (require UserLoginVelocity and restart)
+velocityAutoLogin: false
 
 # Database options
 database:

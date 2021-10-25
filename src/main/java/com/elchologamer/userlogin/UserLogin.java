@@ -57,7 +57,7 @@ public final class UserLogin extends JavaPlugin {
             Utils.log("&eFailed to register logging filter");
         }
 
-        if (getConfig().getBoolean("autologin", true)) {
+        if (getConfig().getBoolean("velocityAutoLogin", true)) {
             getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:uuid", new VelocityMsgListener());
             registerEvents(new VelocityMsgListener());
             Utils.log("Auto-login enabled");
