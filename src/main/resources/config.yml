@@ -11,6 +11,8 @@
 # ascii art is pretty cool huh
 # Discord support server: https://discord.gg/gbjaEDzRXU
 
+# Enable autologin feature (require UserLoginVelocity and restart)
+autologin: false
 
 # Enable update checking
 checkUpdates: true
@@ -38,9 +40,9 @@ enabledCommands:
 # (Changes will only take effect on a server restart)
 commandAliases:
   userlogin: [ 'ul' ]
-  register: [ 'reg' ]
-  login: [ 'l' ]
-  changepassword: [ 'cp' ]
+  register: [ ]
+  login: [ ]
+  changepassword: [  ]
 
 # A list of commands that will be executed when a player
 # logs in, useful for adding extra functionality

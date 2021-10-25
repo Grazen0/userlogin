@@ -10,6 +10,7 @@ import com.elchologamer.userlogin.command.sub.SetCommand;
 import com.elchologamer.userlogin.command.sub.UnregisterCommand;
 import com.elchologamer.userlogin.database.Database;
 import com.elchologamer.userlogin.listener.JoinQuitListener;
+import com.elchologamer.userlogin.listener.VelocityMsgListener;
 import com.elchologamer.userlogin.listener.restriction.*;
 import com.elchologamer.userlogin.manager.LangManager;
 import com.elchologamer.userlogin.manager.LocationsManager;
@@ -38,9 +39,6 @@ public final class UserLogin extends JavaPlugin {
 
         Utils.debug("RUNNING IN DEBUG MODE");
 
-        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
-        getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:main", new JoinQuitListener());
-
         // Must be loaded on enable as they get the plugin instance when initialized
         locationsManager = new LocationsManager();
         lang = new LangManager();
@@ -59,9 +57,17 @@ public final class UserLogin extends JavaPlugin {
             Utils.log("&eFailed to register logging filter");
         }
 
-        // Register event listeners
+        if (getConfig().getBoolean("autologin", true)) {
+            getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:uuid", new VelocityMsgListener());
+            registerEvents(new VelocityMsgListener());
+            Utils.log("Auto-login enabled");
+        }
+        else {
+            registerEvents(new JoinQuitListener());
+            Utils.log("Auto-login disabled");
+        }
 
-        registerEvents(new JoinQuitListener());
+        // Register event listeners
         registerEvents(new ChatRestriction());
         registerEvents(new MovementRestriction());
         registerEvents(new BlockBreakingRestriction());
