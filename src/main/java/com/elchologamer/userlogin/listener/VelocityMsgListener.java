@@ -6,15 +6,13 @@ import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
-import org.bukkit.event.EventPriority;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.event.player.PlayerQuitEvent;
 import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.util.UUID;
 
-public class VelocityMsgListener implements PluginMessageListener, Listener {
+public class VelocityMsgListener extends JoinQuitListener implements PluginMessageListener, Listener {
     @Override
     public void onPluginMessageReceived(String channel, Player player, byte[] message) {
         if (!channel.equals("userlogin:uuid")) return;
@@ -29,10 +27,5 @@ public class VelocityMsgListener implements PluginMessageListener, Listener {
         if (UserLogin.getPlugin().getConfig().getBoolean("disableVanillaJoinMessages")) {
             event.setJoinMessage(null);
         }
-    }
-
-    @EventHandler
-    public void onPlayerQuit(PlayerQuitEvent event) {
-        ULPlayer.get(event.getPlayer()).onQuit();
     }
 }
