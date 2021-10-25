@@ -1,6 +1,7 @@
 package com.elchologamer.userlogin.util;
 
 import com.elchologamer.userlogin.UserLogin;
+import org.apache.commons.lang.StringUtils;
 import org.apache.logging.log4j.Level;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Marker;
@@ -22,25 +23,27 @@ public class LogFilter implements Filter {
 
     private Result filter(String message) {
 
-        List<String> commands = new ArrayList<>();
+        if (!StringUtils.containsIgnoreCase(message, " issued server command: /")) return Result.NEUTRAL;
 
-        StringBuilder regex = new StringBuilder();
+        List<String> commands = new ArrayList<>();
+        commands.add("login");
+        commands.add("register");
+        commands.add("changepassword");
 
         ConfigurationSection section = UserLogin.getPlugin().getConfig().getConfigurationSection("commandAliases");
         if (section != null) {
             commands.addAll(section.getStringList("login"));
             commands.addAll(section.getStringList("register"));
             commands.addAll(section.getStringList("changepassword"));
-            for(String command : commands){
-                regex.append(" |").append(command);
+        }
+
+        for (String command : commands) {
+            if (StringUtils.containsIgnoreCase(message, command)) {
+                return Result.DENY;
             }
         }
 
-        if (message.matches("(.+) issued server command: /(?i)(login |register |changepassword" + regex + " )(.*)")) {
-            return Result.DENY;
-        } else {
-            return Result.NEUTRAL;
-        }
+        return Result.NEUTRAL;
     }
 
     @Override
