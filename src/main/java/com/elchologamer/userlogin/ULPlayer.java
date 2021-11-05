@@ -52,14 +52,14 @@ public class ULPlayer {
 
         Player player = getPlayer();
 
-        if (fromOtherServer) {
-            onAuthenticate(AuthType.LOGIN);
-            return;
-        }
-
         // Teleport to login position
         if (plugin.getConfig().getBoolean("teleports.toLogin")) {
             player.teleport(plugin.getLocations().getLocation("login", player.getWorld().getSpawnLocation()));
+        }
+
+        if (fromOtherServer) {
+            onAuthenticate(AuthType.LOGIN);
+            return;
         }
 
         // Bypass if IP is registered

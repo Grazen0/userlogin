@@ -10,7 +10,7 @@ import com.elchologamer.userlogin.command.sub.SetCommand;
 import com.elchologamer.userlogin.command.sub.UnregisterCommand;
 import com.elchologamer.userlogin.database.Database;
 import com.elchologamer.userlogin.listener.JoinQuitListener;
-import com.elchologamer.userlogin.listener.VelocityMsgListener;
+import com.elchologamer.userlogin.listener.PluginMsgListener;
 import com.elchologamer.userlogin.listener.restriction.*;
 import com.elchologamer.userlogin.manager.LangManager;
 import com.elchologamer.userlogin.manager.LocationsManager;
@@ -57,14 +57,14 @@ public final class UserLogin extends JavaPlugin {
             Utils.log("&eFailed to register logging filter");
         }
 
-        if (getConfig().getBoolean("velocityAutoLogin", true)) {
-            getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:uuid", new VelocityMsgListener());
-            registerEvents(new VelocityMsgListener());
-            Utils.log("Auto-login enabled");
+        if (getConfig().getBoolean("bungeecord.autoLogin", true)) {
+            getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:returned", new PluginMsgListener());
+            registerEvents(new PluginMsgListener());
+            Utils.log("Autologin enabled");
         }
         else {
             registerEvents(new JoinQuitListener());
-            Utils.log("Auto-login disabled");
+            Utils.log("Autologin disabled");
         }
 
         // Register event listeners

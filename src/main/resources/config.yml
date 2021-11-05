@@ -131,8 +131,8 @@ bungeeCord:
   # Target server to send the player to when logged in
   spawnServer: 'LOBBY'
 
-# Enable autologin feature (require UserLoginVelocity and restart)
-velocityAutoLogin: false
+  # Enable autologin feature (require UserLoginProxy and restart)
+  autoLogin: false
 
 # Database options
 database:
