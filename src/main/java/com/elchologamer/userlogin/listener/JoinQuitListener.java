@@ -14,7 +14,7 @@ public class JoinQuitListener implements Listener {
         if (UserLogin.getPlugin().getConfig().getBoolean("disableVanillaJoinMessages")) {
             event.setJoinMessage(null);
         }
-        ULPlayer.get(event.getPlayer()).onJoin();
+        ULPlayer.get(event.getPlayer()).onJoin(false);
     }
 
     @EventHandler

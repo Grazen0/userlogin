@@ -46,7 +46,7 @@ public class ULPlayer {
         return player;
     }
 
-    public void onJoin() {
+    public void onJoin(boolean fromOtherServer) {
         loggedIn = false;
         loginAttempts = 0;
 
@@ -55,6 +55,11 @@ public class ULPlayer {
         // Teleport to login position
         if (plugin.getConfig().getBoolean("teleports.toLogin")) {
             player.teleport(plugin.getLocations().getLocation("login", player.getWorld().getSpawnLocation()));
+        }
+
+        if (fromOtherServer) {
+            onAuthenticate(AuthType.LOGIN);
+            return;
         }
 
         // Bypass if IP is registered

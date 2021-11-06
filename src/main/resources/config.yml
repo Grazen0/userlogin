@@ -11,7 +11,6 @@
 # ascii art is pretty cool huh
 # Discord support server: https://discord.gg/gbjaEDzRXU
 
-
 # Enable update checking
 checkUpdates: true
 
@@ -132,6 +131,8 @@ bungeeCord:
   # Target server to send the player to when logged in
   spawnServer: 'LOBBY'
 
+  # Enable autologin feature (require UserLoginProxy and restart)
+  autoLogin: false
 
 # Database options
 database:
