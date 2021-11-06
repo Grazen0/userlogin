@@ -29,13 +29,7 @@ abstract class BaseRestriction<E extends Event> implements Listener {
 
         RestrictionEvent<E> restrictionEvent = new RestrictionEvent<>(event);
 
-        Player player = null;
-
-        if (event instanceof PlayerEvent) {
-            player = ((PlayerEvent) event).getPlayer();
-        } else if (event instanceof EntityEvent && ((EntityEvent) event).getEntityType() == EntityType.PLAYER) {
-            player = (Player) ((EntityEvent) event).getEntity();
-        }
+        Player player = getEventPlayer(event);
 
         if (player == null || UserLoginAPI.isLoggedIn(player)) return false;
 
@@ -44,6 +38,20 @@ abstract class BaseRestriction<E extends Event> implements Listener {
         }
 
         return !restrictionEvent.isCancelled();
+    }
+
+    protected Player getEventPlayer(E event) {
+        if (event instanceof PlayerEvent) {
+            return ((PlayerEvent) event).getPlayer();
+        } else if (event instanceof EntityEvent) {
+            EntityEvent ee = (EntityEvent) event;
+
+            if (ee.getEntityType() == EntityType.PLAYER) {
+                return (Player) ee.getEntity();
+            }
+        }
+
+        return null;
     }
 
     public UserLogin getPlugin() {
