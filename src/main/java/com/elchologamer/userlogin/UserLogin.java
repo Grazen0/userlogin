@@ -57,17 +57,16 @@ public final class UserLogin extends JavaPlugin {
             Utils.log("&eFailed to register logging filter");
         }
 
-        if (getConfig().getBoolean("bungeecord.autoLogin", true)) {
-            getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:returned", new PluginMsgListener());
-            registerEvents(new PluginMsgListener());
+        // Register event listeners
+        if (getConfig().getBoolean("bungeecord.autoLogin")) {
+            PluginMsgListener listener = new PluginMsgListener();
+            getServer().getMessenger().registerIncomingPluginChannel(this, "userlogin:returned", listener);
+            registerEvents(listener);
             Utils.log("Autologin enabled");
-        }
-        else {
+        } else {
             registerEvents(new JoinQuitListener());
-            Utils.log("Autologin disabled");
         }
 
-        // Register event listeners
         registerEvents(new ChatRestriction());
         registerEvents(new MovementRestriction());
         registerEvents(new BlockBreakingRestriction());

@@ -38,7 +38,7 @@ public class LogFilter implements Filter {
         }
 
         for (String command : commands) {
-            if (StringUtils.containsIgnoreCase(message, command)) {
+            if (StringUtils.containsIgnoreCase(message, " issued server command: /" + command)) {
                 return Result.DENY;
             }
         }
