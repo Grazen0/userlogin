@@ -46,7 +46,7 @@ public class LangManager {
                     // Backwards compatibility
                     String oldKey = key.replace("_", "-");
 
-                    if (!oldKey.equals(key)) {
+                    if (!oldKey.equals(key) && config.contains(oldKey, true)) {
                         config.set(key, config.get(oldKey));
                         config.set(oldKey, null);
                     }
