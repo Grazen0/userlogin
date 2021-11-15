@@ -22,8 +22,8 @@ public class LoginCommand extends AuthCommand {
 
         // Authenticate passwords
         if (!getPlugin().getDB().comparePasswords(uuid, args[0])) {
-            boolean exceeded = ulPlayer.onLoginAttempt();
-            if (!exceeded) {
+            boolean notExceeded = ulPlayer.onLoginAttempt();
+            if (notExceeded) {
                 ulPlayer.sendMessage("messages.incorrect_password");
             }
 

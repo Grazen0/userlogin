@@ -1,6 +1,6 @@
 name: 'UserLogin'
 version: '${project.version}'
-api-version: 1.17
+api-version: 1.13
 main: 'com.elchologamer.userlogin.UserLogin'
 author: 'ElCholoGamer'
 description: 'A simple-to-use authentication system.'

@@ -1,8 +1,6 @@
 package com.elchologamer.userlogin.listener.restriction;
 
-import com.elchologamer.userlogin.api.UserLoginAPI;
 import org.bukkit.entity.Entity;
-import org.bukkit.entity.EntityType;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.entity.EntityDamageByEntityEvent;
@@ -14,13 +12,9 @@ public class AttackRestriction extends BaseRestriction<EntityDamageByEntityEvent
     }
 
     @Override
-    public boolean shouldRestrict(EntityDamageByEntityEvent event) {
-        if (!getPlugin().getConfig().getBoolean("restrictions." + configKey)) return false;
-
+    protected Player getEventPlayer(EntityDamageByEntityEvent event) {
         Entity damager = event.getDamager();
-        if (damager.getType() != EntityType.PLAYER) return false;
-
-        return !UserLoginAPI.isLoggedIn((Player) damager);
+        return damager instanceof Player ? (Player) damager : null;
     }
 
     @EventHandler

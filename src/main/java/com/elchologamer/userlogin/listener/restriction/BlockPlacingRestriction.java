@@ -1,6 +1,6 @@
 package com.elchologamer.userlogin.listener.restriction;
 
-import com.elchologamer.userlogin.api.UserLoginAPI;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.block.BlockPlaceEvent;
 
@@ -11,8 +11,8 @@ public class BlockPlacingRestriction extends BaseRestriction<BlockPlaceEvent> {
     }
 
     @Override
-    public boolean shouldRestrict(BlockPlaceEvent e) {
-        return super.shouldRestrict(e) && !UserLoginAPI.isLoggedIn(e.getPlayer());
+    protected Player getEventPlayer(BlockPlaceEvent event) {
+        return event.getPlayer();
     }
 
     @EventHandler
