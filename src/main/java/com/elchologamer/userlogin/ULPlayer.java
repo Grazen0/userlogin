@@ -53,7 +53,7 @@ public class ULPlayer {
         Player player = getPlayer();
 
         // Teleport to login position
-        if (plugin.getConfig().getBoolean("teleports.toLogin")) {
+        if (plugin.getConfig().getBoolean("teleports.toLogin", plugin.getConfig().getBoolean("teleports.preLogin", true))) {
             player.teleport(plugin.getLocations().getLocation("login", player.getWorld().getSpawnLocation()));
         }
 
@@ -116,7 +116,7 @@ public class ULPlayer {
 
         boolean bungeeEnabled = config.getBoolean("bungeeCord.enabled");
         if (bungeeEnabled) {
-            String targetServer = config.getString("bungeeCord.spawnServer");
+            String targetServer = config.getString("bungeeCord.targetServer", config.getString("bungeeCord.spawnServer"));
             event = new AuthenticationEvent(player, type, targetServer);
         } else {
             Location target = null;
@@ -124,7 +124,7 @@ public class ULPlayer {
 
             if (teleports.getBoolean("savePosition")) {
                 target = plugin.getLocations().getPlayerLocation(player, spawn);
-            } else if (teleports.getBoolean("toSpawn", true)) {
+            } else if (teleports.getBoolean("postLogin", teleports.getBoolean("toSpawn", true))) {
                 target = plugin.getLocations().getLocation("spawn", spawn);
             }
 

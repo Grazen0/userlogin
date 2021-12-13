@@ -24,7 +24,14 @@ public class SetCommand extends SubCommand {
         if (args.length == 0) return false;
 
         String type = args[0].toLowerCase();
-        if (!type.equals("spawn") && !type.equals("login")) return false;
+        if (!type.equals("spawn") && !type.equals("login") && !type.equals("prelogin") && !type.equals("postlogin"))
+            return false;
+
+        if (type.equals("prelogin")) {
+            type = "login";
+        } else if (type.equals("postlogin")) {
+            type = "spawn";
+        }
 
         ULPlayer ulPlayer = ULPlayer.get((Player) sender);
         Player player = ulPlayer.getPlayer();
@@ -36,7 +43,7 @@ public class SetCommand extends SubCommand {
         // Send message
         ulPlayer.sendMessage(
                 "commands.set",
-                new QuickMap<>("type", (Object) type)
+                new QuickMap<>("type", (Object) args[0].toLowerCase())
                         .set("x", (int) loc.getX())
                         .set("y", (int) loc.getY())
                         .set("z", (int) loc.getZ())
@@ -53,8 +60,8 @@ public class SetCommand extends SubCommand {
         List<String> options = new ArrayList<>();
 
         if (args.length == 1) {
-            options.add("login");
-            options.add("spawn");
+            options.add("prelogin");
+            options.add("postlogin");
         }
 
         return options;
