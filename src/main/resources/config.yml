@@ -45,14 +45,9 @@ commandAliases:
 # logs in, useful for adding extra functionality
 loginCommands: [ ]
 
-timeout:
-
-  # Enable/disable kicking non-logged in players after a certain time
-  enabled: true
-
-  # Delay (seconds) for kicking non-logged in players
-  time: 60
-
+# Kick players after some time (seconds)
+# Set as -1 to disable
+timeout: 60
 
 # Password options
 password:

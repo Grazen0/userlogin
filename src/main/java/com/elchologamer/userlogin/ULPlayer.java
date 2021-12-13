@@ -196,8 +196,16 @@ public class ULPlayer {
         Player player = getPlayer();
 
         // Timeout
-        if (plugin.getConfig().getBoolean("timeout.enabled", true)) {
-            long timeoutDelay = plugin.getConfig().getLong("timeout.time");
+        long timeoutDelay = -1;
+        if (plugin.getConfig().isConfigurationSection("timeout")) {
+            if (plugin.getConfig().getBoolean("timeout.enabled")) {
+                timeoutDelay = plugin.getConfig().getLong("timeout.time");
+            }
+        } else {
+            timeoutDelay = plugin.getConfig().getLong("timeout");
+        }
+
+        if (timeoutDelay >= 0) {
             timeout = player.getServer().getScheduler().scheduleSyncDelayedTask(
                     plugin,
                     () -> player.kickPlayer(plugin.getLang().getMessage("messages.timeout")),
