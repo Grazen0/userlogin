@@ -22,7 +22,7 @@ public class LangManager {
         File folder = new File(plugin.getDataFolder(), "lang");
         folder.mkdirs();
 
-        String[] langs = {"en_US", "es_ES"};
+        String[] langs = {"en_US", "es_ES", "pt_BR"};
 
         for (String lang : langs) {
             try {
