@@ -26,6 +26,14 @@ vanillaJoinMessages: false
 # Interval (seconds) for repeating the welcome message (-1 to disable)
 repeatWelcomeMessage: -1
 
+# A list of commands that will be executed when a player
+# logs in, useful for adding extra functionality
+loginCommands: [ ]
+
+# Kick players after some time (seconds)
+# Set as -1 to disable
+timeout: 60
+
 # Allows auto-login for players that join from the same
 # IP address within a timeframe. (Specified in seconds)
 # Set as -1 to disable.
@@ -38,6 +46,7 @@ enabledCommands:
   login: true
   changepassword: true
 
+
 # Custom command aliases
 # (Changes will only take effect on a server restart)
 commandAliases:
@@ -46,13 +55,6 @@ commandAliases:
   login: [ ]
   changepassword: [ ]
 
-# A list of commands that will be executed when a player
-# logs in, useful for adding extra functionality
-loginCommands: [ ]
-
-# Kick players after some time (seconds)
-# Set as -1 to disable
-timeout: 60
 
 # Password options
 password:
