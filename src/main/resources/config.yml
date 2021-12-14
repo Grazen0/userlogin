@@ -26,7 +26,12 @@ vanillaJoinMessages: false
 # Interval (seconds) for repeating the welcome message (-1 to disable)
 repeatingWelcomeMsg: -1
 
-# You can enable/disable specific commands here
+# Allows auto-login for players that join from the same
+# IP address within a timeframe. (Specified in seconds)
+# Set as -1 to disable.
+ipCache: -1
+
+# Allows enabling/disabling of specific commands
 enabledCommands:
   userlogin: true
   register: true
@@ -109,15 +114,6 @@ teleports:
   # "/ul set postlogin" on login.
   # Takes effect when the savePosition and BungeeCord modes are disabled.
   postLogin: true
-
-ipRecords:
-
-  # Allow players to bypass login if they log in with the
-  # same IP address inside a certain timeframe
-  enabled: false
-
-  # Time (seconds) for which the player's IP will be remembered
-  delay: 30
 
 
 bungeeCord:

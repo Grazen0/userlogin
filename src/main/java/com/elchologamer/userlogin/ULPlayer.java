@@ -62,20 +62,23 @@ public class ULPlayer {
             return;
         }
 
+        if (ipForgor != -1) {
+            plugin.getServer().getScheduler().cancelTask(ipForgor);
+            ipForgor = -1;
+        }
+
         // Bypass if IP is registered
-        if (plugin.getConfig().getBoolean("ipRecords.enabled")) {
-            if (ip != null) {
-                InetSocketAddress addr = player.getAddress();
-                if (addr != null && addr.getHostString().equals(ip)) {
-                    onAuthenticate(AuthType.LOGIN);
-                    return;
-                }
+        if (ip != null) {
+            boolean ret = false;
+            InetSocketAddress addr = player.getAddress();
+
+            if (addr != null && addr.getHostString().equals(ip)) {
+                onAuthenticate(AuthType.LOGIN);
+                ret = true;
             }
 
-            if (ipForgor != -1) {
-                plugin.getServer().getScheduler().cancelTask(ipForgor);
-                ipForgor = -1;
-            }
+            ip = null;
+            if (ret) return;
         }
 
         schedulePreLoginTasks();
@@ -92,14 +95,28 @@ public class ULPlayer {
                 plugin.getLocations().savePlayerLocation(getPlayer());
             }
 
+            long rememberIp = -1;
+
+            if (plugin.getConfig().isConfigurationSection("ipRecords")) {
+                if (plugin.getConfig().getBoolean("ipRecords.enabled")) {
+                    rememberIp = plugin.getConfig().getLong("ipRecords.delay");
+                }
+            } else {
+                rememberIp = plugin.getConfig().getLong("ipCache");
+            }
+
             // Store IP address if enabled
-            if (plugin.getConfig().getBoolean("ipRecords.enabled")) {
+            if (rememberIp >= 0) {
                 // Schedule IP deletion
-                ipForgor = plugin.getServer().getScheduler().scheduleSyncDelayedTask(
-                        plugin,
-                        () -> ip = null,
-                        plugin.getConfig().getLong("ipRecords.delay", 10) * 20
-                );
+                InetSocketAddress addr = getPlayer().getAddress();
+                if (addr != null) {
+                    ip = addr.getHostString();
+                    ipForgor = plugin.getServer().getScheduler().scheduleSyncDelayedTask(
+                            plugin,
+                            () -> ip = null,
+                            rememberIp * 20
+                    );
+                }
             }
         }
     }
