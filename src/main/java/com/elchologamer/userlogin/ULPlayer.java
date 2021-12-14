@@ -232,12 +232,12 @@ public class ULPlayer {
 
 
         // Repeating welcome message
-        long interval = plugin.getConfig().getLong("repeatingWelcomeMsg", -1) * 20;
+        long interval = plugin.getConfig().getLong("repeatWelcomeMessage", plugin.getConfig().getLong("repeatingWelcomeMsg", -1));
         if (interval > 0) {
             welcomeMessage = player.getServer().getScheduler().scheduleSyncRepeatingTask(
                     plugin,
                     this::sendWelcomeMessage,
-                    interval, interval
+                    interval * 20, interval * 20
             );
         }
     }

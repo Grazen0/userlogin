@@ -24,7 +24,7 @@ loginBroadcast: true
 vanillaJoinMessages: false
 
 # Interval (seconds) for repeating the welcome message (-1 to disable)
-repeatingWelcomeMsg: -1
+repeatWelcomeMessage: -1
 
 # Allows auto-login for players that join from the same
 # IP address within a timeframe. (Specified in seconds)
