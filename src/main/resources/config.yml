@@ -81,8 +81,9 @@ restrictions:
   commands: false
   blockBreaking: false
   blockPlacing: false
-  itemDrop: false
+  itemDrop: false # Can cause items to disappear if dropped from the inventory UI. Enable inventoryClick to prevent this
   itemPickup: false # 1.12+ only
+  inventoryClick: false
   damage:
     attack: false
     receive: false

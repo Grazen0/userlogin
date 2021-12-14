@@ -76,6 +76,7 @@ public final class UserLogin extends JavaPlugin {
         registerEvents(new ItemDropRestriction());
         registerEvents(new AttackRestriction());
         registerEvents(new ReceiveDamageRestriction());
+        registerEvents(new InventoryClickRestriction());
 
         // Register Item Pickup restriction if class exists
         try {
