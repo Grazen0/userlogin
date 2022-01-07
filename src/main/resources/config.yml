@@ -9,6 +9,7 @@
 # |....................................|___/...........|
 # +----------------------------------------------------+
 # ascii art is pretty cool ngl
+# FAQ website: https://elchologamer.tk/userlogin
 # Discord support server: https://discord.gg/gbjaEDzRXU
 
 # Enable update checking
@@ -27,7 +28,7 @@ vanillaJoinMessages: false
 repeatWelcomeMessage: -1
 
 # A list of commands that will be executed when a player
-# logs in, useful for adding extra functionality
+# logs in. Useful for adding extra functionality
 loginCommands: [ ]
 
 # Kick players after some time (seconds)
