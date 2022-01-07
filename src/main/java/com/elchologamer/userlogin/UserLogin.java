@@ -46,6 +46,8 @@ public final class UserLogin extends JavaPlugin {
 
         reloadPlugin();
 
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
+
         // Register FastLogin hook
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
             new FastLoginHook().register();
