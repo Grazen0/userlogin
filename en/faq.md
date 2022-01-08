@@ -6,13 +6,13 @@ Frequently asked questions
 
 <hr />
 
-## Q: I changed the config, but no changes are taking effect!
+## #1: I changed the config, but no changes are taking effect!
 
-A: Make sure to use the `/ul reload` command for config changes to take effect. If that doesn't work, check the server console for any errors.
+Make sure to use the `/ul reload` command for config changes to take effect. If that doesn't work, check the server console for any errors.
 
-## Q: The movement restriction isn't working!
+## #2: The movement restriction isn't working!
 
-A: Check your `config.yml` file. A common mistake is to put the following:
+Check your `config.yml` file. A common mistake is to put the following:
 
 ```yaml
 restrictions:
