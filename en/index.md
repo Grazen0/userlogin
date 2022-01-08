@@ -1,6 +1,6 @@
 ---
 fullHeader: true
-download_msg: Download on SpigotMC
+spigot_msg: Download on SpigotMC
 github_msg: View on GitHub
 ---
 
