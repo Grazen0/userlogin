@@ -4,6 +4,6 @@ title: UserLogin
 
 Welcome! Select your language:
 
-### [English](/en)
+### [English]({% post_url /en %})
 
-### [Español](/es)
+### [Español]({% post_url /es %})
