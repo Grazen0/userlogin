@@ -1,8 +1,9 @@
 ---
 title: UserLogin
+fullHeader: true
 ---
 
-Welcome! Select your language:
+Select your language:
 
 ### [English](/{{ site.github.repository_name }}/en)
 
