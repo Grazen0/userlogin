@@ -6,7 +6,7 @@ Frequently asked questions
 
 <hr />
 
-## I changed the config, but no changes are taking effect!
+## I changed the config, but no changes are taking effect
 
 Make sure to use the `/ul reload` command for config changes to take effect. If that doesn't work, check the server console for any errors.
 
@@ -45,11 +45,11 @@ restrictions:
   # ...
 ```
 
-## ¿How can I make premium players bypass the login?
+## How can I make premium players bypass the login?
 
 UserLogin has support for the [FastLogin](https://www.spigotmc.org/resources/fastlogin.14153/) plugin, which provides auto-login for premium players. To enable this feature, simply add FastLogin to your server. Do note that FastLogin no longer releases new versions in the SpigotMC website directly, instead using an external site. You can download its latest version [here](https://ci.codemc.io/job/Games647/job/FastLogin/).
 
-## Players have to log in again after using the `/reload` Spigot command!
+## Players have to log in again after using the /reload Spigot command!
 
 There is no fix for this. The `/reload` command [is known to cause various issues and bugs, such as memory leaks, conflicts with some plugins, and instabilities](https://madelinemiller.dev/blog/problem-with-reload/). If you just want to reload the plugin, use `/ul reload` instead.
 

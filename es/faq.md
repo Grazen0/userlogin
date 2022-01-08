@@ -49,7 +49,7 @@ restrictions:
 
 UserLogin tiene soporte para el plugin [FastLogin](https://www.spigotmc.org/resources/fastlogin.14153/), el cual permite la función de auto-logeo para jugadores premium. Para habilitar esto, basta con añadirlo a tus plugins. Cabe destacar que FastLogin no publica actualizaciones directamente a Spigot desde hace 4 años, sino que emplea otra plataforma. Puedes descargar la última versión [aquí](https://ci.codemc.io/job/Games647/job/FastLogin/).
 
-## Los jugadores tienen que logearse nuevamente tras usar el comando de Spigot `/reload`!
+## Los jugadores tienen que logearse nuevamente tras usar el comando de Spigot /reload!
 
 Esto es un fallo conocido, y no hay nada que se pueda hacer al respecto. El comando `/reload` [causa diversos errores en el servidor, como pérdidas de memoria, algunos conflictos para algunos plugins, e inestabilidades](https://madelinemiller.dev/blog/problem-with-reload/). Si quieres recargar el plugin, usa `/ul reload` en su lugar.
 
