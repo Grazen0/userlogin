@@ -5,3 +5,4 @@ defaults:
       path: ''
     values:
       title: UserLogin
+      google_analytics: G-JTZ6QQSV6X
