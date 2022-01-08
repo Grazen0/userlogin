@@ -4,6 +4,6 @@ title: UserLogin
 
 Welcome! Select your language:
 
-### [English]({% link /en %})
+### [English](/{{ site.github.repository_name }}/en)
 
-### [Español]({% link /es %})
+### [Español](/{{ site.github.repository_name }}/es)
