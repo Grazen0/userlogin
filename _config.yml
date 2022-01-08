@@ -8,3 +8,15 @@ defaults:
       google_analytics: 'G-JTZ6QQSV6X'
       download_url: 'https://www.spigotmc.org/resources/userlogin.80669/'
       support_url: 'https://discord.gg/gbjaEDzRXU'
+  - scope:
+      path: 'en'
+    values:
+      footer_support: Looking for support?
+      footer_support_link: Join our Discord server!
+      footer_credits: UserLogin is maintained by
+  - scope:
+      path: 'es'
+    values:
+      footer_support: Buscando soporte?
+      footer_support_link: Únete a nuestro servidor de Discord!
+      footer_credits: UserLogin es mantenido por

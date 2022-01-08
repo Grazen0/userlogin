@@ -19,9 +19,9 @@
       {% if page.fullHeader %}
         <h2 class="project-tagline">{{ page.description | default: site.description | default: site.github.project_tagline }}</h2>
         
-        <a href="{{ page.download_url }}" class="btn">Download on SpigotMC</a>
+        <a href="{{ page.download_url }}" class="btn">{{ page.spigot_msg }}</a>
         {% if site.github.is_project_page %}
-          <a href="{{ site.github.repository_url }}" class="btn">View on GitHub</a>
+          <a href="{{ site.github.repository_url }}" class="btn">{{ page.github_msg }}</a>
         {% endif %}
       {% endif %}
     </header>
@@ -30,9 +30,9 @@
       {{ content }}
 
       <footer class="site-footer">
-        <span class="site-footer-owner">Looking for support? Join our <a href="{{ page.support_url }}">Discord server</a>!</span>
+        <span class="site-footer-owner">{{ page.footer_support }} <a href="{{ page.support_url }}">{{ page.footer_support_link }}</a></span>
         {% if site.github.is_project_page %}
-          <span class="site-footer-credits">UserLogin is maintained by <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></span>
+          <span class="site-footer-credits">{{ page.footer_credits }} <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></span>
         {% endif %}
       </footer>
     </main>
