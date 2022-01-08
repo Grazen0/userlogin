@@ -8,16 +8,24 @@ body {
 }
 
 .main-content {
+	hr {
+		background-color: #1f2b37;
+	}
+
 	pre,
 	code {
 		background-color: #1b232f;
 	}
 
-	.highlight {
+	.highlight:not(pre) {
 		background-color: transparent;
 	}
 
 	pre {
 		border-color: #35445b;
+	}
+
+	.site-footer {
+		border-color: #1f2b37;
 	}
 }
