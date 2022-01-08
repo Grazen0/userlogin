@@ -36,7 +36,7 @@ loginCommands: [ ]
 timeout: 60
 
 # Allows auto-login for players that join from the same
-# IP address within a timeframe. (Specified in seconds)
+# IP address within a timeframe. (Specify in seconds)
 # Set as -1 to disable.
 ipCache: -1
 
