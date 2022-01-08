@@ -29,12 +29,14 @@
     <main id="content" class="main-content" role="main">
       {{ content }}
 
-      <footer class="site-footer">
-        <span class="site-footer-owner">{{ page.footer_support }} <a href="{{ page.support_url }}">{{ page.footer_support_link }}</a></span>
-        {% if site.github.is_project_page %}
-          <span class="site-footer-credits">{{ page.footer_credits }} <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></span>
-        {% endif %}
-      </footer>
+      {% if page.footer %}
+        <footer class="site-footer">
+          <span class="site-footer-owner">{{ page.footer_support }} <a href="{{ page.support_url }}">{{ page.footer_support_link }}</a></span>
+          {% if site.github.is_project_page %}
+            <span class="site-footer-credits">{{ page.footer_credits }} <a href="{{ site.github.owner_url }}">{{ site.github.owner_name }}</a></span>
+          {% endif %}
+        </footer>
+      {% endif %}
     </main>
   </body>
 </html>

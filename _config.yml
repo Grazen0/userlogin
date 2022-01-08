@@ -5,11 +5,12 @@ defaults:
       path: ''
     values:
       title: UserLogin
+      footer: true
       google_analytics: 'G-JTZ6QQSV6X'
       download_url: 'https://www.spigotmc.org/resources/userlogin.80669/'
       support_url: 'https://discord.gg/gbjaEDzRXU'
   - scope:
-      path: 'en'
+      path: ''
     values:
       footer_support: Looking for support?
       footer_support_link: Join our Discord server!
