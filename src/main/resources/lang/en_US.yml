@@ -23,7 +23,7 @@ messages:
   already_registered: '&cYou are already registered!'
   incorrect_password: '&4Incorrect password!'
   short_password: '&cYour password must have a minimum of &4{chars} &ccharacters'
-  long_password: '&cYour password must have a maximum of {chars} characters'
+  long_password: '&cYour password must have a maximum of &4{chars} &ccharacters'
   regex_mismatch: '&cYour password has an invalid pattern!'
   different_passwords: '&cYour passwords don''t match!'
   already_logged_in: '&cYou are already logged in!'

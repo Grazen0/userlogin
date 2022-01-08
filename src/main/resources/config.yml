@@ -8,7 +8,8 @@
 # |......................................_/ |..........|
 # |....................................|___/...........|
 # +----------------------------------------------------+
-# ascii art is pretty cool huh
+# ascii art is pretty cool ngl
+# FAQ website: https://elchologamer.tk/userlogin
 # Discord support server: https://discord.gg/gbjaEDzRXU
 
 # Enable update checking
@@ -20,18 +21,32 @@ lang: 'en_US'
 # Broadcast message when a player logs in
 loginBroadcast: true
 
-# Disable vanilla join messages
-disableVanillaJoinMessages: true
+# Keep vanilla join messages
+vanillaJoinMessages: false
 
 # Interval (seconds) for repeating the welcome message (-1 to disable)
-repeatingWelcomeMsg: -1
+repeatWelcomeMessage: -1
 
-# You can enable/disable specific commands here
+# A list of commands that will be executed when a player
+# logs in. Useful for adding extra functionality
+loginCommands: [ ]
+
+# Kick players after some time (seconds)
+# Set as -1 to disable
+timeout: 60
+
+# Allows auto-login for players that join from the same
+# IP address within a timeframe. (Specify in seconds)
+# Set as -1 to disable.
+ipCache: -1
+
+# Allows enabling/disabling of specific commands
 enabledCommands:
   userlogin: true
   register: true
   login: true
   changepassword: true
+
 
 # Custom command aliases
 # (Changes will only take effect on a server restart)
@@ -40,18 +55,6 @@ commandAliases:
   register: [ ]
   login: [ ]
   changepassword: [ ]
-
-# A list of commands that will be executed when a player
-# logs in, useful for adding extra functionality
-loginCommands: [ ]
-
-timeout:
-
-  # Enable/disable kicking non-logged in players after a certain time
-  enabled: true
-
-  # Delay (seconds) for kicking non-logged in players
-  time: 60
 
 
 # Password options
@@ -86,8 +89,9 @@ restrictions:
   commands: false
   blockBreaking: false
   blockPlacing: false
-  itemDrop: false
+  itemDrop: false # Can cause items to disappear if dropped from the inventory UI. Enable inventoryClick to prevent this
   itemPickup: false # 1.12+ only
+  inventoryClick: false
   damage:
     attack: false
     receive: false
@@ -100,27 +104,19 @@ restrictions:
 teleports:
 
   # Save player positions on logout
-  savePosition: false
-  # The savePosition mode teleports the player
+  # The savePosition mode teleports players
   # to their last position when they log in.
   # Useful for survival servers and similar.
+  savePosition: false
 
-  # Teleport players to login location on join
-  toLogin: true
+  # Teleport players to the position set with
+  # "/ul set prelogin" on join.
+  preLogin: true
 
-  # Teleport players to the position set with "/ul set spawn"
-  # when logged in. Only takes effect when the BungeeCord and
-  # savePosition modes are disabled.
-  toSpawn: true
-
-ipRecords:
-
-  # Allow players to bypass login if they log in with the
-  # same IP address inside a certain timeframe
-  enabled: false
-
-  # Time (seconds) for which the player's IP will be remembered
-  delay: 30
+  # Teleport players to the position set with,
+  # "/ul set postlogin" on login.
+  # Takes effect when the savePosition and BungeeCord modes are disabled.
+  postLogin: true
 
 
 bungeeCord:
@@ -128,11 +124,15 @@ bungeeCord:
   # Enable sending logged in players to another server in the network
   enabled: false
 
-  # Target server to send the player to when logged in
-  spawnServer: 'LOBBY'
+  # Server to send the player to when logged in
+  targetServer: 'LOBBY'
 
-  # Enable autologin feature (require UserLoginProxy and restart)
+  # Enable auto-login
+  # This allows players to be automatically logged in
+  # when joining from another server in the network
+  # (Requires the UserLoginProxy plugin to work)
   autoLogin: false
+
 
 # Database options
 database:

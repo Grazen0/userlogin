@@ -3,11 +3,12 @@ package com.elchologamer.userlogin.command;
 import com.elchologamer.userlogin.ULPlayer;
 import com.elchologamer.userlogin.UserLogin;
 import com.elchologamer.userlogin.api.types.AuthType;
+import com.elchologamer.userlogin.command.base.AsyncCommand;
 import com.elchologamer.userlogin.command.base.BaseCommand;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public abstract class AuthCommand extends BaseCommand {
+public abstract class AuthCommand extends AsyncCommand {
 
     private final AuthType type;
     private final int minArgs;
@@ -26,7 +27,7 @@ public abstract class AuthCommand extends BaseCommand {
     }
 
     @Override
-    public final boolean run(CommandSender sender, String label, String[] args) {
+    public final boolean asyncRun(CommandSender sender, String label, String[] args) {
         ULPlayer ulPlayer = ULPlayer.get((Player) sender);
 
         // Check if player is already logged in

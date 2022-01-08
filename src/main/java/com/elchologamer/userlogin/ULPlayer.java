@@ -53,7 +53,7 @@ public class ULPlayer {
         Player player = getPlayer();
 
         // Teleport to login position
-        if (plugin.getConfig().getBoolean("teleports.toLogin")) {
+        if (plugin.getConfig().getBoolean("teleports.toLogin", plugin.getConfig().getBoolean("teleports.preLogin", true))) {
             player.teleport(plugin.getLocations().getLocation("login", player.getWorld().getSpawnLocation()));
         }
 
@@ -62,20 +62,23 @@ public class ULPlayer {
             return;
         }
 
+        if (ipForgor != -1) {
+            plugin.getServer().getScheduler().cancelTask(ipForgor);
+            ipForgor = -1;
+        }
+
         // Bypass if IP is registered
-        if (plugin.getConfig().getBoolean("ipRecords.enabled")) {
-            if (ip != null) {
-                InetSocketAddress addr = player.getAddress();
-                if (addr != null && addr.getHostString().equals(ip)) {
-                    onAuthenticate(AuthType.LOGIN);
-                    return;
-                }
+        if (ip != null) {
+            boolean ret = false;
+            InetSocketAddress addr = player.getAddress();
+
+            if (addr != null && addr.getHostString().equals(ip)) {
+                onAuthenticate(AuthType.LOGIN);
+                ret = true;
             }
 
-            if (ipForgor != -1) {
-                plugin.getServer().getScheduler().cancelTask(ipForgor);
-                ipForgor = -1;
-            }
+            ip = null;
+            if (ret) return;
         }
 
         schedulePreLoginTasks();
@@ -92,14 +95,28 @@ public class ULPlayer {
                 plugin.getLocations().savePlayerLocation(getPlayer());
             }
 
+            long rememberIp = -1;
+
+            if (plugin.getConfig().isConfigurationSection("ipRecords")) {
+                if (plugin.getConfig().getBoolean("ipRecords.enabled")) {
+                    rememberIp = plugin.getConfig().getLong("ipRecords.delay");
+                }
+            } else {
+                rememberIp = plugin.getConfig().getLong("ipCache");
+            }
+
             // Store IP address if enabled
-            if (plugin.getConfig().getBoolean("ipRecords.enabled")) {
+            if (rememberIp >= 0) {
                 // Schedule IP deletion
-                ipForgor = plugin.getServer().getScheduler().scheduleSyncDelayedTask(
-                        plugin,
-                        () -> ip = null,
-                        plugin.getConfig().getLong("ipRecords.delay", 10) * 20
-                );
+                InetSocketAddress addr = getPlayer().getAddress();
+                if (addr != null) {
+                    ip = addr.getHostString();
+                    ipForgor = plugin.getServer().getScheduler().scheduleSyncDelayedTask(
+                            plugin,
+                            () -> ip = null,
+                            rememberIp * 20
+                    );
+                }
             }
         }
     }
@@ -116,7 +133,7 @@ public class ULPlayer {
 
         boolean bungeeEnabled = config.getBoolean("bungeeCord.enabled");
         if (bungeeEnabled) {
-            String targetServer = config.getString("bungeeCord.spawnServer");
+            String targetServer = config.getString("bungeeCord.targetServer", config.getString("bungeeCord.spawnServer"));
             event = new AuthenticationEvent(player, type, targetServer);
         } else {
             Location target = null;
@@ -124,7 +141,7 @@ public class ULPlayer {
 
             if (teleports.getBoolean("savePosition")) {
                 target = plugin.getLocations().getPlayerLocation(player, spawn);
-            } else if (teleports.getBoolean("toSpawn", true)) {
+            } else if (teleports.getBoolean("postLogin", teleports.getBoolean("toSpawn", true))) {
                 target = plugin.getLocations().getLocation("spawn", spawn);
             }
 
@@ -196,8 +213,16 @@ public class ULPlayer {
         Player player = getPlayer();
 
         // Timeout
-        if (plugin.getConfig().getBoolean("timeout.enabled", true)) {
-            long timeoutDelay = plugin.getConfig().getLong("timeout.time");
+        long timeoutDelay = -1;
+        if (plugin.getConfig().isConfigurationSection("timeout")) {
+            if (plugin.getConfig().getBoolean("timeout.enabled")) {
+                timeoutDelay = plugin.getConfig().getLong("timeout.time");
+            }
+        } else {
+            timeoutDelay = plugin.getConfig().getLong("timeout");
+        }
+
+        if (timeoutDelay >= 0) {
             timeout = player.getServer().getScheduler().scheduleSyncDelayedTask(
                     plugin,
                     () -> player.kickPlayer(plugin.getLang().getMessage("messages.timeout")),
@@ -207,12 +232,12 @@ public class ULPlayer {
 
 
         // Repeating welcome message
-        long interval = plugin.getConfig().getLong("repeatingWelcomeMsg", -1) * 20;
+        long interval = plugin.getConfig().getLong("repeatWelcomeMessage", plugin.getConfig().getLong("repeatingWelcomeMsg", -1));
         if (interval > 0) {
             welcomeMessage = player.getServer().getScheduler().scheduleSyncRepeatingTask(
                     plugin,
                     this::sendWelcomeMessage,
-                    interval, interval
+                    interval * 20, interval * 20
             );
         }
     }

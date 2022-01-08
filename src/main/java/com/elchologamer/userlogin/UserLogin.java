@@ -19,6 +19,7 @@ import com.elchologamer.userlogin.util.LogFilter;
 import com.elchologamer.userlogin.util.Metrics;
 import com.elchologamer.userlogin.util.Metrics.SimplePie;
 import com.elchologamer.userlogin.util.Utils;
+import org.bukkit.entity.Player;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -44,6 +45,8 @@ public final class UserLogin extends JavaPlugin {
         lang = new LangManager();
 
         reloadPlugin();
+
+        getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
         // Register FastLogin hook
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
@@ -75,6 +78,7 @@ public final class UserLogin extends JavaPlugin {
         registerEvents(new ItemDropRestriction());
         registerEvents(new AttackRestriction());
         registerEvents(new ReceiveDamageRestriction());
+        registerEvents(new InventoryClickRestriction());
 
         // Register Item Pickup restriction if class exists
         try {
@@ -171,6 +175,14 @@ public final class UserLogin extends JavaPlugin {
 
     @Override
     public void onDisable() {
+        if (getConfig().getBoolean("teleports.savePosition")) {
+            for (Player player : getServer().getOnlinePlayers()) {
+                if (ULPlayer.get(player).isLoggedIn()) {
+                    locationsManager.savePlayerLocation(player);
+                }
+            }
+        }
+
         if (db != null) {
             try {
                 db.disconnect();
