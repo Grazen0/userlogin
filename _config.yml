@@ -1,5 +1,6 @@
 title: UserLogin
-theme: jekyll-theme-cayman
+remote_theme: lewismiddleton/cayman-dark
+
 defaults:
   - scope:
       path: ''
