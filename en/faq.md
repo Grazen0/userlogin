@@ -1,3 +1,5 @@
+[Go back](/{{ site.github.repository_name }}/en)
+
 # FAQ
 
 Frequently asked questions
