@@ -40,7 +40,9 @@ public abstract class AuthCommand extends AsyncCommand {
         if (args.length < minArgs) return false;
 
         // Authenticate player
-        if (authenticate(ulPlayer, args)) ulPlayer.onAuthenticate(type);
+        if (authenticate(ulPlayer, args)) {
+            getPlugin().getServer().getScheduler().runTask(getPlugin(), () -> ulPlayer.onAuthenticate(type));
+        }
 
         return true;
     }
