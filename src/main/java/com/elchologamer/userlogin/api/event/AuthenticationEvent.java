@@ -6,16 +6,18 @@ import com.elchologamer.userlogin.util.Utils;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Cancellable;
+import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 import org.bukkit.event.player.PlayerEvent;
 
-public class AuthenticationEvent extends PlayerEvent implements Cancellable {
+public class AuthenticationEvent extends Event implements Cancellable {
 
     private final UserLogin plugin = UserLogin.getPlugin();
 
     private static final HandlerList HANDLERS = new HandlerList();
 
     private final AuthType type;
+    private final Player player;
     private boolean cancelled = false;
     private Location destination = null;
     private String targetServer = null;
@@ -23,7 +25,8 @@ public class AuthenticationEvent extends PlayerEvent implements Cancellable {
     private String announcement = null;
 
     private AuthenticationEvent(Player player, AuthType type) {
-        super(player);
+        super(true);
+        this.player = player;
         this.type = type;
         message = Utils.color(plugin.getLang().getMessage("messages." + type.getMessageKey()));
 
@@ -53,6 +56,11 @@ public class AuthenticationEvent extends PlayerEvent implements Cancellable {
 
     public AuthType getType() {
         return type;
+    }
+
+
+    public Player getPlayer() {
+        return player;
     }
 
     public String getMessage() {
