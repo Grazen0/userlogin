@@ -19,7 +19,7 @@ jobs:
         run: npm install yaml
 
       - name: Compare lang files
-        run: node compare-lang-files.js
+        run: node scripts/compare-lang-files.js
 
   build:
     runs-on: ubuntu-latest
