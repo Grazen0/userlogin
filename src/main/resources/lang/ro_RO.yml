@@ -1,0 +1,55 @@
+commands:
+  disabled: '&cAceastă comandă este dezactivată'
+  player_unregistered: '&b{player} &a fost dezînregistrat cu succes!'
+  errors:
+    player_only: '&cAceasta este o comandă doar pentru jucători'
+    no_permission: '&cNu ai permisiunea de a utiliza această comandă'
+    player_not_found: '&cJucătorul nu a fost găsit!'
+    unregister_failed: '&cNu s-a reușit ștergerea parolei. Citește consola pentru mai multe informații'
+  set: '&eLocația de {type} a fost setată la &bX: {x}, Y: {y}, Z: {z}, Y: {yaw}, P: {pitch}, &eat the world &b"{world}"'
+  reload: '&ePlugin reîncărcat!'
+  descriptions:
+    userlogin: Comanda principală pentru UserLogin
+    login: Îți conectează utilizatorul cu parola dată
+    register: Îți înregistrează utilizatorul cu parola dată
+    changepassword: Îți schimbă parola cu una nouă
+  usages:
+    userlogin: '&cUtilizare corectă: /userlogin [comandă] (Scrie /ul help pentru mai multe)'
+    login: '&cUtilizare corectă: /login <parolă>'
+    register: '&cUtilizare corectă: /register <parolă> <parolă>'
+    changepassword: '&cUtilizare corectă: /change password <parola-veche> <parola-nouă> <parola-nouă>'
+messages:
+  not_registered: '&cNu ești înregistrat! Scrie &a/register <parola> <parola> &cpentru a te înregistra!'
+  already_registered: '&cEști deja înregistrat!'
+  incorrect_password: '&4Parolă incorectă'
+  short_password: '&cParola trebuie să aibă cel puțin &4{chars} &ccaractere'
+  long_password: '&cParola trebuie să aibă macim &4{chars} &ccaractere'
+  regex_mismatch: '&cParola ta are un model invalid!'
+  different_passwords: '&cParolele nu se potrivesc!'
+  already_logged_in: '&cEști deja autentificat!'
+  logged_in: ''
+  registered: '&9Autentificare reușită!'
+  register_failed: '&cÎnregistrarea a eșuat, încercă din nou.'
+  welcome:
+    registered: '&6Bun venit! Scrie &3/login <parola> &6pentru a intra pe server'
+    unregistered: '&6Bun venit! Scrie &3/register <parola> <parola> &6pentru a te înregistra'
+  chat_disabled: '&cTrebuie să te conectezi mai întâi pentru a folosi chat-ul!'
+  timeout: Ai stat prea mult timp fără să te conectezi
+  max_attempts_exceeded: Ai depășit {count} încercări de autentificare, te rugăm să încerci din nou
+  login_announcement: '&e{player} a intrat pe server!'
+  move_warning: '&cTrebuie să te autentifici pentru a te mișca!'
+  commands_disabled: '&cTrebuie să te autentifici pentru a folosi comenzi!'
+  must_log_in: '&cTrebuie să fi autentificat pentru a folosi această comandă'
+  password_changed: '&6Parola a fost schimbată cu succes'
+  password_change_error: '&cA apărut o eroare la schimbarea parolei'
+  help:
+    - '&a----------- | &2[Ajutor UserLogin] &a| -----------'
+    - '&2/ul help: &aAfișează această listă de ajutor'
+    - '&2/ul reload: &aReîncarcă configurațiile'
+    - '&2/ul set [login|spawn]: &aSetează locația specificată la locația ta'
+    - '&2/ul unregister <player>: &aDezînregistrează jucătorul specificat'
+    - '&a-----------------------------------------------------'
+other:
+  database_connected: '&eBază de date contectată!'
+  database_error: '&cNu s-a reușit conectarea la baza de date, citește mai jos:'
+  driver_missing: '&cDriver JDBC pentru baza de date lipsește: {driver}'
