@@ -107,7 +107,7 @@ teleports:
   # The savePosition mode teleports players
   # to their last position when they log in.
   # Useful for survival servers and similar.
-  savePosition: false
+  savePosition:true
 
   # Teleport players to the position set with
   # "/ul set prelogin" on join.
