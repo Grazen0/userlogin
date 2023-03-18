@@ -48,6 +48,9 @@ public final class UserLogin extends JavaPlugin {
 
         getServer().getMessenger().registerOutgoingPluginChannel(this, "BungeeCord");
 
+        // Try to find LuckPerms
+        tryLoadLuckPerms();
+
         // Register FastLogin hook
         if (getServer().getPluginManager().isPluginEnabled("FastLogin")) {
             new FastLoginHook().register();
@@ -171,6 +174,16 @@ public final class UserLogin extends JavaPlugin {
 
     private void registerEvents(Listener listener) {
         getServer().getPluginManager().registerEvents(listener, this);
+    }
+
+    private void tryLoadLuckPerms() {
+        try {
+            Class.forName("net.luckperms.api.LuckPerms");
+        } catch (ClassNotFoundException e) {
+            return;
+        }
+
+        com.elchologamer.userlogin.util.LuckPermsContext.registerLuckPermsContext(plugin);
     }
 
     @Override
