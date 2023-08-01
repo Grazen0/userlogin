@@ -1,0 +1,58 @@
+commands:
+  disabled: '&c该指令已被禁用'
+  player_unregistered: '&b{player} &e注册成功!'
+  errors:
+    player_only: '&c这是一个仅供玩家执行的命令'
+    no_permission: '&c你无权执行该命令'
+    player_not_found: '&c玩家不存在!'
+    unregister_failed: '&c密码删除失败，请查看控制台日志了解详情'
+  set: '&e {type} 登录位置被设置在 &bX: {x}, Y: {y}, Z: {z}, Y: {yaw},
+    P: {pitch}, &e在名为 &b"{world}" 的世界'
+  reload: '&e插件重新加载完成!'
+  descriptions:
+    userlogin: UserLogin插件的主管理员命令
+    login: 用密码登录服务器
+    register: 用密码注册服务器
+    changepassword: 修改当前密码
+  usages:
+    userlogin: '&c正确用法: /userlogin [命令参数] (使用 /ul 了解详情)'
+    login: '&c正确用法: /login <密码>'
+    register: '&c正确用法: /register <密码> <重复密码>'
+    changepassword: '&c正确用法: /changepassword <老密码> <新密码>
+      <重复新密码>'
+messages:
+  not_registered: '&c你还没有注册! 使用 &a/register <密码> <重复密码>
+    &c进行注册!'
+  already_registered: '&c你已经注册过了!'
+  incorrect_password: '&4密码错误!'
+  short_password: '&c你的密码至少要有 &4{chars} &c位'
+  long_password: '&c你的密码最多有 &4{chars} &c位'
+  regex_mismatch: '&c你的密码中含有无效字符!'
+  different_passwords: '&c密码不匹配!'
+  already_logged_in: '&c你已经登陆过了!'
+  logged_in: '&9登录成功!'
+  registered: '&9注册成功!'
+  register_failed: '&c注册失败，请重试'
+  welcome:
+    registered: '&6欢迎来到服务器！ 使用 &3/login <密码> &6登录服务器'
+    unregistered: '&6欢迎来到服务器！ 使用 &3/register <密码> <重复密码> &6注册账户'
+  chat_disabled: '&c你必须登录才能使用聊天功能!'
+  timeout: 你未登录时间过长被踢出
+  max_attempts_exceeded: 你尝试了 {count} 次进行登录, 请重试
+  login_announcement: '&e{player} 进入了服务器!'
+  move_warning: '&c你必须登录才能移动!'
+  commands_disabled: '&c你必须登录才能使用命令!'
+  must_log_in: '&c你必须登录才能使用该命令'
+  password_changed: '&6修改密码成功'
+  password_change_error: '&c修改密码发生错误'
+  help:
+  - '&a----------- | &2[UserLogin 帮助] &a| -----------'
+  - '&2/ul help: &a展示帮助信息'
+  - '&2/ul reload: &a重新加载配置文件'
+  - '&2/ul set [login|spawn]: &a将登录时的位置设置在现在你的位置'
+  - '&2/ul unregister <player>: &a删除某个用户的UserLogin账号'
+  - '&a-----------------------------------------------------'
+other:
+  database_connected: '&e数据库连接成功!'
+  database_error: '&c连接数据库失败，请看下方信息：'
+  driver_missing: '&cJDBC 数据库驱动丢失: {driver}'
